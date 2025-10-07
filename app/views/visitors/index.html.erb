@@ -1,0 +1,24 @@
+<h1>Lista de Visitantes Cadastrados</h1>
+
+<%= link_to "Novo Visitante", new_visitor_path %>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>QR Code Hash</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @visitors.each do |visitor| %>
+      <tr>
+        <td><%= visitor.name %></td>
+        <td><%= visitor.cpf %></td>
+        <td><strong><%= visitor.qr_code_hash %></strong></td>
+        <td><%= link_to "Ver Detalhes", visitor %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

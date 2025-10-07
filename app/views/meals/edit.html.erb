@@ -1,0 +1,8 @@
+<h1>Editar Refeição: <%= @meal.name %></h1>
+
+<%= render 'form', meal: @meal %>
+
+<hr>
+
+<%= link_to 'Mostrar Detalhes', @meal %> |
+<%= link_to 'Voltar para a Lista', meals_path %>

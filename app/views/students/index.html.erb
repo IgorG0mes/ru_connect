@@ -1,0 +1,24 @@
+<h1>Lista de Alunos Cadastrados</h1>
+
+<%= link_to "Novo Aluno", new_student_path %>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Matrícula</th>
+      <th>QR Code Hash</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @students.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <td><%= student.registration %></td>
+        <td><strong><%= student.qr_code_hash %></strong></td>
+        <td><%= link_to "Ver Detalhes", student %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

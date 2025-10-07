@@ -1,0 +1,31 @@
+<%= form_with(model: visitor) do |form| %>
+  <% if visitor.errors.any? %>
+    <div style="color: red">
+      <p><%= pluralize(visitor.errors.count, "erro") %> impediram este visitante de ser salvo:</p>
+      <ul>
+        <% visitor.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cpf, 'CPF (Opcional para Visitante)' %>
+    <%= form.text_field :cpf %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Salvar Visitante' %>
+  </div>
+<% end %>

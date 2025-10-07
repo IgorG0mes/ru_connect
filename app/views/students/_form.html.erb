@@ -1,0 +1,41 @@
+<%= form_with(model: student) do |form| %>
+  <% if student.errors.any? %>
+    <div style="color: red">
+      <p><%= pluralize(student.errors.count, "erro") %> impediram este aluno de ser salvo:</p>
+      <ul>
+        <% student.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :registration, 'Matrícula' %>
+    <%= form.text_field :registration %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :cpf %>
+    <%= form.text_field :cpf %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :course, 'Curso' %>
+    <%= form.text_field :course %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Salvar Aluno' %>
+  </div>
+<% end %>

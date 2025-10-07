@@ -1,0 +1,27 @@
+<div class="container text-center">
+  <h1>Catraca de Acesso RU-Connect</h1>
+  <p class="lead">Aproxime o QR Code ou insira o identificador.</p>
+
+  <%= form_with url: identify_path, method: :post, local: true, data: { turbo: false } do |f| %>
+    <div class="form-group my-3">
+      <%= f.label :identifier, "Código de Identificação:" %>
+      <%= f.text_field :identifier, class: "form-control form-control-lg", autofocus: true %>
+    </div>
+    
+    <div class="actions">
+      <%= f.submit "Validar", class: "btn btn-primary btn-lg" %>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <% if notice %>
+      <div class="alert alert-success"><%= notice %></div>
+    <% end %>
+    <% if alert %>
+      <div class="alert alert-danger"><%= alert %></div>
+      <div><%= link_to "Cadastrar", new_student_path %></div>
+    <% end %>
+  </div>
+
+  <p class="mt-4"><small>Acesso administrativo: <%= link_to "Entrar", new_user_session_path %></small></p>
+</div>

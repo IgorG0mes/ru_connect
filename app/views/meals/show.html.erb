@@ -1,0 +1,10 @@
+<h1>Refeição: <%= @meal.name %></h1>
+
+<p><strong>Nome:</strong> <%= @meal.name %></p>
+<p><strong>Início:</strong> <%= @meal.start_at.strftime('%H:%M') if @meal.start_at %></p>
+<p><strong>Fim:</strong> <%= @meal.end_at.strftime('%H:%M') if @meal.end_at %></p>
+
+<hr>
+
+<%= link_to 'Editar', edit_meal_path(@meal) %> |
+<%= link_to 'Voltar para a Lista', meals_path %>

@@ -1,0 +1,10 @@
+<h1>Detalhes do Aluno: <%= @student.name %></h1>
+
+<p><strong>Matrícula:</strong> <%= @student.registration %></p>
+<p><strong>CPF:</strong> <%= @student.cpf %></p>
+<p><strong>E-mail:</strong> <%= @student.email %></p>
+<p><strong>Curso:</strong> <%= @student.course %></p>
+<p><strong>QR Code Hash (Chave):</strong> <code><%= @student.qr_code_hash %></code></p>
+
+<%= link_to 'Editar', edit_student_path(@student) %> |
+<%= link_to 'Voltar para a Lista', students_path %>

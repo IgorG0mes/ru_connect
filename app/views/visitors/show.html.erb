@@ -1,0 +1,11 @@
+<h1>Detalhes do Visitante: <%= @visitor.name %></h1>
+
+<p><strong>Nome:</strong> <%= @visitor.name %></p>
+<p><strong>CPF:</strong> <%= @visitor.cpf %></p>
+<p><strong>E-mail:</strong> <%= @visitor.email %></p>
+<p><strong>QR Code Hash (Chave):</strong> <code><%= @visitor.qr_code_hash %></code></p>
+
+<hr>
+
+<%= link_to 'Editar', edit_visitor_path(@visitor) %> |
+<%= link_to 'Voltar para a Lista', visitors_path %>

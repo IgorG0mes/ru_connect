@@ -1,0 +1,8 @@
+<h1>Editar Visitante: <%= @visitor.name %></h1>
+
+<%= render 'form', visitor: @visitor %>
+
+<hr>
+
+<%= link_to 'Mostrar Detalhes', @visitor %> |
+<%= link_to 'Voltar para a Lista', visitors_path %>

@@ -1,0 +1,25 @@
+<h1>Lista de Refeições e Horários</h1>
+
+<%= link_to "Nova Refeição", new_meal_path %>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Início</th>
+      <th>Fim</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @meals.each do |meal| %>
+      <tr>
+        <td><%= meal.name %></td>
+        <td><%= meal.start_at.strftime('%H:%M') if meal.start_at %></td>
+        <td><%= meal.end_at.strftime('%H:%M') if meal.end_at %></td>
+        <td>
+          <%= link_to "Editar", edit_meal_path(meal) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

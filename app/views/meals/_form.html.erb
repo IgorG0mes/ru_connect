@@ -1,0 +1,31 @@
+<%= form_with(model: meal) do |form| %>
+  <% if meal.errors.any? %>
+    <div style="color: red">
+      <p><%= pluralize(meal.errors.count, "erro") %> impediram a refeição de ser salva:</p>
+      <ul>
+        <% meal.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, 'Nome da Refeição (Ex: Almoço, Jantar)' %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_at, 'Início' %>
+    <%= form.time_field :start_at %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :end_at, 'Fim' %>
+    <%= form.time_field :end_at %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Salvar Refeição' %>
+  </div>
+<% end %>

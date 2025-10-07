@@ -1,0 +1,10 @@
+<h1>Editar Aluno: <%= @student.name %></h1>
+
+<%# O 'render' chama o arquivo _form.html.erb. %>
+<%# Como @student já existe e tem ID, o form_with dentro do _form sabe que deve fazer um PUT/PATCH (update) %>
+<%= render 'form', student: @student %>
+
+<hr>
+
+<%= link_to 'Mostrar Detalhes', @student %> |
+<%= link_to 'Voltar para a Lista', students_path %>
