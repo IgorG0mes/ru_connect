@@ -1,0 +1,32 @@
+<h1>Gerenciamento de Cardápios Diários</h1>
+
+<%= link_to "Novo Cardápio", new_daily_menu_path %>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Refeição</th>
+      <th>Prato Principal</th>
+      <th>Guarnições</th>
+      <th>Salada</th>
+      <th>Sobremesa</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @daily_menus.each do |menu| %>
+      <tr>
+        <td><%= l(menu.date, format: '%A, %d/%m') %></td>
+        <td><%= menu.meal.name %></td>
+        <td><%= menu.main_dish %></td>
+        <td><%= menu.side_dish %></td>
+        <td><%= menu.salad %></td>
+        <td><%= menu.dessert %></td>
+        <td>
+          <%= link_to "Editar", edit_daily_menu_path(menu) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
