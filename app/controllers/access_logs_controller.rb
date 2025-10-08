@@ -1,0 +1,2 @@
+class AccessLogsController < ApplicationController
+end
