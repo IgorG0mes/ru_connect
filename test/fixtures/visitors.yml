@@ -4,10 +4,10 @@ one:
   name: MyString
   cpf: MyString
   email: MyString
-  qr_code_hash: MyString
+  qr_code_hash: abc456
 
 two:
   name: MyString
   cpf: MyString
   email: MyString
-  qr_code_hash: MyString
+  qr_code_hash: def123

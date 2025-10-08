@@ -1,7 +1,14 @@
 class Meal < ApplicationRecord
   def self.find_current
-    current_time = Time.zone.now
+    current_time = Time.zone.now.strftime("%H:%M:%S")
 
-    Meal.where("start_at <= ? AND end_at >= ?", current_time, current_time).first
+    meals = Meal.all.select do |meal|
+      start_time = meal.start_at.strftime("%H:%M:%S")
+      end_time   = meal.end_at.strftime("%H:%M:%S")
+
+      current_time.between?(start_time, end_time)
+    end
+
+    meals.first
   end
 end

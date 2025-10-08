@@ -16,7 +16,7 @@ class AccessController < ApplicationController
 
       case access_log.status.to_sym
       when :allowed
-        flash.now[:notice] = "ACESSO LIBERADO! Bem-vindo(a) #{person.name}."
+        flash.now[:notice] = "ACESSO LIBERADO! Bem-vindo(a) #{person.name}, Bom #{meal.name.downcase}."
       when :denied
         flash.now[:alert] = "ACESSO NEGADO: #{access_log.denial_reason}"
       when :warning
