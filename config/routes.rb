@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root "access#identification"
   get "identify", to: "access#identification"
   post "identify", to: "access#process_identification"
+  get "menu", to: "daily_menus#today", as: :public_menu
 
   resources :students
   resources :visitors
