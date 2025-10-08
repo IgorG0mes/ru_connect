@@ -1,0 +1,33 @@
+<div class="container text-center">
+  <h1>Cardápio do Dia: <%= l(Date.current, format: '%A, %d de %B') %></h1>
+  <hr>
+
+  <% if @current_menu.present? %>
+    <h2>Refeição Atual: <%= @current_menu.meal.name %></h2>
+    <p class="lead">Servido das <%= @current_menu.meal.start_at.strftime('%H:%M') %>h às <%= @current_menu.meal.end_at.strftime('%H:%M') %>h</p>
+
+    <div class="card p-4 my-4" style="border: 1px solid #ccc;">
+      <p><strong>Prato Principal:</strong> <%= @current_menu.main_dish %></p>
+      <p><strong>Acompanhamentos:</strong> <%= @current_menu.side_dish %></p>
+      <p><strong>Salada:</strong> <%= @current_menu.salad %></p>
+      <p><strong>Sobremesa:</strong> <%= @current_menu.dessert %></p>
+    </div>
+
+  <% elsif @daily_menus.present? %>
+    <h2>Cardápios Previstos para o Dia</h2>
+    <% @daily_menus.each do |menu| %>
+      <div class="card p-3 my-3">
+        <h3><%= menu.meal.name %></h3>
+        <p><small>Das <%= menu.meal.start_at.strftime('%H:%M') %>h às <%= menu.meal.end_at.strftime('%H:%M') %>h</small></p>
+        <p>Prato Principal: <%= menu.main_dish %></p>
+      </div>
+    <% end %>
+  
+  <% elsif flash[:alert] %>
+    <div class="alert alert-warning">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <p class="mt-5"><small>Para identificação, volte à <%= link_to 'Validação de Acesso', root_path %>.</small></p>
+</div>

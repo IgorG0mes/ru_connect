@@ -1,5 +1,5 @@
 class DailyMenusController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:today]
   before_action :set_daily_menu, only: [:edit, :update]
 
   def index
@@ -32,6 +32,20 @@ class DailyMenusController < ApplicationController
     else
       @meals = Meal.all
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def today
+    current_meal = Meal.find_current
+    @current_menu = DailyMenu.includes(:meal)
+                             .find_by(date: Date.current, meal: current_meal)
+
+    if current_meal.nil?
+      flash.now[:alert] = "Não há refeição disponível no momento."
+    elsif @current_menu.nil? && (Date.current.saturday? || Date.current.sunday?)
+      flash.now[:alert] = "O RU está fechado aos finais de semana."
+    elsif Holidays.on(Date.current, :br).any?
+      flash.now[:alert] = "O RU está fechado em feriados."
     end
   end
 
