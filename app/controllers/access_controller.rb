@@ -1,5 +1,5 @@
 class AccessController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :identification, :process_identification ]
+  before_action :authenticate_user!
 
   def identification
   end
