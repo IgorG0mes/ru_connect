@@ -1,0 +1,46 @@
+<%= form_with(model: daily_menu) do |form| %>
+  <% if daily_menu.errors.any? %>
+    <div style="color: red">
+      <p><%= pluralize(daily_menu.errors.count, "erro") %> impediram o cardápio de ser salvo:</p>
+      <ul>
+        <% daily_menu.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :date, 'Data' %>
+    <%= form.date_field :date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :meal_id, 'Refeição' %>
+    <%= form.collection_select :meal_id, @meals, :id, :name, prompt: "Selecione a Refeição" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :main_dish, 'Prato Principal' %>
+    <%= form.text_field :main_dish %>
+  </div>
+
+  <div class="field">
+    <%= form.label :side_dish, 'Acompanhamentos (Guarnição)' %>
+    <%= form.text_field :side_dish %>
+  </div>
+
+  <div class="field">
+    <%= form.label :salad, 'Salada' %>
+    <%= form.text_field :salad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :dessert, 'Sobremesa' %>
+    <%= form.text_field :dessert %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Salvar Cardápio' %>
+  </div>
+<% end %>

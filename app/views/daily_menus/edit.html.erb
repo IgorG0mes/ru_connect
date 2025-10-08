@@ -1,0 +1,5 @@
+<h1>Editar Cardápio para <%= @daily_menu.date.strftime('%d/%m/%Y') %></h1>
+
+<%= render 'form', daily_menu: @daily_menu %>
+
+<%= link_to 'Voltar para a Lista', daily_menus_path %>
