@@ -17,7 +17,6 @@
 
   <div class="field">
     <%= form.label :meal_id, 'Refeição' %>
-    <%# Cria um dropdown (select) com todas as refeições disponíveis %>
     <%= form.collection_select :meal_id, @meals, :id, :name, prompt: "Selecione a Refeição" %>
   </div>
 
