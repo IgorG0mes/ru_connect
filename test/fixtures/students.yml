@@ -3,15 +3,15 @@
 one:
   name: MyString
   cpf: MyString
-  registration: MyString
+  registration: abc456
   email: MyString
   course: MyString
-  qr_code_hash: MyString
+  qr_code_hash: abc123
 
 two:
   name: MyString
   cpf: MyString
-  registration: MyString
+  registration: def654
   email: MyString
   course: MyString
-  qr_code_hash: MyString
+  qr_code_hash: def321
