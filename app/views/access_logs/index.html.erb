@@ -1,0 +1,39 @@
+<h1>Registro de Acessos</h1>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Hora</th>
+      <th>Matrícula/CPF</th>
+      <th>Nome</th>
+      <th>Resultado</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @access_logs.each do |log| %>
+      <tr>
+        <td><%= l(log.created_at) %></td> 
+        <td><%= log.identifier %></td> 
+        <td><%= log.person_name %></td>
+        
+        <td>
+          <% if log.allowed? %>
+            <span style="color: green;"><%= log.denial_reason %></span>
+          <% elsif log.denied? %>
+            <span style="color: red;"><%= log.denial_reason %></span>
+          <% else %>
+            <span style="color: orange;"><%= log.denial_reason %></span>
+          <% end %>
+        </td>
+        <td>
+          <% if current_user.role&.name == 'admin' %>
+            <%= link_to "Excluir", log, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este registro?" }, style: "color: red;" %>
+          <% else %>
+            <small>Sem permissão</small>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

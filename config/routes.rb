@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   resources :visitors
   resources :meals
   resources :daily_menus
+  resources :access_logs, only: [:index, :destroy]
 end
