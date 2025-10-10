@@ -1,4 +1,5 @@
 require "rqrcode"
+
 class Student < ApplicationRecord
   has_many :access_logs, as: :personable
   after_create :generate_qr_code
