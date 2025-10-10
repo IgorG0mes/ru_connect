@@ -1,6 +1,7 @@
 class VisitorsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_visitor, only: [ :show, :edit, :update ]
+  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr ]
+  before_action :require_admin, only: [:regenerate_qr]
 
   def index
     @visitors = Visitor.all
@@ -32,6 +33,12 @@ class VisitorsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def regenerate_qr
+    QrCodeGeneratorService.generate_and_assign(@visitor)
+
+    redirect_to @visitor, notice: "Novo QR Code gerado e salvo para #{@visitor.name}."
   end
 
   private
