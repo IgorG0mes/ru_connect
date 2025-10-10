@@ -41,7 +41,6 @@ class StudentsController < ApplicationController
     redirect_to @student, notice: "Novo QR Code gerado e salvo para #{@student.name}."
   end
 
-
   private
 
   def set_student
