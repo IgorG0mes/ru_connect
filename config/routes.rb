@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "access#identification"
-  get "identify", to: "access#identification"
+  get "identify", to: "access#identification", as: :identify
   post "identify", to: "access#process_identification"
   get "menu", to: "daily_menus#today", as: :public_menu
 
