@@ -9,8 +9,14 @@ Rails.application.routes.draw do
   resources :students do
     post :regenerate_qr, on: :member
   end
-  resources :visitors
+
+  resources :visitors do
+    post :regenerate_qr, on: :member
+  end
+
   resources :meals
+
   resources :daily_menus
+
   resources :access_logs, only: [:index, :destroy]
 end

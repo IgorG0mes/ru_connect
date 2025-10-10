@@ -5,7 +5,22 @@
 <p><strong>E-mail:</strong> <%= @visitor.email %></p>
 <p><strong>QR Code Hash (Chave):</strong> <code><%= @visitor.qr_code_hash %></code></p>
 
-<hr>
+<div style="float: left; margin-left: 20px;">
+  <% if @visitor.qr_code_hash.present? %>
+    <h2>QR Code de Acesso</h2>
+    <%= @visitor.generate_qr_code_svg %>
+    <p class="text-center">Chave: <code><%= @visitor.qr_code_hash %></code></p>
+  <% else %>
+    <p>QR Code ainda não gerado. Edite e salve para forçar a geração.</p>
+  <% end %>
+  <% if current_user.role&.name == 'admin' %>
+  <%= link_to 'Gerar Novo QR Code', regenerate_qr_visitor_path(@visitor), 
+      data: { turbo_method: :post, turbo_confirm: 'Isso invalidará o QR Code antigo. Continuar?' },
+      style: "color: orange;" %>
+<% end %>
+</div>
+
+<hr style="clear: both;">
 
 <%= link_to 'Editar', edit_visitor_path(@visitor) %> |
 <%= link_to 'Voltar para a Lista', visitors_path %>
