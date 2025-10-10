@@ -1,5 +1,7 @@
 <div class="container text-center">
   <h1>Validação de Acesso RU-Connect</h1>
+  <p class="mt-4"><small>Acesso administrativo: <%= link_to "Entrar", new_user_session_path %></small></p>
+  
   <p class="lead">Aproxime o QR Code ou insira o identificador.</p>
 
   <%= form_with url: identify_path, method: :post, local: true, data: { turbo: false } do |f| %>
@@ -22,6 +24,14 @@
       <div><%= link_to "Cadastrar", new_student_path %></div>
     <% end %>
   </div>
-
-  <p class="mt-4"><small>Acesso administrativo: <%= link_to "Entrar", new_user_session_path %></small></p>
 </div>
+
+<hr class="my-5">
+
+<h2>Últimos Acessos de Hoje</h2>
+
+<% if @today_logs.present? %>
+  <%= render 'access_logs/access_logs_table', logs: @today_logs %>
+<% else %>
+  <p>Nenhum acesso registrado ainda hoje.</p>
+<% end %>
