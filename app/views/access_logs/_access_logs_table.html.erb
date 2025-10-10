@@ -1,0 +1,37 @@
+<table border="1">
+  <thead>
+    <tr>
+      <th>Hora</th>
+      <th>Matrícula/CPF</th>
+      <th>Nome</th>
+      <th>Resultado</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% logs.each do |log| %>
+      <tr>
+        <td><%= l(log.created_at) %></td> 
+        <td><%= log.identifier %></td> 
+        <td><%= log.person_name %></td>
+        
+        <td>
+          <% if log.allowed? %>
+            <span style="color: green;"><%= log.access_result %></span>
+          <% elsif log.denied? %>
+            <span style="color: red;"><%= log.access_result %></span>
+          <% else %>
+            <span style="color: orange;"><%= log.access_result %></span>
+          <% end %>
+        </td>
+        <td>
+          <% if defined?(current_user) && current_user&.role&.name == 'admin' %>
+            <%= link_to "Excluir", log, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este registro?" }, style: "color: red;" %>
+          <% else %>
+            <small>Sem permissão</small>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

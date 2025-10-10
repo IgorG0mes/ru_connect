@@ -1,5 +1,6 @@
 class AccessController < ApplicationController
   before_action :authenticate_user!
+  before_action :load_today_logs, only: [:identification, :process_identification]
 
   def identification
   end
@@ -18,9 +19,9 @@ class AccessController < ApplicationController
       when :allowed
         flash.now[:notice] = "ACESSO LIBERADO! Bem-vindo(a) #{person.name}, Bom #{meal.name.downcase}."
       when :denied
-        flash.now[:alert] = "ACESSO NEGADO: #{access_log.denial_reason}"
+        flash.now[:alert] = "ACESSO NEGADO: #{access_log.access_result}"
       when :warning
-        flash.now[:alert] = "AVISO: #{access_log.denial_reason}"
+        flash.now[:alert] = "AVISO: #{access_log.access_result}"
       end
     else
       flash.now[:alert] = "Usuário não encontrado. Necessário Cadastro."
@@ -30,6 +31,13 @@ class AccessController < ApplicationController
   end
 
   private
+
+  def load_today_logs
+    @today_logs = AccessLog.includes(:personable)
+                           .where(created_at: Time.zone.now.all_day)
+                           .order(created_at: :desc)
+                           .limit(30)
+  end
 
   def find_person(identifier)
     Student.find_by(qr_code_hash: identifier) ||
@@ -44,7 +52,7 @@ class AccessController < ApplicationController
       return AccessLog.create(
         personable: person,
         status: :warning,
-        denial_reason: "Refeição não está disponível no horário atual."
+        access_result: "Refeição não está disponível no horário atual."
       )
     end
 
@@ -52,10 +60,15 @@ class AccessController < ApplicationController
       return AccessLog.create(
         personable: person,
         status: :denied,
-        denial_reason: "Não é possível acessar novamente. Acesso já consumido hoje."
+        access_result: "Não é possível acessar novamente. Acesso já consumido hoje."
       )
     end
 
-    AccessLog.create!(personable: person, status: :allowed, access_time: Time.current)
+    AccessLog.create!(
+      personable: person,
+      status: :allowed,
+      access_time: Time.current,
+      access_result: "Acesso aprovado para #{meal.name.capitalize}."
+    )
   end
 end
