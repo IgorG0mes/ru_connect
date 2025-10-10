@@ -2,18 +2,39 @@
   <h1>Validação de Acesso RU-Connect</h1>
   <p class="mt-4"><small>Acesso administrativo: <%= link_to "Entrar", new_user_session_path %></small></p>
   
-  <p class="lead">Aproxime o QR Code ou insira o identificador.</p>
+  <p class="lead">Método de Identificação:</p>
 
-  <%= form_with url: identify_path, method: :post, local: true, data: { turbo: false } do |f| %>
-    <div class="form-group my-3">
-      <%= f.label :identifier, "Código de Identificação:" %>
-      <%= f.text_field :identifier, class: "form-control form-control-lg", autofocus: true %>
+  <div class="row my-4">
+    <div class="col-md-6 mx-auto">
+      <h3>Entrada Manual</h3>
+      <p>Digite o CPF ou Matrícula</p>
+      
+      <%= form_with url: identify_path, method: :post, local: true, data: { turbo: false } do |f| %>
+        <div class="form-group my-3">
+          <%= f.label :identifier, "Identificador:" %>
+          <%= f.text_field :identifier, class: "form-control form-control-lg", autofocus: true %>
+          <%= f.submit "Validar Manualmente", class: "btn btn-primary btn-lg" %>
+        </div>
+      <% end %>
     </div>
-    
-    <div class="actions">
-      <%= f.submit "Validar", class: "btn btn-primary btn-lg" %>
+
+    <div class="col-md-12 my-4">
+      <hr>
+      <h3>OU</h3>
+      <hr>
     </div>
-  <% end %>
+
+    <div class="col-md-6 mx-auto">
+      <h3>Leitura por Câmera</h3>
+      
+      <button id="start-scanner-btn" class="btn btn-success btn-lg mb-3">
+        ▶️ Start Scanning
+      </button>
+  
+      <div id="reader" style="width:300px; margin: 0 auto; display: none;"></div> 
+    </div>
+
+  </div>
 
   <div class="my-5">
     <% if notice %>
@@ -21,12 +42,74 @@
     <% end %>
     <% if alert %>
       <div class="alert alert-danger"><%= alert %></div>
-      <div><%= link_to "Cadastrar", new_student_path %></div>
+      <div><%= link_to "Cadastrar Novo Aluno", new_student_path %></div>
     <% end %>
   </div>
 </div>
 
 <hr class="my-5">
+
+<script>
+  const feedbackElement = document.getElementById('scan-feedback');
+  const readerElement = document.getElementById('reader');
+  const startButton = document.getElementById('start-scanner-btn');
+
+  var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 }, false);
+
+  function onScanSuccess(decodedText, decodedResult) {
+    html5QrcodeScanner.pause(true); 
+    
+    if (readerElement) {
+        readerElement.style.display = 'none';
+    }
+    if (feedbackElement) {
+        feedbackElement.classList.remove('d-none');
+    }
+
+    console.log(`Enviando código lido: ${decodedText}`);
+    
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '<%= identify_path %>'; 
+    
+    const identifierField = document.createElement('input');
+    identifierField.type = 'hidden';
+    identifierField.name = 'identifier'; 
+    identifierField.value = decodedText;
+    form.appendChild(identifierField);
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const csrfField = document.createElement('input');
+    csrfField.type = 'hidden';
+    csrfField.name = 'authenticity_token';
+    csrfField.value = csrfToken;
+    form.appendChild(csrfField);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  function startScanner() {
+    startButton.style.display = 'none';
+    readerElement.style.display = 'block';
+    
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+  }
+  
+  if (startButton) {
+      startButton.addEventListener('click', startScanner);
+  }
+  
+  function onScanFailure(error) {
+  }
+
+  document.addEventListener('turbo:before-render', () => {
+    html5QrcodeScanner.clear().catch(error => {
+      console.warn("Falha ao desligar o leitor de QR Code:", error);
+    });
+  });
+</script>
 
 <h2>Últimos Acessos de Hoje</h2>
 
