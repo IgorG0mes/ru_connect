@@ -18,4 +18,10 @@ class AccessLog < ApplicationRecord
   rescue
     "Pessoa Desconhecida"
   end
+
+  def course_name
+    personable.course
+  rescue
+    "Visitante"
+  end
 end

@@ -4,6 +4,7 @@
       <th>Hora</th>
       <th>Matrícula/CPF</th>
       <th>Nome</th>
+      <th>Curso</th>
       <th>Resultado</th>
       <th>Ações</th>
     </tr>
@@ -14,6 +15,7 @@
         <td><%= l(log.created_at) %></td> 
         <td><%= log.identifier %></td> 
         <td><%= log.person_name %></td>
+        <td><%= log.course_name %></td>
         
         <td>
           <% if log.allowed? %>
