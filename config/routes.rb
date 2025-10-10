@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   post "identify", to: "access#process_identification"
   get "menu", to: "daily_menus#today", as: :public_menu
 
-  resources :students
+  resources :students do
+    post :regenerate_qr, on: :member
+  end
   resources :visitors
   resources :meals
   resources :daily_menus

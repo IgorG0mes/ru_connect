@@ -1,6 +1,7 @@
 class StudentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_student, only: [ :show, :edit, :update ]
+  before_action :set_student, only: [ :show, :edit, :update, :regenerate_qr ]
+  before_action :require_admin, only: [:regenerate_qr]
 
   def index
     @students = Student.all
@@ -33,6 +34,13 @@ class StudentsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  def regenerate_qr
+    QrCodeGeneratorService.generate_and_assign(@student)
+
+    redirect_to @student, notice: "Novo QR Code gerado e salvo para #{@student.name}."
+  end
+
 
   private
 
