@@ -32,6 +32,12 @@ class AccessController < ApplicationController
 
   private
 
+  def normalize_identifier(identifier)
+    return unless identifier.present?
+
+    identifier.to_s.gsub(/[^0-9]/, "")
+  end
+
   def load_today_logs
     @today_logs = AccessLog.includes(:personable)
                            .where(created_at: Time.zone.now.all_day)
@@ -40,11 +46,12 @@ class AccessController < ApplicationController
   end
 
   def find_person(identifier)
+    normalized_id = normalize_identifier(identifier)
     Student.find_by(qr_code_hash: identifier) ||
     Student.find_by(registration: identifier) ||
-    Student.find_by(cpf: identifier) ||
+    Student.find_by(cpf: normalized_id) ||
     Visitor.find_by(qr_code_hash: identifier) ||
-    Visitor.find_by(cpf: identifier)
+    Visitor.find_by(cpf: normalized_id)
   end
 
   def record_access_attempt(person, meal)
