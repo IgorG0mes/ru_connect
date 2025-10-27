@@ -3,6 +3,7 @@ require "rqrcode"
 class Student < ApplicationRecord
   has_many :access_logs, as: :personable
   after_create :generate_qr_code
+  before_save :clean_cpf
 
   def generate_qr_code_svg
     return unless qr_code_hash.present?
@@ -22,5 +23,9 @@ class Student < ApplicationRecord
   private
   def generate_qr_code
     QrCodeGeneratorService.generate_and_assign(self)
+  end
+
+  def clean_cpf
+    self.cpf = self.cpf.to_s.gsub(/[^0-9]/, "")
   end
 end
