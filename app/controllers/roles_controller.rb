@@ -1,5 +1,7 @@
 class RolesController < ApplicationController
   before_action :require_admin
+  before_action :set_role, only: [:edit, :update, :destroy]
+
   def index
     @roles = Role.all.order(:name)
   end
