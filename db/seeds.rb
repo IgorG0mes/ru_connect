@@ -1,12 +1,6 @@
-# puts "Criando Role Admin..."
-# admin_role = Role.find_or_create_by!(name: 'admin')
-
-# puts "Criando Usuário Operador..."
-# User.find_or_create_by!(email: 'igor@ru.com') do |user|
-#   user.password = 'password'
-#   user.username = 'igor.gomes'
-#   user.role = admin_role
-# end
+puts "\n--- 1. CRIAÇÃO DE ROLES ---"
+Role.find_or_create_by!(name: 'admin')
+Role.find_or_create_by!(name: 'balconist')
 
 require 'cpf_cnpj'
 require 'faker'
@@ -23,7 +17,7 @@ def generate_valid_cpf
   CPF.generate(true)
 end
 
-puts "\n--- 1. CRIAÇÃO DE #{NUM_RECORDS} ALUNOS (Students) ---"
+puts "\n--- 2. CRIAÇÃO DE #{NUM_RECORDS} ALUNOS (Students) ---"
 (1..NUM_RECORDS).each do |i|
   name = Faker::Name.name
   registration = (202512307 + i).to_s
@@ -38,7 +32,7 @@ puts "\n--- 1. CRIAÇÃO DE #{NUM_RECORDS} ALUNOS (Students) ---"
 end
 puts "\n   -> #{NUM_RECORDS} Alunos criados."
 
-puts "\n--- 2. CRIAÇÃO DE #{NUM_RECORDS} VISITANTES (Visitors) ---"
+puts "\n--- 3. CRIAÇÃO DE #{NUM_RECORDS} VISITANTES (Visitors) ---"
 (1..NUM_RECORDS).each do |i|
   name = Faker::Name.name
 
@@ -49,5 +43,3 @@ puts "\n--- 2. CRIAÇÃO DE #{NUM_RECORDS} VISITANTES (Visitors) ---"
   print "." if i % 100 == 0
 end
 puts "\n   -> #{NUM_RECORDS} Visitantes criados."
-
-puts "\n--- SCRIPT DE SEEDING CONCLUÍDO ---"
