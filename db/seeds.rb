@@ -39,6 +39,7 @@ puts "\n--- 3. CRIAÇÃO DE #{NUM_RECORDS} VISITANTES (Visitors) ---"
   Visitor.find_or_create_by!(cpf: generate_valid_cpf) do |visitor|
     visitor.name = name
     visitor.email = Faker::Internet.unique.email(name: name.gsub(/\s+/, ".").downcase)
+    visitor.cpf = generate_valid_cpf.gsub(/[^0-9]/, '')
   end
   print "." if i % 100 == 0
 end
