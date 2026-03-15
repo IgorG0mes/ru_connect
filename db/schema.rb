@@ -10,81 +10,81 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_10_002552) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "access_logs", force: :cascade do |t|
-    t.integer "status"
-    t.datetime "access_time"
     t.string "access_result"
-    t.string "personable_type", null: false
-    t.bigint "personable_id", null: false
+    t.datetime "access_time"
     t.datetime "created_at", null: false
+    t.bigint "personable_id", null: false
+    t.string "personable_type", null: false
+    t.integer "status"
     t.datetime "updated_at", null: false
     t.index ["personable_type", "personable_id"], name: "index_access_logs_on_personable"
   end
 
   create_table "daily_menus", force: :cascade do |t|
-    t.bigint "meal_id", null: false
-    t.date "date"
-    t.string "main_dish"
-    t.string "side_dish"
-    t.string "salad"
-    t.string "dessert"
     t.datetime "created_at", null: false
+    t.date "date"
+    t.string "dessert"
+    t.string "main_dish"
+    t.bigint "meal_id", null: false
+    t.string "salad"
+    t.string "side_dish"
     t.datetime "updated_at", null: false
     t.index ["meal_id"], name: "index_daily_menus_on_meal_id"
   end
 
   create_table "meals", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.time "end_at"
     t.string "name"
     t.time "start_at"
-    t.time "end_at"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "roles", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
   end
 
   create_table "students", force: :cascade do |t|
-    t.string "name"
-    t.string "cpf"
-    t.string "registration"
-    t.string "email"
     t.string "course"
-    t.string "qr_code_hash"
+    t.string "cpf"
     t.datetime "created_at", null: false
+    t.string "email"
+    t.string "name"
+    t.string "qr_code_hash"
+    t.string "registration"
     t.datetime "updated_at", null: false
     t.index ["qr_code_hash"], name: "index_students_on_qr_code_hash", unique: true
     t.index ["registration"], name: "index_students_on_registration", unique: true
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "username"
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
     t.bigint "role_id"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   create_table "visitors", force: :cascade do |t|
-    t.string "name"
     t.string "cpf"
-    t.string "email"
-    t.string "qr_code_hash"
     t.datetime "created_at", null: false
+    t.string "email"
+    t.string "name"
+    t.string "qr_code_hash"
     t.datetime "updated_at", null: false
   end
 
