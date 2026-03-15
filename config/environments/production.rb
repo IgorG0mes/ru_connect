@@ -79,10 +79,6 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  config.hosts << ENV["RAILWAY_PUBLIC_DOMAIN"] if ENV["RAILWAY_PUBLIC_DOMAIN"].present?
-  config.hosts << ENV["RAILWAY_PRIVATE_DOMAIN"] if ENV["RAILWAY_PRIVATE_DOMAIN"].present?
-
-  # Skip DNS rebinding protection for the default health check endpoint.
-  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # Allow all hosts — Railway handles routing/security at the infrastructure level.
+  config.hosts.clear
 end
