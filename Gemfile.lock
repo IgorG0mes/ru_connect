@@ -433,7 +433,7 @@ DEPENDENCIES
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
-  rails (~> 8.1.0)
+  rails (~> 8.1.1)
   rails-i18n
   rqrcode
   rspec-rails
