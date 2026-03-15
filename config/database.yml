@@ -17,7 +17,9 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
+    database: ru_connect_production
+    username: ru_connect
+    password: <%= ENV["RU_CONNECT_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: ru_connect_production_cache
