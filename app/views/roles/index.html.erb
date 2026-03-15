@@ -1,0 +1,23 @@
+<h1>Gerenciamento de Roles</h1>
+
+<%= link_to "Nova Role", new_role_path %>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nome da Role</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @roles.each do |role| %>
+      <tr>
+        <td><%= role.name %></td>
+        <td>
+          <%= link_to "Editar", edit_role_path(role) %> |
+          <%= link_to "Excluir", role, data: { turbo_method: :delete, turbo_confirm: "CUIDADO: Excluir esta role pode quebrar o acesso de usuários. Continuar?" }, style: "color: red;" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
