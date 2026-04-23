@@ -1,0 +1,16 @@
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1><%= t(".title") %></h1>
+    <%= link_to t(".new_link"), new_user_path, class: "identify-btn" %>
+  </div>
+
+  <% if @users.any? %>
+    <div class="students-list">
+      <% @users.each do |user| %>
+        <%= render "users/user_row", user: user %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="resource-search-empty"><%= t(".empty") %></p>
+  <% end %>
+</div>

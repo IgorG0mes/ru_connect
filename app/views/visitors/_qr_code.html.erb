@@ -1,0 +1,25 @@
+<turbo-frame id="qr_code_visitor_<%= visitor.id %>">
+  <div class="profile-card profile-card--qr">
+    <div class="profile-card-title"><%= t(".title") %></div>
+
+    <% if visitor.qr_code_hash.present? %>
+      <div class="profile-qr-image">
+        <%= visitor.generate_qr_code_svg %>
+      </div>
+      <div class="profile-qr-hash">
+        <span class="profile-qr-hash-label"><%= t(".key_label") %></span>
+        <code class="profile-qr-code"><%= visitor.qr_code_hash %></code>
+      </div>
+    <% else %>
+      <p class="profile-qr-missing"><%= t(".not_generated") %></p>
+    <% end %>
+
+    <% if current_user.role&.name == "admin" %>
+      <div class="profile-qr-actions">
+        <%= link_to t(".regenerate"), regenerate_qr_visitor_path(visitor),
+              class: "profile-qr-btn",
+              data: { turbo_method: :post, turbo_confirm: t(".confirm_regenerate") } %>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

@@ -1,33 +1,41 @@
-<div class="container text-center">
-  <h1>Cardápio do Dia: <%= l(Date.current, format: '%A, %d de %B') %></h1>
-  <hr>
+<div class="today-page">
+  <div class="today-header">
+    <div class="today-logo">🍽️</div>
+    <h1 class="today-title"><%= t(".title", date: l(Date.current, format: '%A, %d de %B')) %></h1>
+  </div>
 
   <% if @current_menu.present? %>
-    <h2>Refeição Atual: <%= @current_menu.meal.name %></h2>
-    <p class="lead">Servido das <%= @current_menu.meal.start_at.strftime('%H:%M') %>h às <%= @current_menu.meal.end_at.strftime('%H:%M') %>h</p>
+    <p class="today-meal-label"><%= t(".current_meal", meal: @current_menu.meal.name) %></p>
+    <p class="today-hours"><%= t(".served_hours", start: @current_menu.meal.start_at.strftime('%H:%M'), end: @current_menu.meal.end_at.strftime('%H:%M')) %></p>
 
-    <div class="card p-4 my-4" style="border: 1px solid #ccc;">
-      <p><strong>Prato Principal:</strong> <%= @current_menu.main_dish %></p>
-      <p><strong>Acompanhamentos:</strong> <%= @current_menu.side_dish %></p>
-      <p><strong>Salada:</strong> <%= @current_menu.salad %></p>
-      <p><strong>Sobremesa:</strong> <%= @current_menu.dessert %></p>
-    </div>
-
-  <% elsif @daily_menus.present? %>
-    <h2>Cardápios Previstos para o Dia</h2>
-    <% @daily_menus.each do |menu| %>
-      <div class="card p-3 my-3">
-        <h3><%= menu.meal.name %></h3>
-        <p><small>Das <%= menu.meal.start_at.strftime('%H:%M') %>h às <%= menu.meal.end_at.strftime('%H:%M') %>h</small></p>
-        <p>Prato Principal: <%= menu.main_dish %></p>
+    <div class="today-menu-card">
+      <div class="today-menu-item">
+        <div class="today-menu-label"><%= t(".main_dish_label") %></div>
+        <div class="today-menu-value"><%= @current_menu.main_dish %></div>
       </div>
-    <% end %>
-  
-  <% elsif flash[:alert] %>
-    <div class="alert alert-warning">
-      <%= flash[:alert] %>
+      <hr class="form-divider">
+      <div class="today-menu-item">
+        <div class="today-menu-label"><%= t(".side_dish_label") %></div>
+        <div class="today-menu-value"><%= @current_menu.side_dish %></div>
+      </div>
+      <% if @current_menu.salad.present? %>
+        <hr class="form-divider">
+        <div class="today-menu-item">
+          <div class="today-menu-label"><%= t(".salad_label") %></div>
+          <div class="today-menu-value"><%= @current_menu.salad %></div>
+        </div>
+      <% end %>
+      <% if @current_menu.dessert.present? %>
+        <hr class="form-divider">
+        <div class="today-menu-item">
+          <div class="today-menu-label"><%= t(".dessert_label") %></div>
+          <div class="today-menu-value"><%= @current_menu.dessert %></div>
+        </div>
+      <% end %>
     </div>
   <% end %>
 
-  <p class="mt-5"><small>Para identificação, volte à <%= link_to 'Validação de Acesso', root_path %>.</small></p>
+  <div class="today-footer">
+    <%= link_to t(".access_link"), root_path, class: "today-access-link" %>
+  </div>
 </div>

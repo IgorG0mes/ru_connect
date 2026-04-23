@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   root "access#identification"
   get "identify", to: "access#identification", as: :identify
@@ -21,4 +21,5 @@ Rails.application.routes.draw do
   resources :access_logs, only: [:index, :destroy]
 
   resources :roles, except: [:show]
+  resources :users, path: "admin/users", except: [:show]
 end

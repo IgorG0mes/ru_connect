@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Ru Connect" %></title>
+    <title><%= content_for(:title) || t(".app_title") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -10,44 +10,98 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script> 
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   </head>
 
-  <body>      
+  <body>
+    <div class="app-layout">
       <% if user_signed_in? %>
-        <nav style="background-color: #f0f0f0; padding: 10px; border-bottom: 1px solid #ccc;">
-        
-        <span>Olá, <%= current_user.username %>!</span>
-        
-        | <%= link_to "Identificação", identify_path %>
-        | <%= link_to "Alunos", students_path %>
-        | <%= link_to "Visitantes", visitors_path %>
-        | <%= link_to "Refeições", meals_path %>
-        | <%= link_to "Cardápios", daily_menus_path %>
-        | <%= link_to "Logs de Acesso", access_logs_path %>
-        | <%= link_to "Roles", roles_path %>
+        <aside class="sidebar" data-controller="sidebar">
+          <div class="sidebar-header">
+            <button class="sidebar-link sidebar-toggle" data-action="click->sidebar#toggle">
+              <span class="sidebar-icon">☰</span>
+              <span class="sidebar-label"><%= t(".app_title") %></span>
+            </button>
+          </div>
 
-        | <%= link_to "Sair (Logout)", destroy_user_session_path, 
-              data: { turbo_method: :delete, turbo_confirm: 'Tem certeza que deseja sair?' }, 
-              style: "color: red;" %>
+          <div class="sidebar-user sidebar-link" style="cursor: default;">
+            <span class="sidebar-icon">👤</span>
+            <span class="sidebar-label"><%= current_user.username %></span>
+          </div>
+
+          <nav class="sidebar-nav">
+            <%= link_to identify_path, class: "sidebar-link" do %>
+              <span class="sidebar-icon">🔍</span>
+              <span class="sidebar-label"><%= t(".nav.identification") %></span>
+            <% end %>
+            <%= link_to students_path, class: "sidebar-link" do %>
+              <span class="sidebar-icon">🎓</span>
+              <span class="sidebar-label"><%= t(".nav.students") %></span>
+            <% end %>
+            <%= link_to visitors_path, class: "sidebar-link" do %>
+              <span class="sidebar-icon">🧑</span>
+              <span class="sidebar-label"><%= t(".nav.visitors") %></span>
+            <% end %>
+            <%= link_to meals_path, class: "sidebar-link" do %>
+              <span class="sidebar-icon">🍽️</span>
+              <span class="sidebar-label"><%= t(".nav.meals") %></span>
+            <% end %>
+            <%= link_to daily_menus_path, class: "sidebar-link" do %>
+              <span class="sidebar-icon">📋</span>
+              <span class="sidebar-label"><%= t(".nav.daily_menus") %></span>
+            <% end %>
+            <%= link_to access_logs_path, class: "sidebar-link" do %>
+              <span class="sidebar-icon">📜</span>
+              <span class="sidebar-label"><%= t(".nav.access_logs") %></span>
+            <% end %>
+            <% if current_user.role&.name == "admin" %>
+              <%= link_to roles_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🔑</span>
+                <span class="sidebar-label"><%= t(".nav.roles") %></span>
+              <% end %>
+              <%= link_to users_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">👥</span>
+                <span class="sidebar-label"><%= t(".nav.users") %></span>
+              <% end %>
+            <% end %>
+          </nav>
+
+          <div class="sidebar-footer">
+            <%= link_to destroy_user_session_path, class: "sidebar-link sidebar-link--danger",
+                  data: { turbo_method: :delete, turbo_confirm: t(".confirm_logout") } do %>
+              <span class="sidebar-icon">🚪</span>
+              <span class="sidebar-label"><%= t(".nav.logout") %></span>
+            <% end %>
+          </div>
+        </aside>
       <% end %>
-    </nav>
-    <hr>
-    
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
 
-    <%= yield %>
+      <div class="main-wrapper">
+        <div id="toast_container" class="toast-container">
+          <% if notice %>
+            <div class="toast toast-notice" data-controller="toast" data-action="click->toast#dismiss">
+              <%= notice %>
+            </div>
+          <% end %>
+          <% if alert %>
+            <div class="toast toast-alert" data-controller="toast" data-action="click->toast#dismiss">
+              <%= alert %>
+            </div>
+          <% end %>
+        </div>
 
+        <main class="main-content">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
   </body>
 </html>

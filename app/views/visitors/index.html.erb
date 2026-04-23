@@ -1,24 +1,44 @@
-<h1>Lista de Visitantes Cadastrados</h1>
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1 class="resource-search-title"><%= t(".title") %></h1>
+    <%= link_to t(".new_link"), new_visitor_path, class: "identify-btn" %>
+  </div>
 
-<%= link_to "Novo Visitante", new_visitor_path %>
+  <%= form_with url: visitors_path, method: :get, html: { class: "resource-search-form" } do |f| %>
+    <p class="resource-search-hint"><%= t(".search_hint") %></p>
+    <div class="identify-input-group">
+      <%= f.text_field :q, value: params[:q], placeholder: t(".search_placeholder"),
+            class: "identify-input", autofocus: true %>
+      <%= f.submit t("shared.search"), class: "identify-btn identify-btn--inline" %>
+    </div>
+  <% end %>
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>CPF</th>
-      <th>QR Code Hash</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @visitors.each do |visitor| %>
-      <tr>
-        <td><%= visitor.name %></td>
-        <td><%= visitor.cpf %></td>
-        <td><strong><%= visitor.qr_code_hash %></strong></td>
-        <td><%= link_to "Ver Detalhes", visitor %></td>
-      </tr>
+  <turbo-frame id="visitors_list">
+    <% if @searched %>
+      <% if @visitors.any? %>
+        <div class="resource-search-count">
+          <%= t(".results_count", count: @total) %> &nbsp;|&nbsp; <%= t(".page", page: @page) %>
+        </div>
+
+        <div class="students-list">
+          <% @visitors.each do |visitor| %>
+            <%= render "visitors/visitor_row", visitor: visitor %>
+          <% end %>
+        </div>
+
+        <div class="resource-pagination">
+          <% if @page > 1 %>
+            <%= link_to t(".previous"), visitors_path(q: params[:q], page: @page - 1),
+                  class: "identify-btn", data: { turbo_frame: "visitors_list" } %>
+          <% end %>
+          <% if @has_more %>
+            <%= link_to t(".next"), visitors_path(q: params[:q], page: @page + 1),
+                  class: "identify-btn", data: { turbo_frame: "visitors_list" } %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="resource-search-empty"><%= t(".no_results", query: params[:q]) %></p>
+      <% end %>
     <% end %>
-  </tbody>
-</table>
+  </turbo-frame>
+</div>

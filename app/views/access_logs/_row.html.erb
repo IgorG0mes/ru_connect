@@ -1,0 +1,18 @@
+<tr id="access_log_<%= log.id %>">
+  <td><%= l(log.created_at, format: :access_log) %></td>
+  <td><%= log.identifier %></td>
+  <td><%= link_to log.person_name, log.personable %></td>
+  <td><%= log.course_name %></td>
+  <td>
+    <span class="access-status-badge" data-status="<%= log.status %>">
+      <%= log.access_result %>
+    </span>
+  </td>
+  <% if defined?(current_user) && current_user&.role&.name == "admin" %>
+    <td>
+      <%= link_to t(".delete"), log,
+            data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") },
+            class: "access-log-delete-btn" %>
+    </td>
+  <% end %>
+</tr>

@@ -3,6 +3,11 @@ require "rqrcode"
 class Visitor < ApplicationRecord
   has_many :access_logs, as: :personable
   after_create :generate_qr_code
+  before_validation :clean_cpf
+
+  validates :name, presence: true
+  validates :cpf, presence: true
+  validate :cpf_format_valid, if: -> { cpf.present? }
 
   def generate_qr_code_svg
     return unless qr_code_hash.present?
@@ -20,7 +25,16 @@ class Visitor < ApplicationRecord
   end
 
   private
+
   def generate_qr_code
     QrCodeGeneratorService.generate_and_assign(self)
+  end
+
+  def clean_cpf
+    self.cpf = cpf.to_s.gsub(/[^0-9]/, "")
+  end
+
+  def cpf_format_valid
+    errors.add(:cpf, :invalid) unless CPF.valid?(cpf)
   end
 end

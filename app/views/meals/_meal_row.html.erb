@@ -1,0 +1,14 @@
+<div class="meal-card" id="meal_<%= meal.id %>">
+  <div class="meal-card-icon">🍽️</div>
+  <div class="meal-card-body">
+    <%= link_to meal.name, meal_path(meal), class: "meal-card-name" %>
+    <div class="meal-card-time">
+      <%= meal.start_at.strftime("%H:%M") if meal.start_at %>
+      –
+      <%= meal.end_at.strftime("%H:%M") if meal.end_at %>
+    </div>
+  </div>
+  <div class="meal-card-actions">
+    <%= link_to t(".edit"), edit_meal_path(meal), class: "identify-btn student-card-btn", data: { turbo_frame: "_top" } %>
+  </div>
+</div>
