@@ -1,0 +1,21 @@
+<div class="daily-menu-meal-card" id="daily_menu_<%= menu.id %>">
+  <div class="daily-menu-meal-card-header">
+    <span class="daily-menu-meal-badge"><%= menu.meal.name %></span>
+    <span class="daily-menu-meal-hours"><%= menu.meal.start_at.strftime("%H:%M") %>–<%= menu.meal.end_at.strftime("%H:%M") %></span>
+  </div>
+  <div class="daily-menu-meal-card-main"><%= menu.main_dish %></div>
+  <div class="daily-menu-card-extras">
+    <% if menu.side_dish.present? %>
+      <span class="daily-menu-extra-tag">🍛 <%= menu.side_dish %></span>
+    <% end %>
+    <% if menu.salad.present? %>
+      <span class="daily-menu-extra-tag">🥬 <%= menu.salad %></span>
+    <% end %>
+    <% if menu.dessert.present? %>
+      <span class="daily-menu-extra-tag">🍮 <%= menu.dessert %></span>
+    <% end %>
+  </div>
+  <div class="daily-menu-meal-card-footer">
+    <%= link_to t(".edit"), edit_daily_menu_path(menu), class: "identify-btn student-card-btn" %>
+  </div>
+</div>

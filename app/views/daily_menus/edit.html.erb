@@ -1,5 +1,12 @@
-<h1>Editar Cardápio para <%= @daily_menu.date.strftime('%d/%m/%Y') %></h1>
+<div class="form-page">
+  <div class="form-page-topbar">
+    <%= link_to t(".back"), daily_menus_path, class: "profile-back-link" %>
+  </div>
 
-<%= render 'form', daily_menu: @daily_menu %>
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title", date: l(@daily_menu.date)) %></h1>
+    <p class="form-page-subtitle"><%= t(".subtitle") %></p>
+  </div>
 
-<%= link_to 'Voltar para a Lista', daily_menus_path %>
+  <%= render "form", daily_menu: @daily_menu %>
+</div>

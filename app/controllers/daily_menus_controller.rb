@@ -3,7 +3,19 @@ class DailyMenusController < ApplicationController
   before_action :set_daily_menu, only: [:edit, :update]
 
   def index
-    @daily_menus = DailyMenu.includes(:meal).order(date: :asc)
+    per_page = 2
+    @page = (params[:page] || 1).to_i
+
+    all_dates = DailyMenu.distinct.order(date: :asc).pluck(:date)
+    @total_pages = (all_dates.count / per_page.to_f).ceil.clamp(1, Float::INFINITY).to_i
+    @page = @page.clamp(1, @total_pages)
+
+    paginated_dates = all_dates.slice((@page - 1) * per_page, per_page) || []
+
+    @menus_by_date = DailyMenu.includes(:meal)
+                               .where(date: paginated_dates)
+                               .order(date: :asc)
+                               .group_by(&:date)
   end
 
   def new
@@ -15,7 +27,7 @@ class DailyMenusController < ApplicationController
     @daily_menu = DailyMenu.new(daily_menu_params)
 
     if @daily_menu.save
-      redirect_to daily_menus_path, notice: "Cardápio para #{Date.parse(@daily_menu.date.to_s).strftime('%d/%m/%Y')} cadastrado com sucesso."
+      redirect_to daily_menus_path, notice: t("flash.daily_menus.created", date: l(@daily_menu.date))
     else
       @meals = Meal.all
       render :new, status: :unprocessable_entity
@@ -28,7 +40,7 @@ class DailyMenusController < ApplicationController
 
   def update
     if @daily_menu.update(daily_menu_params)
-      redirect_to daily_menus_path, notice: "Cardápio atualizado com sucesso!"
+      redirect_to daily_menus_path, notice: t("flash.daily_menus.updated")
     else
       @meals = Meal.all
       render :edit, status: :unprocessable_entity
@@ -41,11 +53,11 @@ class DailyMenusController < ApplicationController
                              .find_by(date: Date.current, meal: current_meal)
 
     if current_meal.nil?
-      flash.now[:alert] = "Não há refeição disponível no momento."
+      flash.now[:alert] = t("flash.daily_menus.no_meal")
     elsif @current_menu.nil? && (Date.current.saturday? || Date.current.sunday?)
-      flash.now[:alert] = "O RU está fechado aos finais de semana."
+      flash.now[:alert] = t("flash.daily_menus.closed_weekend")
     elsif Holidays.on(Date.current, :br).any?
-      flash.now[:alert] = "O RU está fechado em feriados."
+      flash.now[:alert] = t("flash.daily_menus.closed_holiday")
     end
   end
 
@@ -56,13 +68,6 @@ class DailyMenusController < ApplicationController
   end
 
   def daily_menu_params
-    params.require(:daily_menu).permit(
-      :date,
-      :meal_id,
-      :main_dish,
-      :side_dish,
-      :salad,
-      :dessert
-    )
+    params.require(:daily_menu).permit(:date, :meal_id, :main_dish, :side_dish, :salad, :dessert)
   end
 end

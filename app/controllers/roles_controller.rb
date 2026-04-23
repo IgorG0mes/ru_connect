@@ -13,7 +13,7 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(role_params)
     if @role.save
-      redirect_to roles_path, notice: "Role '#{@role.name}' criado com sucesso."
+      redirect_to roles_path, notice: t("flash.roles.created", name: @role.name)
     else
       render :new, status: :unprocessable_entity
     end
@@ -24,7 +24,7 @@ class RolesController < ApplicationController
 
   def update
     if @role.update(role_params)
-      redirect_to roles_path, notice: "Role '#{@role.name}' atualizado com sucesso."
+      redirect_to roles_path, notice: t("flash.roles.updated", name: @role.name)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -32,7 +32,11 @@ class RolesController < ApplicationController
 
   def destroy
     @role.destroy!
-    redirect_to roles_path, notice: "Role excluído com sucesso."
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("role_#{@role.id}") }
+      format.html { redirect_to roles_path, notice: t("flash.roles.destroyed") }
+    end
   end
 
   private

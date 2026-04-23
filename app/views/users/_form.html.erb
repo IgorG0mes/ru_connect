@@ -1,0 +1,46 @@
+<%= form_with(model: user, html: { class: "form-card" }) do |form| %>
+  <% if user.errors.any? %>
+    <div class="form-errors">
+      <div class="form-errors-title"><%= t(".errors", count: user.errors.count) %></div>
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= form.label :username, t(".username_label"), class: "form-label" %>
+    <%= form.text_field :username, class: "form-input", placeholder: "Ex: joao.silva" %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :email, t(".email_label"), class: "form-label" %>
+    <%= form.email_field :email, class: "form-input", placeholder: "email@exemplo.com" %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :role_id, t(".role_label"), class: "form-label" %>
+    <%= form.collection_select :role_id, @roles, :id, :name, { prompt: t(".role_prompt") }, { class: "form-input" } %>
+  </div>
+
+  <hr class="form-divider">
+
+  <div class="form-field">
+    <%= form.label :password, t(".password_label"), class: "form-label" %>
+    <%= form.password_field :password, class: "form-input", placeholder: user.new_record? ? nil : t(".password_placeholder_edit") %>
+    <% unless user.new_record? %>
+      <span class="form-input-feedback" style="color: #94a3b8;"><%= t(".password_hint") %></span>
+    <% end %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :password_confirmation, t(".password_confirmation_label"), class: "form-label" %>
+    <%= form.password_field :password_confirmation, class: "form-input" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit t(".submit"), class: "form-submit" %>
+  </div>
+<% end %>

@@ -14,7 +14,7 @@ class MealsController < ApplicationController
     @meal = Meal.new(meal_params)
 
     if @meal.save
-      redirect_to meals_path, notice: "Refeição #{@meal.name} cadastrada com sucesso!"
+      redirect_to meals_path, notice: t("flash.meals.created", name: @meal.name)
     else
       render :new, status: :unprocessable_entity
     end
@@ -25,7 +25,7 @@ class MealsController < ApplicationController
 
   def update
     if @meal.update(meal_params)
-      redirect_to meals_path, notice: "Refeição #{@meal.name} atualizada com sucesso!"
+      redirect_to meals_path, notice: t("flash.meals.updated", name: @meal.name)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -33,7 +33,6 @@ class MealsController < ApplicationController
 
   def show
   end
-
 
   private
 
