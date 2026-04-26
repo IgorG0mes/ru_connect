@@ -1,7 +1,7 @@
 class VisitorsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr ]
-  before_action :require_admin, only: [:regenerate_qr]
+  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
+  before_action :require_admin, only: [ :regenerate_qr, :destroy ]
 
   PER_PAGE = 10
 
@@ -43,6 +43,11 @@ class VisitorsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @visitor.destroy
+    redirect_to visitors_path, notice: t("flash.visitors.deleted", name: @visitor.name)
   end
 
   def regenerate_qr

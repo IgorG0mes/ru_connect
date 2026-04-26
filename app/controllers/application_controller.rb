@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def after_sign_in_path_for(resource)
+    identify_path
+  end
+
   def require_admin
     unless current_user && current_user.role&.name == "admin"
       redirect_to root_path, alert: t("flash.application.access_denied")

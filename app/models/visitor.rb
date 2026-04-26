@@ -7,6 +7,7 @@ class Visitor < ApplicationRecord
 
   validates :name, presence: true
   validates :cpf, presence: true
+  validates :balance, numericality: { greater_than_or_equal_to: 0 }
   validate :cpf_format_valid, if: -> { cpf.present? }
 
   def generate_qr_code_svg
