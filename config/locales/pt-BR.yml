@@ -500,8 +500,8 @@ pt-BR:
       staff_login: "Área do funcionário"
       menu_link: "Cardápio de hoje"
       invalid_cpf: "CPF inválido. Verifique os dígitos informados."
-      not_found: "Nenhum cadastro encontrado com esse CPF. Verifique o número e tente
-        novamente."
+      not_found: "Nenhum cadastro encontrado com esse CPF. Verifique o número e tente novamente."
+      rate_limited: "Muitas tentativas. Aguarde 1 minuto antes de consultar novamente."
       visitor_badge: "Visitante"
       email_label: "E-mail"
       course_label: "Curso"
