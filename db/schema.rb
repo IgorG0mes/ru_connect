@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_10_002553) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_160205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002553) do
   end
 
   create_table "students", force: :cascade do |t|
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
     t.string "course"
     t.string "cpf"
     t.datetime "created_at", null: false
@@ -60,6 +61,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002553) do
     t.string "name"
     t.string "qr_code_hash"
     t.string "registration"
+    t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["qr_code_hash"], name: "index_students_on_qr_code_hash", unique: true
     t.index ["registration"], name: "index_students_on_registration", unique: true
@@ -81,6 +83,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002553) do
   end
 
   create_table "visitors", force: :cascade do |t|
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
     t.string "cpf"
     t.datetime "created_at", null: false
     t.string "email"

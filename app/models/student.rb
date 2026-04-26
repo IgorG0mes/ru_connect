@@ -5,6 +5,9 @@ class Student < ApplicationRecord
   after_create :generate_qr_code
   before_validation :clean_cpf
 
+  enum :status, { active: 0, inactive: 1, suspended: 2, graduated: 3 }
+
+  validates :balance, numericality: { greater_than_or_equal_to: 0 }
   validate :cpf_format_valid, if: -> { cpf.present? }
 
   def generate_qr_code_svg

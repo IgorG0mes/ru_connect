@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_student, only: [ :show, :edit, :update, :regenerate_qr ]
-  before_action :require_admin, only: [:regenerate_qr]
+  before_action :set_student, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
+  before_action :require_admin, only: [ :regenerate_qr, :destroy ]
 
   PER_PAGE = 10
 
@@ -9,7 +9,7 @@ class StudentsController < ApplicationController
     @searched = params[:q].present?
     return unless @searched
 
-    base = Student.where("unaccent(name) ILIKE unaccent(?) OR registration ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
+    base = Student.where("unaccent(name) ILIKE unaccent(?) OR registration ILIKE ? OR cpf ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%", "%#{params[:q]}%")
     @page     = (params[:page] || 1).to_i
     @total    = base.count
     @has_more = @total > @page * PER_PAGE
@@ -46,6 +46,11 @@ class StudentsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @student.destroy
+    redirect_to students_path, notice: t("flash.students.deleted", name: @student.name)
   end
 
   def regenerate_qr

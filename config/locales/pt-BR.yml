@@ -14,7 +14,7 @@ pt-BR:
         Sexta-feira,
         Sábado,
       ]
-    abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
+    abbr_day_names: [ Dom, Seg, Ter, Qua, Qui, Sex, Sáb ]
     month_names:
       [
         ~,
@@ -31,8 +31,7 @@ pt-BR:
         Novembro,
         Dezembro,
       ]
-    abbr_month_names:
-      [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+    abbr_month_names: [ ~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez ]
     order:
       - day
       - month
@@ -62,10 +61,13 @@ pt-BR:
         registration: Matrícula
         email: E-mail
         course: Curso
+        balance: Saldo
+        status: Situação
       visitor:
         name: Nome
         cpf: CPF
         email: E-mail
+        balance: Saldo
       meal:
         name: Nome
         start_at: Início
@@ -119,10 +121,12 @@ pt-BR:
       created: "Aluno %{name} cadastrado com sucesso! QR Code gerado."
       updated: "Aluno atualizado com sucesso."
       qr_regenerated: "Novo QR Code gerado para %{name}."
+      deleted: "Aluno %{name} excluído com sucesso."
     visitors:
       created: "Visitante %{name} cadastrado com sucesso! QR Code gerado."
       updated: "Visitante atualizado com sucesso."
       qr_regenerated: "Novo QR Code gerado para %{name}."
+      deleted: "Visitante %{name} excluído com sucesso."
     meals:
       created: "Refeição %{name} cadastrada com sucesso!"
       updated: "Refeição %{name} atualizada com sucesso!"
@@ -168,7 +172,7 @@ pt-BR:
       new_link: "Novo Aluno"
       search_placeholder: "Buscar por nome ou matrícula..."
       search_hint: "Digite o nome ou matrícula do aluno e pressione Buscar"
-      no_results: 'Nenhum aluno encontrado para "%{query}".'
+      no_results: "Nenhum aluno encontrado para \"%{query}\"."
       results_count:
         one: "1 resultado encontrado"
         other: "%{count} resultados encontrados"
@@ -192,6 +196,9 @@ pt-BR:
     show:
       title: "Detalhes do Aluno: %{name}"
       edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir %{name}? Esta ação não pode ser
+        desfeita."
       back: "← Voltar"
       personal_info: "Informações Pessoais"
       registered_at: "Cadastrado em"
@@ -226,7 +233,7 @@ pt-BR:
       new_link: "Novo Visitante"
       search_placeholder: "Buscar por nome ou CPF..."
       search_hint: "Digite o nome ou CPF do visitante e pressione Buscar"
-      no_results: 'Nenhum visitante encontrado para "%{query}".'
+      no_results: "Nenhum visitante encontrado para \"%{query}\"."
       results_count:
         one: "1 resultado encontrado"
         other: "%{count} resultados encontrados"
@@ -250,6 +257,9 @@ pt-BR:
     show:
       title: "Detalhes do Visitante: %{name}"
       edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir %{name}? Esta ação não pode ser
+        desfeita."
       back: "← Voltar"
       personal_info: "Informações Pessoais"
       registered_at: "Cadastrado em"
@@ -331,9 +341,8 @@ pt-BR:
     role_row:
       edit: "Editar"
       delete: "Excluir"
-      confirm_delete: "Tem certeza que deseja excluir esta role?"
-      delete: "Excluir"
-      confirm_delete: "CUIDADO: Excluir esta role pode quebrar o acesso de usuários. Continuar?"
+      confirm_delete: "CUIDADO: Excluir esta role pode quebrar o acesso de usuários.
+        Continuar?"
 
   daily_menus:
     index:
@@ -459,6 +468,32 @@ pt-BR:
           course: "Curso"
           result: "Resultado"
           actions: "Ações"
+
+  finder:
+    index:
+      title: "Consulta de Acesso ao RU"
+      subtitle: "Aluno ou visitante? Digite seu CPF para ver sua situação cadastral e
+        saldo"
+      placeholder: "000.000.000-00"
+      submit: "Consultar"
+      staff_login: "Área do funcionário"
+      menu_link: "Cardápio de hoje"
+      invalid_cpf: "CPF inválido. Verifique os dígitos informados."
+      not_found: "Nenhum cadastro encontrado com esse CPF. Verifique o número e tente
+        novamente."
+      visitor_badge: "Visitante"
+      email_label: "E-mail"
+      course_label: "Curso"
+      registration_label: "Matrícula"
+      balance_label: "Saldo disponível"
+      logs_title: "Últimos acessos"
+      no_logs: "Nenhum acesso registrado ainda."
+      back: "Nova consulta"
+      status:
+        active: "Ativa"
+        inactive: "Inativa"
+        suspended: "Suspensa"
+        graduated: "Formado(a)"
 
   devise:
     sessions:

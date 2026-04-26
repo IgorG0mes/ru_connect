@@ -5,7 +5,14 @@
 <div class="student-profile">
   <div class="student-profile-topbar">
     <%= link_to t(".back"), visitors_path, class: "profile-back-link" %>
-    <%= link_to t(".edit"), edit_visitor_path(@visitor), class: "identify-btn" %>
+    <div class="profile-topbar-actions">
+      <%= link_to t(".edit"), edit_visitor_path(@visitor), class: "identify-btn" %>
+      <% if current_user.role&.name == "admin" %>
+        <%= link_to t(".delete"), visitor_path(@visitor),
+              class: "profile-delete-btn",
+              data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete", name: @visitor.name) } %>
+      <% end %>
+    </div>
   </div>
 
   <div class="student-profile-hero">
@@ -36,6 +43,13 @@
       <div class="profile-field">
         <div class="profile-field-label"><%= Visitor.human_attribute_name(:email) %></div>
         <div class="profile-field-value"><%= @visitor.email.presence || t(".no_email") %></div>
+      </div>
+
+      <div class="profile-field">
+        <div class="profile-field-label"><%= Visitor.human_attribute_name(:balance) %></div>
+        <div class="profile-field-value profile-field-value--balance">
+          <%= number_to_currency(@visitor.balance, unit: "R$", separator: ",", delimiter: ".") %>
+        </div>
       </div>
 
       <div class="profile-field">

@@ -1,5 +1,4 @@
 class AccessController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:identification]
   before_action :load_today_logs, only: [:identification, :process_identification]
 
   def identification
