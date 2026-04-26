@@ -77,10 +77,16 @@ pt-BR:
       daily_menu:
         date: Data
         meal_id: Refeição
-        main_dish: Prato Principal
-        side_dish: Acompanhamentos (Guarnição)
-        salad: Salada
-        dessert: Sobremesa
+        animal_protein: Proteína Animal
+        vegan_protein: Proteína Vegana
+        side_dish_one: Acompanhamento 1
+        side_dish_two: Acompanhamento 2
+        side_dish_three: Acompanhamento 3
+        salad_one: Salada 1
+        salad_two: Salada 2
+        salad_three: Salada 3
+        dessert_one: Sobremesa 1
+        dessert_two: Sobremesa 2
     errors:
       models:
         student:
@@ -137,6 +143,7 @@ pt-BR:
     daily_menus:
       created: "Cardápio para %{date} cadastrado com sucesso."
       updated: "Cardápio atualizado com sucesso!"
+      deleted: "Cardápio excluído com sucesso."
       no_meal: "Não há refeição disponível no momento."
       closed_weekend: "O RU está fechado aos finais de semana."
       closed_holiday: "O RU está fechado em feriados."
@@ -371,6 +378,20 @@ pt-BR:
     form:
       meal_prompt: "Selecione a Refeição"
       submit: "Salvar Cardápio"
+      section_protein: "Proteínas"
+      section_side_dish: "Acompanhamentos"
+      section_salad: "Saladas"
+      section_dessert: "Sobremesas"
+      animal_protein_placeholder: "Ex: Frango grelhado"
+      vegan_protein_placeholder: "Ex: Tofu grelhado"
+      side_dish_one_placeholder: "Ex: Arroz branco"
+      side_dish_two_placeholder: "Ex: Feijão carioca"
+      side_dish_three_placeholder: "Ex: Macarrão alho e óleo"
+      salad_one_placeholder: "Ex: Alface americana"
+      salad_two_placeholder: "Ex: Cenoura ralada"
+      salad_three_placeholder: "Ex: Beterraba cozida"
+      dessert_one_placeholder: "Ex: Melancia fresca"
+      dessert_two_placeholder: "Ex: Paçoca"
       errors:
         one: "1 erro impediu o cardápio de ser salvo:"
         other: "%{count} erros impediram o cardápio de ser salvo:"
@@ -380,15 +401,15 @@ pt-BR:
       served_hours: "Servido das %{start}h às %{end}h"
       scheduled_title: "Cardápios Previstos para o Dia"
       hours_range: "Das %{start}h às %{end}h"
-      main_dish_label: "Prato Principal"
-      side_dish_label: "Acompanhamentos"
-      salad_label: "Salada"
-      dessert_label: "Sobremesa"
-      main_dish_partial: "Prato Principal:"
-      back_to_access: "Para identificação, volte à"
+      section_protein: "Proteínas"
+      section_side_dish: "Acompanhamentos"
+      section_salad: "Saladas"
+      section_dessert: "Sobremesas"
       access_link: "← Voltar para Identificação"
     daily_menu_row:
       edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir este cardápio?"
 
   users:
     index:
