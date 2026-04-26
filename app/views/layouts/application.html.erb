@@ -18,7 +18,7 @@
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js" type="text/javascript" nonce="<%= request.content_security_policy_nonce %>"></script>
   </head>
 
   <body>

@@ -1,6 +1,6 @@
 class FinderController < ApplicationController
   skip_before_action :authenticate_user!
-  rate_limit to: 10, within: 1.minute, by: -> { session.id },
+  rate_limit to: 10, within: 1.minute, by: -> { session.id.presence || request.ip },
              with: -> { redirect_to finder_path, alert: I18n.t("finder.index.rate_limited") },
              only: [:search]
 
@@ -17,6 +17,10 @@ class FinderController < ApplicationController
 
     @person = Student.find_by(cpf: cpf) || Visitor.find_by(cpf: cpf)
     @person_type = @person.class.name.downcase.to_sym if @person
+
+    Rails.logger.info(
+      "[finder] ip=#{request.ip} found=#{@person.present?} type=#{@person_type || :none}"
+    )
 
     if @person
       @recent_logs = @person.access_logs.order(created_at: :desc).limit(3)
