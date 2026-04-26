@@ -17,29 +17,69 @@
 
   <div class="form-field">
     <%= form.label :meal_id, class: "form-label" %>
-    <%= form.collection_select :meal_id, @meals, :id, :name, { prompt: t(".meal_prompt") }, { class: "form-input" } %>
+    <%= form.collection_select :meal_id, meals, :id, :name, { prompt: t(".meal_prompt") }, { class: "form-input" } %>
   </div>
 
   <hr class="form-divider">
+  <p class="form-section-title">🥩 <%= t(".section_protein") %></p>
 
   <div class="form-field">
-    <%= form.label :main_dish, class: "form-label" %>
-    <%= form.text_field :main_dish, class: "form-input" %>
+    <%= form.label :animal_protein, class: "form-label form-label--required" %>
+    <%= form.text_field :animal_protein, class: "form-input", placeholder: t(".animal_protein_placeholder") %>
   </div>
 
   <div class="form-field">
-    <%= form.label :side_dish, class: "form-label" %>
-    <%= form.text_field :side_dish, class: "form-input" %>
+    <%= form.label :vegan_protein, class: "form-label form-label--required" %>
+    <%= form.text_field :vegan_protein, class: "form-input", placeholder: t(".vegan_protein_placeholder") %>
+  </div>
+
+  <hr class="form-divider">
+  <p class="form-section-title">🍚 <%= t(".section_side_dish") %></p>
+
+  <div class="form-field">
+    <%= form.label :side_dish_one, class: "form-label form-label--required" %>
+    <%= form.text_field :side_dish_one, class: "form-input", placeholder: t(".side_dish_one_placeholder") %>
   </div>
 
   <div class="form-field">
-    <%= form.label :salad, class: "form-label" %>
-    <%= form.text_field :salad, class: "form-input" %>
+    <%= form.label :side_dish_two, class: "form-label" %>
+    <%= form.text_field :side_dish_two, class: "form-input", placeholder: t(".side_dish_two_placeholder") %>
   </div>
 
   <div class="form-field">
-    <%= form.label :dessert, class: "form-label" %>
-    <%= form.text_field :dessert, class: "form-input" %>
+    <%= form.label :side_dish_three, class: "form-label" %>
+    <%= form.text_field :side_dish_three, class: "form-input", placeholder: t(".side_dish_three_placeholder") %>
+  </div>
+
+  <hr class="form-divider">
+  <p class="form-section-title">🥗 <%= t(".section_salad") %></p>
+
+  <div class="form-field">
+    <%= form.label :salad_one, class: "form-label form-label--required" %>
+    <%= form.text_field :salad_one, class: "form-input", placeholder: t(".salad_one_placeholder") %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :salad_two, class: "form-label" %>
+    <%= form.text_field :salad_two, class: "form-input", placeholder: t(".salad_two_placeholder") %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :salad_three, class: "form-label" %>
+    <%= form.text_field :salad_three, class: "form-input", placeholder: t(".salad_three_placeholder") %>
+  </div>
+
+  <hr class="form-divider">
+  <p class="form-section-title">🍮 <%= t(".section_dessert") %></p>
+
+  <div class="form-field">
+    <%= form.label :dessert_one, class: "form-label form-label--required" %>
+    <%= form.text_field :dessert_one, class: "form-input", placeholder: t(".dessert_one_placeholder") %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :dessert_two, class: "form-label" %>
+    <%= form.text_field :dessert_two, class: "form-input", placeholder: t(".dessert_two_placeholder") %>
   </div>
 
   <div class="form-actions">

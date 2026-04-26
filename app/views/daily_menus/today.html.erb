@@ -9,27 +9,37 @@
     <p class="today-hours"><%= t(".served_hours", start: @current_menu.meal.start_at.strftime('%H:%M'), end: @current_menu.meal.end_at.strftime('%H:%M')) %></p>
 
     <div class="today-menu-card">
+      <p class="form-section-title">🥩 <%= t(".section_protein") %></p>
       <div class="today-menu-item">
-        <div class="today-menu-label"><%= t(".main_dish_label") %></div>
-        <div class="today-menu-value"><%= @current_menu.main_dish %></div>
+        <div class="today-menu-label"><%= DailyMenu.human_attribute_name(:animal_protein) %></div>
+        <div class="today-menu-value"><%= @current_menu.animal_protein %></div>
       </div>
+      <div class="today-menu-item">
+        <div class="today-menu-label"><%= DailyMenu.human_attribute_name(:vegan_protein) %></div>
+        <div class="today-menu-value"><%= @current_menu.vegan_protein %></div>
+      </div>
+
       <hr class="form-divider">
-      <div class="today-menu-item">
-        <div class="today-menu-label"><%= t(".side_dish_label") %></div>
-        <div class="today-menu-value"><%= @current_menu.side_dish %></div>
-      </div>
-      <% if @current_menu.salad.present? %>
-        <hr class="form-divider">
+      <p class="form-section-title">🍛 <%= t(".section_side_dish") %></p>
+      <% [@current_menu.side_dish_one, @current_menu.side_dish_two, @current_menu.side_dish_three].select(&:present?).each do |dish| %>
         <div class="today-menu-item">
-          <div class="today-menu-label"><%= t(".salad_label") %></div>
-          <div class="today-menu-value"><%= @current_menu.salad %></div>
+          <div class="today-menu-value"><%= dish %></div>
         </div>
       <% end %>
-      <% if @current_menu.dessert.present? %>
-        <hr class="form-divider">
+
+      <hr class="form-divider">
+      <p class="form-section-title">🥗 <%= t(".section_salad") %></p>
+      <% [@current_menu.salad_one, @current_menu.salad_two, @current_menu.salad_three].select(&:present?).each do |salad| %>
         <div class="today-menu-item">
-          <div class="today-menu-label"><%= t(".dessert_label") %></div>
-          <div class="today-menu-value"><%= @current_menu.dessert %></div>
+          <div class="today-menu-value"><%= salad %></div>
+        </div>
+      <% end %>
+
+      <hr class="form-divider">
+      <p class="form-section-title">🍮 <%= t(".section_dessert") %></p>
+      <% [@current_menu.dessert_one, @current_menu.dessert_two].select(&:present?).each do |dessert| %>
+        <div class="today-menu-item">
+          <div class="today-menu-value"><%= dessert %></div>
         </div>
       <% end %>
     </div>
