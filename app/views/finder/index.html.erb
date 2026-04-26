@@ -1,14 +1,16 @@
 <div class="consulta-page">
   <% if @person %>
+    <% header_class = "consulta-result-header consulta-result-header--#{@person_type == :student ? @person.status : 'visitor'}" %>
     <div class="consulta-result-card">
-      <div class="consulta-result-header consulta-result-header--<%= @person_type == :student ? @person.status : "visitor" %>">
+      <div class="<%= header_class %>">
         <div>
           <h2 class="consulta-result-name">
             <% if @person_type == :student %>🎓<% else %>👤<% end %>
             <%= @person.name %>
           </h2>
           <% if @person_type == :student %>
-            <span class="consulta-status-badge consulta-status-badge--<%= @person.status %>">
+            <% badge_class = "consulta-status-badge consulta-status-badge--#{@person.status}" %>
+            <span class="<%= badge_class %>">
               <%= case @person.status
                   when "active"    then "✅"
                   when "inactive"  then "⚠️"
@@ -57,7 +59,8 @@
           <% else %>
             <ul class="consulta-logs-list">
               <% @recent_logs.each do |log| %>
-                <li class="consulta-log-item consulta-log-item--<%= log.status %>">
+                <% log_class = "consulta-log-item consulta-log-item--#{log.status}" %>
+                <li class="<%= log_class %>">
                   <span class="consulta-log-date"><%= l(log.created_at, format: :short) %></span>
                   <span class="consulta-log-result"><%= log.access_result.presence || log.status.capitalize %></span>
                 </li>
