@@ -645,7 +645,7 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
 
 /* Resource search pages (students, visitors) */
 .resource-search-page {
-  max-width: 900px;
+  width: 100%;
 }
 
 .resource-search-header {
@@ -721,7 +721,7 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
 
 /* Student profile page */
 .student-profile {
-  max-width: 860px;
+  width: 100%;
 }
 
 .student-profile-topbar {
@@ -916,7 +916,7 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
 
 /* Generic form pages (new/edit) */
 .form-page {
-  max-width: 520px;
+  width: 100%;
 }
 
 .form-page-topbar {
@@ -984,6 +984,20 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
   font-weight: 600;
   color: #374151;
   margin-bottom: 0.35rem;
+}
+
+.form-label--required::after {
+  content: " *";
+  color: #dc2626;
+}
+
+.form-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.75rem;
 }
 
 .form-input {
@@ -1583,10 +1597,13 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
 .daily-menu-meal-card-footer {
   margin-top: auto;
   padding-top: 0.625rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 /* Calendar index */
-.calendar-page { max-width: 960px; }
+.calendar-page { width: 100%; }
 
 .calendar-month-nav {
   display: flex;
@@ -1747,7 +1764,7 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  max-width: 520px;
+  width: 100%;
 }
 
 .role-card {
