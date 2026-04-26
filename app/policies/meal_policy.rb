@@ -1,0 +1,2 @@
+class MealPolicy < ApplicationPolicy
+end

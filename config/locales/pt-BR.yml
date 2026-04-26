@@ -171,6 +171,7 @@ pt-BR:
         access_logs: "Logs de Acesso"
         roles: "Roles"
         users: "Usuários"
+        permissions: "Permissões"
         logout: "Sair"
 
   students:
@@ -220,6 +221,12 @@ pt-BR:
       cpf_placeholder: "000.000.000-00"
       email_placeholder: "Email da Universidade"
       course_placeholder: "Ex: Engenharia de Software"
+      status_blank: "Selecione a situação"
+      statuses:
+        active: "Ativo"
+        inactive: "Inativo"
+        suspended: "Suspenso"
+        graduated: "Formado"
       errors:
         one: "1 erro impediu este aluno de ser salvo:"
         other: "%{count} erros impediram este aluno de ser salvo:"
@@ -500,7 +507,8 @@ pt-BR:
       staff_login: "Área do funcionário"
       menu_link: "Cardápio de hoje"
       invalid_cpf: "CPF inválido. Verifique os dígitos informados."
-      not_found: "Nenhum cadastro encontrado com esse CPF. Verifique o número e tente novamente."
+      not_found: "Nenhum cadastro encontrado com esse CPF. Verifique o número e tente
+        novamente."
       rate_limited: "Muitas tentativas. Aguarde 1 minuto antes de consultar novamente."
       visitor_badge: "Visitante"
       email_label: "E-mail"
@@ -526,3 +534,31 @@ pt-BR:
         password_placeholder: "••••••••"
         remember_me: "Lembrar de mim"
         submit: "Entrar"
+
+  permissions:
+    index:
+      title: "Controle de Permissões"
+      subtitle: "Defina quais funcionalidades cada papel pode acessar no sistema."
+      role_label: "Papel"
+      matrix_title: "Matriz de permissões"
+      legend_granted: "Permitido"
+      legend_denied: "Negado"
+      legend_na: "Não aplicável"
+      resource: "Recurso"
+      no_roles: "Nenhuma role cadastrada além do admin."
+      resources:
+        Access: "Identificação"
+        Student: "Alunos"
+        Visitor: "Visitantes"
+        DailyMenu: "Cardápios"
+        Meal: "Refeições"
+        AccessLog: "Logs de Acesso"
+        User: "Usuários"
+        Role: "Roles"
+      actions:
+        index: "Acessar"
+        show: "Visualizar"
+        new: "Criar"
+        edit: "Editar"
+        destroy: "Excluir"
+        regenerate_qr: "Reg. QR"

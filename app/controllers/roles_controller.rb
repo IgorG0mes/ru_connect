@@ -1,17 +1,19 @@
 class RolesController < ApplicationController
-  before_action :require_admin
   before_action :set_role, only: [:edit, :update, :destroy]
 
   def index
+    authorize Role
     @roles = Role.all.order(:name)
   end
 
   def new
+    authorize Role
     @role = Role.new
   end
 
   def create
     @role = Role.new(role_params)
+    authorize @role
     if @role.save
       redirect_to roles_path, notice: t("flash.roles.created", name: @role.name)
     else
@@ -20,9 +22,11 @@ class RolesController < ApplicationController
   end
 
   def edit
+    authorize @role
   end
 
   def update
+    authorize @role
     if @role.update(role_params)
       redirect_to roles_path, notice: t("flash.roles.updated", name: @role.name)
     else
@@ -31,6 +35,7 @@ class RolesController < ApplicationController
   end
 
   def destroy
+    authorize @role
     @role.destroy!
 
     respond_to do |format|

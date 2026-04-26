@@ -1,11 +1,11 @@
 class StudentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_student, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
-  before_action :require_admin, only: [ :regenerate_qr, :destroy ]
 
   PER_PAGE = 10
 
   def index
+    authorize Student
     @searched = params[:q].present?
     return unless @searched
 
@@ -18,6 +18,7 @@ class StudentsController < ApplicationController
 
   def new
     @student = Student.new
+    authorize @student
     if params[:identifier].present?
       clean = params[:identifier].gsub(/\D/, "")
       CPF.valid?(clean) ? @student.cpf = clean : @student.registration = params[:identifier]
@@ -26,6 +27,7 @@ class StudentsController < ApplicationController
 
   def create
     @student = Student.new(student_params)
+    authorize @student
 
     if @student.save
       redirect_to students_path, notice: t("flash.students.created", name: @student.name)
@@ -35,12 +37,15 @@ class StudentsController < ApplicationController
   end
 
   def show
+    authorize @student
   end
 
   def edit
+    authorize @student
   end
 
   def update
+    authorize @student
     if @student.update(student_params)
       redirect_to @student, notice: t("flash.students.updated")
     else
@@ -49,11 +54,13 @@ class StudentsController < ApplicationController
   end
 
   def destroy
+    authorize @student
     @student.destroy
     redirect_to students_path, notice: t("flash.students.deleted", name: @student.name)
   end
 
   def regenerate_qr
+    authorize @student
     QrCodeGeneratorService.generate_and_assign(@student)
 
     respond_to do |format|
@@ -75,6 +82,6 @@ class StudentsController < ApplicationController
   end
 
   def student_params
-    params.require(:student).permit(:name, :cpf, :registration, :email, :course)
+    params.require(:student).permit(:name, :cpf, :registration, :email, :course, :status)
   end
 end

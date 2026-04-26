@@ -7,7 +7,7 @@
         <th><%= t("access_logs.index.headers.name") %></th>
         <th><%= t("access_logs.index.headers.course") %></th>
         <th><%= t("access_logs.index.headers.result") %></th>
-        <% if defined?(current_user) && current_user&.role&.name == "admin" %>
+        <% if policy(AccessLog).destroy? %>
           <th><%= t("access_logs.index.headers.actions") %></th>
         <% end %>
       </tr>

@@ -17,10 +17,12 @@
       <span class="daily-menu-extra-tag">🍮 <%= dessert %></span>
     <% end %>
   </div>
-  <% if current_user.role&.name == "admin" || current_user.role&.name == "leader" %>
-    <div class="daily-menu-meal-card-footer">
+  <div class="daily-menu-meal-card-footer">
+    <% if policy(menu).edit? %>
       <%= link_to t(".edit"), edit_daily_menu_path(menu), class: "identify-btn student-card-btn" %>
+    <% end %>
+    <% if policy(menu).destroy? %>
       <%= link_to t(".delete"), daily_menu_path(menu), data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") }, class: "profile-delete-btn student-card-btn" %>
+    <% end %>
     </div>
-  <% end %>
 </div>

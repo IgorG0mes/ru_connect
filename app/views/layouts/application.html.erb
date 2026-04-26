@@ -38,31 +38,43 @@
           </div>
 
           <nav class="sidebar-nav">
-            <%= link_to identify_path, class: "sidebar-link" do %>
-              <span class="sidebar-icon">🪪</span>
-              <span class="sidebar-label"><%= t(".nav.identification") %></span>
+            <% if policy(:access).index? %>
+              <%= link_to identify_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🪪</span>
+                <span class="sidebar-label"><%= t(".nav.identification") %></span>
+              <% end %>
             <% end %>
-            <%= link_to students_path, class: "sidebar-link" do %>
-              <span class="sidebar-icon">🎓</span>
-              <span class="sidebar-label"><%= t(".nav.students") %></span>
+            <% if policy(Student).index? %>
+              <%= link_to students_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🎓</span>
+                <span class="sidebar-label"><%= t(".nav.students") %></span>
+              <% end %>
             <% end %>
-            <%= link_to visitors_path, class: "sidebar-link" do %>
-              <span class="sidebar-icon">🧑</span>
-              <span class="sidebar-label"><%= t(".nav.visitors") %></span>
+            <% if policy(Visitor).index? %>
+              <%= link_to visitors_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🧑</span>
+                <span class="sidebar-label"><%= t(".nav.visitors") %></span>
+              <% end %>
             <% end %>
-            <%= link_to meals_path, class: "sidebar-link" do %>
-              <span class="sidebar-icon">🍽️</span>
-              <span class="sidebar-label"><%= t(".nav.meals") %></span>
+            <% if policy(Meal).index? %>
+              <%= link_to meals_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🍽️</span>
+                <span class="sidebar-label"><%= t(".nav.meals") %></span>
+              <% end %>
             <% end %>
-            <%= link_to daily_menus_path, class: "sidebar-link" do %>
-              <span class="sidebar-icon">📋</span>
-              <span class="sidebar-label"><%= t(".nav.daily_menus") %></span>
+            <% if policy(DailyMenu).index? %>
+              <%= link_to daily_menus_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">📋</span>
+                <span class="sidebar-label"><%= t(".nav.daily_menus") %></span>
+              <% end %>
             <% end %>
-            <%= link_to access_logs_path, class: "sidebar-link" do %>
-              <span class="sidebar-icon">📜</span>
-              <span class="sidebar-label"><%= t(".nav.access_logs") %></span>
+            <% if policy(AccessLog).index? %>
+              <%= link_to access_logs_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">📜</span>
+                <span class="sidebar-label"><%= t(".nav.access_logs") %></span>
+              <% end %>
             <% end %>
-            <% if current_user.role&.name == "admin" %>
+            <% if policy(User).index? %>
               <%= link_to roles_path, class: "sidebar-link" do %>
                 <span class="sidebar-icon">🔑</span>
                 <span class="sidebar-label"><%= t(".nav.roles") %></span>
@@ -70,6 +82,10 @@
               <%= link_to users_path, class: "sidebar-link" do %>
                 <span class="sidebar-icon">👥</span>
                 <span class="sidebar-label"><%= t(".nav.users") %></span>
+              <% end %>
+              <%= link_to permissions_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🛡️</span>
+                <span class="sidebar-label"><%= t(".nav.permissions") %></span>
               <% end %>
             <% end %>
           </nav>

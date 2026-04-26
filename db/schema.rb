@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_26_184509) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -50,6 +50,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_184509) do
     t.string "name"
     t.time "start_at"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.string "action", null: false
+    t.datetime "created_at", null: false
+    t.string "resource", null: false
+    t.bigint "role_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id", "resource", "action"], name: "index_permissions_on_role_id_and_resource_and_action", unique: true
+    t.index ["role_id"], name: "index_permissions_on_role_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -99,4 +109,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_184509) do
   end
 
   add_foreign_key "daily_menus", "meals"
+  add_foreign_key "permissions", "roles"
 end

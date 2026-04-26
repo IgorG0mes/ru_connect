@@ -1,7 +1,9 @@
 <div class="resource-search-page">
   <div class="resource-search-header">
     <h1><%= t(".title") %></h1>
-    <%= link_to t(".new_link"), new_student_path, class: "identify-btn" %>
+    <% if policy(Student).new? %>
+      <%= link_to t(".new_link"), new_student_path, class: "identify-btn" %>
+    <% end %>
   </div>
 
   <%= form_with url: students_path, method: :get, html: { class: "resource-search-form" } do |f| %>

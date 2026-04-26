@@ -41,6 +41,14 @@
     <%= form.text_field :course, class: "form-input", placeholder: t(".course_placeholder") %>
   </div>
 
+  <div class="form-field">
+    <%= form.label :status, class: "form-label" %>
+    <%= form.select :status,
+          Student.statuses.keys.map { |s| [t(".statuses.#{s}"), s] },
+          { include_blank: t(".status_blank") },
+          class: "form-input" %>
+  </div>
+
   <div class="form-actions">
     <%= form.submit t(".submit"), class: "form-submit" %>
   </div>

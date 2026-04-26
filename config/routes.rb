@@ -25,4 +25,10 @@ Rails.application.routes.draw do
 
   resources :roles, except: [:show]
   resources :users, path: "admin/users", except: [:show]
+
+  resources :permissions, only: [:index] do
+    collection do
+      post :toggle
+    end
+  end
 end

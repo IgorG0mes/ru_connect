@@ -6,8 +6,10 @@
   <div class="student-profile-topbar">
     <%= link_to t(".back"), visitors_path, class: "profile-back-link" %>
     <div class="profile-topbar-actions">
-      <%= link_to t(".edit"), edit_visitor_path(@visitor), class: "identify-btn" %>
-      <% if current_user.role&.name == "admin" %>
+      <% if policy(@visitor).edit? %>
+        <%= link_to t(".edit"), edit_visitor_path(@visitor), class: "identify-btn" %>
+      <% end %>
+      <% if policy(@visitor).destroy? %>
         <%= link_to t(".delete"), visitor_path(@visitor),
               class: "profile-delete-btn",
               data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete", name: @visitor.name) } %>

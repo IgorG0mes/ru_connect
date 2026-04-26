@@ -38,6 +38,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 gem "devise"
+gem "pundit"
 gem "rqrcode"
 gem "rails-i18n"
 gem "holidays"
