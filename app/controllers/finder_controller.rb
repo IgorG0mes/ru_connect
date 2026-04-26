@@ -1,10 +1,14 @@
 class FinderController < ApplicationController
   skip_before_action :authenticate_user!
+  rate_limit to: 10, within: 1.minute, by: -> { session.id },
+             with: -> { redirect_to finder_path, alert: I18n.t("finder.index.rate_limited") },
+             only: [:search]
 
   def index
-    return unless params[:cpf].present?
+    cpf_raw = session.delete(:finder_cpf)
+    return unless cpf_raw.present?
 
-    cpf = params[:cpf].to_s.gsub(/[^0-9]/, "")
+    cpf = cpf_raw.to_s.gsub(/[^0-9]/, "")
 
     unless cpf.length == 11 && CPF.valid?(cpf)
       flash.now[:alert] = t("finder.index.invalid_cpf")
@@ -22,6 +26,7 @@ class FinderController < ApplicationController
   end
 
   def search
-    redirect_to finder_path(cpf: params[:cpf])
+    session[:finder_cpf] = params[:cpf]
+    redirect_to finder_path
   end
 end
