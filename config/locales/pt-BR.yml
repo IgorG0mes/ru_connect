@@ -493,7 +493,7 @@ pt-BR:
         active: "Ativa"
         inactive: "Inativa"
         suspended: "Suspensa"
-        graduated: "Concluída"
+        graduated: "Formado(a)"
 
   devise:
     sessions:

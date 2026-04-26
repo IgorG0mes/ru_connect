@@ -40,7 +40,7 @@
 ## 📊 Database Schema
 
 - **Users** — system operators, linked to a **Role**
-- **Students** — university students with CPF, registration number, course, QR Code, enrollment `status`, and `balance` (decimal, for Mercado Pago integration)
+- **Students** — university students with CPF, registration number, course, QR Code, and `balance` (decimal, for Mercado Pago integration). Enrollment `status` is stored as an integer enum: `0 = active`, `1 = inactive`, `2 = suspended`, `3 = graduated`
 - **Visitors** — external visitors with CPF, QR Code, and `balance`
 - **Meals** — meal periods with name and time range (e.g. Almoço 11:00–14:00)
 - **Daily Menus** — food offerings per date and meal type
