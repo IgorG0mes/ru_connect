@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_26_160205) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_184509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -27,14 +27,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_160205) do
   end
 
   create_table "daily_menus", force: :cascade do |t|
+    t.string "animal_protein", default: "", null: false
     t.datetime "created_at", null: false
     t.date "date"
-    t.string "dessert"
-    t.string "main_dish"
+    t.string "dessert_one", default: "", null: false
+    t.string "dessert_two"
     t.bigint "meal_id", null: false
-    t.string "salad"
-    t.string "side_dish"
+    t.string "salad_one", default: "", null: false
+    t.string "salad_three"
+    t.string "salad_two"
+    t.string "side_dish_one", default: "", null: false
+    t.string "side_dish_three"
+    t.string "side_dish_two"
     t.datetime "updated_at", null: false
+    t.string "vegan_protein", default: "", null: false
     t.index ["meal_id"], name: "index_daily_menus_on_meal_id"
   end
 
