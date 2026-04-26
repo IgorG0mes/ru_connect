@@ -17,6 +17,9 @@
       <% if visitor.email.present? %>
         <span class="student-card-tag"><%= visitor.email %></span>
       <% end %>
+      <span class="student-card-tag student-card-tag--balance">
+        💰 <%= number_to_currency(visitor.balance, unit: "R$", separator: ",", delimiter: ".") %>
+      </span>
     </div>
   </div>
 

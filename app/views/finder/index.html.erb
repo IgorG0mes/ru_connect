@@ -1,0 +1,107 @@
+<div class="consulta-page">
+  <% if @person %>
+    <div class="consulta-result-card">
+      <div class="consulta-result-header consulta-result-header--<%= @person_type == :student ? @person.status : "visitor" %>">
+        <div>
+          <h2 class="consulta-result-name">
+            <% if @person_type == :student %>🎓<% else %>👤<% end %>
+            <%= @person.name %>
+          </h2>
+          <% if @person_type == :student %>
+            <span class="consulta-status-badge consulta-status-badge--<%= @person.status %>">
+              <%= case @person.status
+                  when "active"    then "✅"
+                  when "inactive"  then "⚠️"
+                  when "suspended" then "🚫"
+                  when "graduated" then "🏅"
+                  end %>
+              <%= t(".status.#{@person.status}") %>
+            </span>
+          <% else %>
+            <span class="consulta-status-badge consulta-status-badge--visitor">
+              <%= t(".visitor_badge") %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="consulta-result-body">
+        <div class="consulta-info-grid">
+          <% if @person_type == :student %>
+            <div class="consulta-info-item">
+              <span class="consulta-info-label"><%= t(".course_label") %></span>
+              <span class="consulta-info-value"><%= @person.course.presence || "—" %></span>
+            </div>
+            <div class="consulta-info-item">
+              <span class="consulta-info-label"><%= t(".registration_label") %></span>
+              <span class="consulta-info-value consulta-info-value--mono"><%= @person.registration %></span>
+            </div>
+          <% else %>
+            <div class="consulta-info-item">
+              <span class="consulta-info-label"><%= t(".email_label") %></span>
+              <span class="consulta-info-value"><%= @person.email.presence || "—" %></span>
+            </div>
+          <% end %>
+          <div class="consulta-info-item">
+            <span class="consulta-info-label"><%= t(".balance_label") %></span>
+            <span class="consulta-info-value consulta-info-value--balance">
+              <%= number_to_currency(@person.balance, unit: "R$", separator: ",", delimiter: ".") %>
+            </span>
+          </div>
+        </div>
+
+        <div class="consulta-logs-section">
+          <h3 class="consulta-logs-title"><%= t(".logs_title") %></h3>
+          <% if @recent_logs.empty? %>
+            <p class="consulta-logs-empty"><%= t(".no_logs") %></p>
+          <% else %>
+            <ul class="consulta-logs-list">
+              <% @recent_logs.each do |log| %>
+                <li class="consulta-log-item consulta-log-item--<%= log.status %>">
+                  <span class="consulta-log-date"><%= l(log.created_at, format: :short) %></span>
+                  <span class="consulta-log-result"><%= log.access_result.presence || log.status.capitalize %></span>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="consulta-result-footer">
+        <%= link_to finder_path, class: "consulta-btn consulta-btn--outline" do %>
+          ← <%= t(".back") %>
+        <% end %>
+      </div>
+    </div>
+
+  <% else %>
+    <div class="consulta-hero">
+      <div class="consulta-hero-icon">🔍</div>
+      <h1 class="consulta-title"><%= t(".title") %></h1>
+      <p class="consulta-subtitle"><%= t(".subtitle") %></p>
+    </div>
+
+    <%= form_with url: finder_path, method: :post, class: "consulta-form" do |f| %>
+      <div class="consulta-input-group">
+        <%= f.text_field :cpf,
+              placeholder: t(".placeholder"),
+              class: "consulta-input",
+              autofocus: true,
+              inputmode: "numeric",
+              value: params[:cpf] %>
+        <%= f.submit t(".submit"), class: "consulta-btn" %>
+      </div>
+    <% end %>
+
+    <div class="consulta-secondary-actions">
+      <%= link_to new_user_session_path, class: "consulta-secondary-btn consulta-secondary-btn--staff" do %>
+        🔐 <%= t(".staff_login") %>
+      <% end %>
+      <% unless Date.current.saturday? || Date.current.sunday? %>
+        <%= link_to public_menu_path, class: "consulta-secondary-btn consulta-secondary-btn--ghost" do %>
+          🍽️ <%= t(".menu_link") %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
