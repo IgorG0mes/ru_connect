@@ -1,18 +1,20 @@
 class UsersController < ApplicationController
-  before_action :require_admin
   before_action :set_user, only: [:edit, :update, :destroy]
 
   def index
+    authorize User
     @users = User.includes(:role).order(:username)
   end
 
   def new
+    authorize User
     @user = User.new
     @roles = Role.all.order(:name)
   end
 
   def create
     @user = User.new(user_create_params)
+    authorize @user
     if @user.save
       redirect_to users_path, notice: t("flash.users.created", name: @user.username)
     else
@@ -22,10 +24,12 @@ class UsersController < ApplicationController
   end
 
   def edit
+    authorize @user
     @roles = Role.all.order(:name)
   end
 
   def update
+    authorize @user
     update_params = user_update_params
     if update_params[:password].blank?
       update_params.delete(:password)
@@ -41,6 +45,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    authorize @user
     if @user == current_user
       redirect_to users_path, alert: t("flash.users.cannot_delete_self")
       return

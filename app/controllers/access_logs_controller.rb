@@ -1,11 +1,11 @@
 class AccessLogsController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_admin, only: [:destroy]
   before_action :set_access_log, only: [:destroy]
 
   PER_PAGE = 10
 
   def index
+    authorize AccessLog
     @page = (params[:page] || 1).to_i
     @access_logs = AccessLog.includes(:personable)
                             .order(created_at: :desc)
@@ -15,6 +15,7 @@ class AccessLogsController < ApplicationController
   end
 
   def destroy
+    authorize @access_log
     @access_log.destroy!
 
     respond_to do |format|

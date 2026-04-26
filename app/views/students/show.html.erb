@@ -6,8 +6,10 @@
   <div class="student-profile-topbar">
     <%= link_to t(".back"), students_path, class: "profile-back-link" %>
     <div class="profile-topbar-actions">
-      <%= link_to t(".edit"), edit_student_path(@student), class: "identify-btn" %>
-      <% if current_user.role&.name == "admin" %>
+      <% if policy(@student).edit? %>
+        <%= link_to t(".edit"), edit_student_path(@student), class: "identify-btn" %>
+      <% end %>
+      <% if policy(@student).destroy? %>
         <%= link_to t(".delete"), student_path(@student),
               method: :delete,
               class: "profile-delete-btn",

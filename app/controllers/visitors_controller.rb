@@ -1,11 +1,11 @@
 class VisitorsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
-  before_action :require_admin, only: [ :regenerate_qr, :destroy ]
 
   PER_PAGE = 10
 
   def index
+    authorize Visitor
     @searched = params[:q].present?
     return unless @searched
 
@@ -18,11 +18,13 @@ class VisitorsController < ApplicationController
 
   def new
     @visitor = Visitor.new
+    authorize @visitor
     @visitor.cpf = params[:identifier].gsub(/\D/, "") if params[:identifier].present?
   end
 
   def create
     @visitor = Visitor.new(visitor_params)
+    authorize @visitor
 
     if @visitor.save
       redirect_to visitors_path, notice: t("flash.visitors.created", name: @visitor.name)
@@ -32,12 +34,15 @@ class VisitorsController < ApplicationController
   end
 
   def show
+    authorize @visitor
   end
 
   def edit
+    authorize @visitor
   end
 
   def update
+    authorize @visitor
     if @visitor.update(visitor_params)
       redirect_to @visitor, notice: t("flash.visitors.updated")
     else
@@ -46,11 +51,13 @@ class VisitorsController < ApplicationController
   end
 
   def destroy
+    authorize @visitor
     @visitor.destroy
     redirect_to visitors_path, notice: t("flash.visitors.deleted", name: @visitor.name)
   end
 
   def regenerate_qr
+    authorize @visitor
     QrCodeGeneratorService.generate_and_assign(@visitor)
 
     respond_to do |format|

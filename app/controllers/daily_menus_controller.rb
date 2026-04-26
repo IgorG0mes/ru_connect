@@ -3,6 +3,7 @@ class DailyMenusController < ApplicationController
   before_action :set_daily_menu, only: [:edit, :update, :destroy]
 
   def index
+    authorize DailyMenu
     per_page = 2
     @page = (params[:page] || 1).to_i
 
@@ -20,11 +21,13 @@ class DailyMenusController < ApplicationController
 
   def new
     @daily_menu = DailyMenu.new(date: Date.current)
+    authorize @daily_menu
     @meals = Meal.all
   end
 
   def create
     @daily_menu = DailyMenu.new(daily_menu_params)
+    authorize @daily_menu
 
     if @daily_menu.save
       redirect_to daily_menus_path, notice: t("flash.daily_menus.created", date: l(@daily_menu.date))
@@ -35,15 +38,18 @@ class DailyMenusController < ApplicationController
   end
 
   def edit
+    authorize @daily_menu
     @meals = Meal.all
   end
 
   def destroy
+    authorize @daily_menu
     @daily_menu.destroy
     redirect_to daily_menus_path, notice: t("flash.daily_menus.deleted")
   end
 
   def update
+    authorize @daily_menu
     if @daily_menu.update(daily_menu_params)
       redirect_to daily_menus_path, notice: t("flash.daily_menus.updated")
     else

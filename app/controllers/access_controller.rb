@@ -2,9 +2,11 @@ class AccessController < ApplicationController
   before_action :load_today_logs, only: [:identification, :process_identification]
 
   def identification
+    authorize :access, :index?
   end
 
   def process_identification
+    authorize :access, :index?
     identifier = params[:identifier]
 
     if identifier.blank?

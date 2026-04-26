@@ -8,7 +8,7 @@
       <%= log.access_result %>
     </span>
   </td>
-  <% if defined?(current_user) && current_user&.role&.name == "admin" %>
+  <% if policy(log).destroy? %>
     <td>
       <%= link_to t(".delete"), log,
             data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") },

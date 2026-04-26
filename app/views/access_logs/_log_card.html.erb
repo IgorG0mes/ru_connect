@@ -15,7 +15,7 @@
           <%= log.course_name %>
         <% end %>
       </span>
-      <% if defined?(current_user) && current_user&.role&.name == "admin" %>
+      <% if policy(log).destroy? %>
         <%= link_to t("access_logs.row.delete"), log,
               data: { turbo_method: :delete, turbo_confirm: t("access_logs.row.confirm_delete") },
               class: "access-log-delete-btn" %>
