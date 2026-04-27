@@ -1,7 +1,7 @@
-<%= form_with(model: student) do |form| %>
+<%= form_with(model: student, html: { class: "form-card" }) do |form| %>
   <% if student.errors.any? %>
-    <div style="color: red">
-      <p><%= pluralize(student.errors.count, "erro") %> impediram este aluno de ser salvo:</p>
+    <div class="form-errors">
+      <div class="form-errors-title"><%= t(".errors", count: student.errors.count) %></div>
       <ul>
         <% student.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -10,32 +10,46 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="form-field">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-input", placeholder: t(".name_placeholder") %>
   </div>
 
-  <div class="field">
-    <%= form.label :registration, 'Matrícula' %>
-    <%= form.text_field :registration %>
-  </div>
-  
-  <div class="field">
-    <%= form.label :cpf %>
-    <%= form.text_field :cpf %>
-  </div>
-  
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.email_field :email %>
-  </div>
-  
-  <div class="field">
-    <%= form.label :course, 'Curso' %>
-    <%= form.text_field :course %>
+  <hr class="form-divider">
+
+  <div class="form-field">
+    <%= form.label :registration, class: "form-label" %>
+    <%= form.text_field :registration, class: "form-input", placeholder: t(".registration_placeholder") %>
   </div>
 
-  <div class="actions">
-    <%= form.submit 'Salvar Aluno' %>
+  <div class="form-field" data-controller="cpf-validation">
+    <%= form.label :cpf, class: "form-label" %>
+    <%= form.text_field :cpf, class: "form-input", placeholder: t(".cpf_placeholder"),
+          data: { cpf_validation_target: "input", action: "input->cpf-validation#validate" } %>
+    <span data-cpf-validation-target="feedback" class="form-input-feedback"></span>
+  </div>
+
+  <hr class="form-divider">
+
+  <div class="form-field">
+    <%= form.label :email, class: "form-label" %>
+    <%= form.email_field :email, class: "form-input", placeholder: t(".email_placeholder") %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :course, class: "form-label" %>
+    <%= form.text_field :course, class: "form-input", placeholder: t(".course_placeholder") %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :status, class: "form-label" %>
+    <%= form.select :status,
+          Student.statuses.keys.map { |s| [t(".statuses.#{s}"), s] },
+          { include_blank: t(".status_blank") },
+          class: "form-input" %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit t(".submit"), class: "form-submit" %>
   </div>
 <% end %>

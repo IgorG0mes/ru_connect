@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
-  root "access#identification"
+  root "finder#index"
   get "identify", to: "access#identification", as: :identify
   post "identify", to: "access#process_identification"
   get "menu", to: "daily_menus#today", as: :public_menu
+
+  get "finder", to: "finder#index", as: :finder
+  post "finder", to: "finder#search"
 
   resources :students do
     post :regenerate_qr, on: :member
@@ -21,4 +24,11 @@ Rails.application.routes.draw do
   resources :access_logs, only: [:index, :destroy]
 
   resources :roles, except: [:show]
+  resources :users, path: "admin/users", except: [:show]
+
+  resources :permissions, only: [:index] do
+    collection do
+      post :toggle
+    end
+  end
 end

@@ -16,12 +16,12 @@ class AccessLog < ApplicationRecord
   def person_name
     personable.name
   rescue
-    "Pessoa Desconhecida"
+    I18n.t("models.access_log.unknown_person")
   end
 
   def course_name
     personable.course
   rescue
-    "Visitante"
+    I18n.t("models.access_log.visitor_fallback")
   end
 end

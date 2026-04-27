@@ -1,0 +1,25 @@
+<div class="access-log-card" data-status="<%= log.status %>" id="access_log_<%= log.id %>">
+  <span class="access-status-badge" data-status="<%= log.status %>">
+    <%= log.access_result %>
+  </span>
+  <div class="access-log-card-body">
+    <div class="access-log-card-row">
+      <%= link_to log.person_name, log.personable, class: "access-log-card-name", data: { turbo_frame: "_top" } %>
+      <span class="access-log-card-time"><%= l(log.created_at, format: :access_log) %></span>
+    </div>
+    <div class="access-log-card-row">
+      <span class="access-log-card-meta">
+        <%= log.identifier %>
+        <% if log.course_name.present? %>
+          <span class="access-log-card-sep">·</span>
+          <%= log.course_name %>
+        <% end %>
+      </span>
+      <% if policy(log).destroy? %>
+        <%= link_to t("access_logs.row.delete"), log,
+              data: { turbo_method: :delete, turbo_confirm: t("access_logs.row.confirm_delete") },
+              class: "access-log-delete-btn" %>
+      <% end %>
+    </div>
+  </div>
+</div>

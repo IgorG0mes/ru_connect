@@ -1,32 +1,37 @@
-<h1>Gerenciamento de Cardápios Diários</h1>
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1><%= t(".title") %></h1>
+    <%= link_to t(".new_link"), new_daily_menu_path, class: "identify-btn" %>
+  </div>
 
-<%= link_to "Novo Cardápio", new_daily_menu_path %>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>Data</th>
-      <th>Refeição</th>
-      <th>Prato Principal</th>
-      <th>Guarnições</th>
-      <th>Salada</th>
-      <th>Sobremesa</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @daily_menus.each do |menu| %>
-      <tr>
-        <td><%= l(menu.date, format: '%A, %d/%m') %></td>
-        <td><%= menu.meal.name %></td>
-        <td><%= menu.main_dish %></td>
-        <td><%= menu.side_dish %></td>
-        <td><%= menu.salad %></td>
-        <td><%= menu.dessert %></td>
-        <td>
-          <%= link_to "Editar", edit_daily_menu_path(menu) %>
-        </td>
-      </tr>
+  <% if @menus_by_date.any? %>
+    <% @menus_by_date.each do |date, menus| %>
+      <div class="daily-section">
+        <div class="daily-section-header">
+          <span class="daily-section-day"><%= l(date, format: "%d") %></span>
+          <div class="daily-section-label">
+            <span class="daily-section-weekday"><%= l(date, format: "%A") %></span>
+            <span class="daily-section-month"><%= l(date, format: "%B %Y") %></span>
+          </div>
+        </div>
+        <div class="daily-section-menus">
+          <% menus.each do |menu| %>
+            <%= render "daily_menus/daily_menu_row", menu: menu %>
+          <% end %>
+        </div>
+      </div>
     <% end %>
-  </tbody>
-</table>
+
+    <div class="resource-pagination">
+      <% if @page > 1 %>
+        <%= link_to t(".previous"), daily_menus_path(page: @page - 1), class: "identify-btn" %>
+      <% end %>
+      <span class="resource-pagination-info"><%= t(".page", page: @page, total: @total_pages) %></span>
+      <% if @page < @total_pages %>
+        <%= link_to t(".next"), daily_menus_path(page: @page + 1), class: "identify-btn" %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="resource-search-empty"><%= t(".empty") %></p>
+  <% end %>
+</div>
