@@ -1,4 +1,6 @@
 class Meal < ApplicationRecord
+  validates :name, presence: true
+
   def self.find_current
     current_time = Time.zone.now.strftime("%H:%M:%S")
 
