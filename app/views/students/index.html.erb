@@ -1,24 +1,45 @@
-<h1>Lista de Alunos Cadastrados</h1>
-
-<%= link_to "Novo Aluno", new_student_path %>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Matrícula</th>
-      <th>QR Code Hash</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @students.each do |student| %>
-      <tr>
-        <td><%= student.name %></td>
-        <td><%= student.registration %></td>
-        <td><strong><%= student.qr_code_hash %></strong></td>
-        <td><%= link_to "Ver Detalhes", student %></td>
-      </tr>
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1><%= t(".title") %></h1>
+    <% if policy(Student).new? %>
+      <%= link_to t(".new_link"), new_student_path, class: "identify-btn" %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+
+  <%= form_with url: students_path, method: :get, html: { class: "resource-search-form" } do |f| %>
+    <p class="resource-search-hint"><%= t(".search_hint") %></p>
+    <div class="identify-input-group">
+      <%= f.text_field :q, value: params[:q], placeholder: t(".search_placeholder"),
+            autofocus: true, class: "identify-input" %>
+      <%= f.submit t("shared.search"), class: "identify-btn identify-btn--inline" %>
+    </div>
+  <% end %>
+
+  <turbo-frame id="students_list">
+    <% if @searched %>
+      <% if @students.any? %>
+        <p class="resource-search-count"><%= t(".results_count", count: @total) %></p>
+
+        <div class="students-list">
+          <% @students.each do |student| %>
+            <%= render "students/student_row", student: student %>
+          <% end %>
+        </div>
+
+        <div class="resource-pagination">
+          <% if @page > 1 %>
+            <%= link_to t(".previous"), students_path(q: params[:q], page: @page - 1),
+                  data: { turbo_frame: "students_list" }, class: "identify-btn" %>
+          <% end %>
+          <span class="resource-pagination-info"><%= t(".page", page: @page) %></span>
+          <% if @has_more %>
+            <%= link_to t(".next"), students_path(q: params[:q], page: @page + 1),
+                  data: { turbo_frame: "students_list" }, class: "identify-btn" %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="resource-search-empty"><%= t(".no_results", query: params[:q]) %></p>
+      <% end %>
+    <% end %>
+  </turbo-frame>
+</div>
