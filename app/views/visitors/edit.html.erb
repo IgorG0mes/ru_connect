@@ -1,8 +1,13 @@
-<h1>Editar Visitante: <%= @visitor.name %></h1>
+<div class="form-page">
+  <div class="form-page-topbar">
+    <%= link_to t(".back"), visitors_path, class: "profile-back-link" %>
+    <%= link_to t(".show_details"), @visitor, class: "identify-btn" %>
+  </div>
 
-<%= render 'form', visitor: @visitor %>
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title") %></h1>
+    <p class="form-page-subtitle"><%= t(".subtitle", name: @visitor.name) %></p>
+  </div>
 
-<hr>
-
-<%= link_to 'Mostrar Detalhes', @visitor %> |
-<%= link_to 'Voltar para a Lista', visitors_path %>
+  <%= render 'form', visitor: @visitor %>
+</div>

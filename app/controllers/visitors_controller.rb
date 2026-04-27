@@ -1,44 +1,75 @@
 class VisitorsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr ]
-  before_action :require_admin, only: [:regenerate_qr]
+  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
+
+  PER_PAGE = 10
 
   def index
-    @visitors = Visitor.all
+    authorize Visitor
+    @searched = params[:q].present?
+    return unless @searched
+
+    base = Visitor.where("unaccent(name) ILIKE unaccent(?) OR cpf ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
+    @page = (params[:page] || 1).to_i
+    @total = base.count
+    @has_more = @total > @page * PER_PAGE
+    @visitors = base.order(:name).offset((@page - 1) * PER_PAGE).limit(PER_PAGE)
   end
 
   def new
     @visitor = Visitor.new
+    authorize @visitor
+    @visitor.cpf = params[:identifier].gsub(/\D/, "") if params[:identifier].present?
   end
 
   def create
     @visitor = Visitor.new(visitor_params)
+    authorize @visitor
 
     if @visitor.save
-      redirect_to visitors_path, notice: "Visitante #{@visitor.name} cadastrado com sucesso! QR Code gerado."
+      redirect_to visitors_path, notice: t("flash.visitors.created", name: @visitor.name)
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def show
+    authorize @visitor
   end
 
   def edit
+    authorize @visitor
   end
 
   def update
+    authorize @visitor
     if @visitor.update(visitor_params)
-      redirect_to @visitor, notice: "Visitante atualizado com sucesso."
+      redirect_to @visitor, notice: t("flash.visitors.updated")
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
+  def destroy
+    authorize @visitor
+    @visitor.destroy
+    redirect_to visitors_path, notice: t("flash.visitors.deleted", name: @visitor.name)
+  end
+
   def regenerate_qr
+    authorize @visitor
     QrCodeGeneratorService.generate_and_assign(@visitor)
 
-    redirect_to @visitor, notice: "Novo QR Code gerado e salvo para #{@visitor.name}."
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "qr_code_visitor_#{@visitor.id}",
+          partial: "visitors/qr_code",
+          locals: { visitor: @visitor }
+        )
+      end
+      format.html { redirect_to @visitor, notice: t("flash.visitors.qr_regenerated", name: @visitor.name) }
+    end
   end
 
   private
