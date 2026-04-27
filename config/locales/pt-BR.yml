@@ -4,10 +4,34 @@ pt-BR:
       default: "%d/%m/%Y"
       short: "%d de %B"
       long: "%d de %B de %Y"
-    day_names: [Domingo, Segunda-feira, Terça-feira, Quarta-feira, Quinta-feira, Sexta-feira, Sábado]
-    abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
-    month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
-    abbr_month_names: [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+    day_names:
+      [
+        Domingo,
+        Segunda-feira,
+        Terça-feira,
+        Quarta-feira,
+        Quinta-feira,
+        Sexta-feira,
+        Sábado,
+      ]
+    abbr_day_names: [ Dom, Seg, Ter, Qua, Qui, Sex, Sáb ]
+    month_names:
+      [
+        ~,
+        Janeiro,
+        Fevereiro,
+        Março,
+        Abril,
+        Maio,
+        Junho,
+        Julho,
+        Agosto,
+        Setembro,
+        Outubro,
+        Novembro,
+        Dezembro,
+      ]
+    abbr_month_names: [ ~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez ]
     order:
       - day
       - month
@@ -18,6 +42,523 @@ pt-BR:
       default: "%A, %d de %B de %Y, %H:%M:%S %Z"
       short: "%d/%m, %H:%M"
       long: "%A, %d de %B de %Y, %H:%M"
-    am: ''
-    pm: ''
+      access_log: "%d de %B de %Y, %A às %H:%M"
+    am: ""
+    pm: ""
 
+  activerecord:
+    models:
+      student: Aluno
+      visitor: Visitante
+      meal: Refeição
+      role: Role
+      daily_menu: Cardápio
+      access_log: Log de Acesso
+    attributes:
+      student:
+        name: Nome
+        cpf: CPF
+        registration: Matrícula
+        email: E-mail
+        course: Curso
+        balance: Saldo
+        status: Situação
+      visitor:
+        name: Nome
+        cpf: CPF
+        email: E-mail
+        balance: Saldo
+      meal:
+        name: Nome
+        start_at: Início
+        end_at: Fim
+      role:
+        name: Nome
+      daily_menu:
+        date: Data
+        meal_id: Refeição
+        animal_protein: Proteína Animal
+        vegan_protein: Proteína Vegana
+        side_dish_one: Acompanhamento 1
+        side_dish_two: Acompanhamento 2
+        side_dish_three: Acompanhamento 3
+        salad_one: Salada 1
+        salad_two: Salada 2
+        salad_three: Salada 3
+        dessert_one: Sobremesa 1
+        dessert_two: Sobremesa 2
+    errors:
+      models:
+        student:
+          attributes:
+            cpf:
+              invalid: "não é um CPF válido"
+        visitor:
+          attributes:
+            cpf:
+              invalid: "não é um CPF válido"
+        daily_menu:
+          attributes:
+            meal_id:
+              taken: "Já existe um cardápio para esta refeição nesta data."
+
+  flash:
+    application:
+      access_denied: "Acesso negado. Você não tem permissões administrativas para esta ação."
+    access:
+      blank_identifier: "Por favor, informe um CPF ou matrícula."
+      invalid_cpf: "CPF inválido. Verifique os dígitos informados."
+      access_granted: "ACESSO LIBERADO! Bem-vindo(a) %{name}, Bom %{meal}."
+      access_denied: "ACESSO NEGADO: %{result}"
+      access_warning: "AVISO: %{result}"
+      not_found: "Usuário não encontrado. Necessário Cadastro."
+      no_meal: "Refeição não está disponível no horário atual."
+      already_consumed: "Acesso já consumido hoje."
+      approved: "Acesso aprovado para %{meal}."
+    access_logs:
+      destroyed: "Registro de acesso excluído com sucesso."
+      not_found: "Registro de acesso não encontrado."
+    users:
+      created: "Usuário %{name} criado com sucesso."
+      updated: "Usuário %{name} atualizado com sucesso."
+      destroyed: "Usuário excluído com sucesso."
+      cannot_delete_self: "Você não pode excluir sua própria conta."
+    students:
+      created: "Aluno %{name} cadastrado com sucesso! QR Code gerado."
+      updated: "Aluno atualizado com sucesso."
+      qr_regenerated: "Novo QR Code gerado para %{name}."
+      deleted: "Aluno %{name} excluído com sucesso."
+    visitors:
+      created: "Visitante %{name} cadastrado com sucesso! QR Code gerado."
+      updated: "Visitante atualizado com sucesso."
+      qr_regenerated: "Novo QR Code gerado para %{name}."
+      deleted: "Visitante %{name} excluído com sucesso."
+    meals:
+      created: "Refeição %{name} cadastrada com sucesso!"
+      updated: "Refeição %{name} atualizada com sucesso!"
+    roles:
+      created: "Role '%{name}' criado com sucesso."
+      updated: "Role '%{name}' atualizado com sucesso."
+      destroyed: "Role excluído com sucesso."
+    daily_menus:
+      created: "Cardápio para %{date} cadastrado com sucesso."
+      updated: "Cardápio atualizado com sucesso!"
+      deleted: "Cardápio excluído com sucesso."
+      no_meal: "Não há refeição disponível no momento."
+      closed_weekend: "O RU está fechado aos finais de semana."
+      closed_holiday: "O RU está fechado em feriados."
+
+  shared:
+    search: "Buscar"
+    back_to_list: "Voltar para a Lista"
+    not_available: "—"
+
+  models:
+    access_log:
+      unknown_person: "Pessoa Desconhecida"
+      visitor_fallback: "Visitante"
+
+  layouts:
+    application:
+      app_title: "RU Connect"
+      confirm_logout: "Tem certeza que deseja sair?"
+      nav:
+        identification: "Identificação"
+        students: "Alunos"
+        visitors: "Visitantes"
+        meals: "Refeições"
+        daily_menus: "Cardápios"
+        access_logs: "Logs de Acesso"
+        roles: "Roles"
+        users: "Usuários"
+        permissions: "Permissões"
+        logout: "Sair"
+
+  students:
+    index:
+      title: "Lista de Alunos Cadastrados"
+      new_link: "Novo Aluno"
+      search_placeholder: "Buscar por nome ou matrícula..."
+      search_hint: "Digite o nome ou matrícula do aluno e pressione Buscar"
+      no_results: "Nenhum aluno encontrado para \"%{query}\"."
+      results_count:
+        one: "1 resultado encontrado"
+        other: "%{count} resultados encontrados"
+      page: "Página %{page}"
+      previous: "← Anterior"
+      next: "Próxima →"
+      headers:
+        name: "Nome"
+        registration: "Matrícula"
+        qr_code: "QR Code Hash"
+        actions: "Ações"
+    new:
+      title: "Novo Aluno"
+      subtitle: "Preencha os dados do novo aluno abaixo"
+      back: "← Voltar para a Lista"
+    edit:
+      title: "Editar Aluno"
+      subtitle: "Atualize as informações de %{name}"
+      show_details: "Ver Perfil"
+      back: "← Voltar para a Lista"
+    show:
+      title: "Detalhes do Aluno: %{name}"
+      edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir %{name}? Esta ação não pode ser
+        desfeita."
+      back: "← Voltar"
+      personal_info: "Informações Pessoais"
+      registered_at: "Cadastrado em"
+      no_email: "Não informado"
+      registration_abbr: "Mat."
+      qr_active: "QR Ativo"
+      qr_missing: "Sem QR"
+    form:
+      submit: "Salvar Aluno"
+      name_placeholder: "Nome completo"
+      registration_placeholder: "Ex: 2024001"
+      cpf_placeholder: "000.000.000-00"
+      email_placeholder: "Email da Universidade"
+      course_placeholder: "Ex: Engenharia de Software"
+      status_blank: "Selecione a situação"
+      statuses:
+        active: "Ativo"
+        inactive: "Inativo"
+        suspended: "Suspenso"
+        graduated: "Formado"
+      errors:
+        one: "1 erro impediu este aluno de ser salvo:"
+        other: "%{count} erros impediram este aluno de ser salvo:"
+    qr_code:
+      title: "QR Code de Acesso"
+      key_label: "Chave:"
+      not_generated: "QR Code ainda não gerado. Edite e salve para forçar a geração."
+      regenerate: "Gerar Novo QR Code"
+      confirm_regenerate: "Isso invalidará o QR Code antigo. Continuar?"
+    student_row:
+      show: "Ver Perfil"
+      qr_active: "QR Ativo"
+      qr_missing: "Sem QR"
+
+  visitors:
+    index:
+      title: "Lista de Visitantes Cadastrados"
+      new_link: "Novo Visitante"
+      search_placeholder: "Buscar por nome ou CPF..."
+      search_hint: "Digite o nome ou CPF do visitante e pressione Buscar"
+      no_results: "Nenhum visitante encontrado para \"%{query}\"."
+      results_count:
+        one: "1 resultado encontrado"
+        other: "%{count} resultados encontrados"
+      page: "Página %{page}"
+      previous: "← Anterior"
+      next: "Próxima →"
+      headers:
+        name: "Nome"
+        cpf: "CPF"
+        qr_code: "QR Code Hash"
+        actions: "Ações"
+    new:
+      title: "Novo Visitante"
+      subtitle: "Preencha os dados do novo visitante abaixo"
+      back: "← Voltar para a Lista"
+    edit:
+      title: "Editar Visitante"
+      subtitle: "Atualize as informações de %{name}"
+      show_details: "Ver Perfil"
+      back: "← Voltar para a Lista"
+    show:
+      title: "Detalhes do Visitante: %{name}"
+      edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir %{name}? Esta ação não pode ser
+        desfeita."
+      back: "← Voltar"
+      personal_info: "Informações Pessoais"
+      registered_at: "Cadastrado em"
+      no_email: "Não informado"
+      qr_active: "QR Ativo"
+      qr_missing: "Sem QR"
+    form:
+      submit: "Salvar Visitante"
+      name_placeholder: "Nome completo"
+      cpf_placeholder: "000.000.000-00"
+      email_placeholder: "email@exemplo.com"
+      errors:
+        one: "1 erro impediu este visitante de ser salvo:"
+        other: "%{count} erros impediram este visitante de ser salvo:"
+    qr_code:
+      title: "QR Code de Acesso"
+      key_label: "Chave:"
+      not_generated: "QR Code ainda não gerado. Edite e salve para forçar a geração."
+      regenerate: "Gerar Novo QR Code"
+      confirm_regenerate: "Isso invalidará o QR Code antigo. Continuar?"
+    visitor_row:
+      show: "Ver Perfil"
+      qr_active: "QR Ativo"
+      qr_missing: "Sem QR"
+
+  meals:
+    index:
+      title: "Refeições e Horários"
+      new_link: "Nova Refeição"
+      empty: "Nenhuma refeição cadastrada ainda."
+      headers:
+        name: "Nome"
+        start_at: "Início"
+        end_at: "Fim"
+        actions: "Ações"
+    new:
+      title: "Nova Refeição"
+      subtitle: "Cadastre um novo horário de refeição"
+      back: "← Voltar para a Lista"
+    edit:
+      title: "Editar: %{name}"
+      subtitle: "Atualize as informações desta refeição"
+      back: "← Voltar para a Lista"
+    show:
+      title: "Refeição: %{name}"
+      edit: "Editar"
+      back: "← Voltar para a Lista"
+    form:
+      name_label: "Nome da Refeição"
+      submit: "Salvar Refeição"
+      errors:
+        one: "1 erro impediu a refeição de ser salva:"
+        other: "%{count} erros impediram a refeição de ser salva:"
+    meal_row:
+      edit: "Editar"
+
+  roles:
+    index:
+      title: "Gerenciamento de Roles"
+      new_link: "Nova Role"
+      empty: "Nenhuma role cadastrada ainda."
+      headers:
+        name: "Nome da Role"
+        actions: "Ações"
+    new:
+      title: "Nova Role"
+      subtitle: "Crie um novo nível de acesso"
+      back: "← Voltar"
+    edit:
+      title: "Editar: %{name}"
+      subtitle: "Atualize o nome desta role"
+      back: "← Voltar"
+    form:
+      name_label: "Nome da Role"
+      submit: "Salvar Role"
+      errors:
+        one: "1 erro impediu esta role de ser salva:"
+        other: "%{count} erros impediram esta role de ser salva:"
+    role_row:
+      edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "CUIDADO: Excluir esta role pode quebrar o acesso de usuários.
+        Continuar?"
+
+  daily_menus:
+    index:
+      title: "Cardápios Diários"
+      new_link: "Novo Cardápio"
+      empty: "Nenhum cardápio cadastrado ainda."
+      previous: "← Anterior"
+      next: "Próximo →"
+      page: "Página %{page} de %{total}"
+      headers:
+        date: "Data"
+        meal: "Refeição"
+        main_dish: "Prato Principal"
+        side_dish: "Guarnições"
+        salad: "Salada"
+        dessert: "Sobremesa"
+        actions: "Ações"
+    new:
+      title: "Novo Cardápio"
+      subtitle: "Cadastre o cardápio para uma data e refeição"
+      back: "← Voltar para a Lista"
+    edit:
+      title: "Editar Cardápio: %{date}"
+      subtitle: "Atualize as informações deste cardápio"
+      back: "← Voltar para a Lista"
+    form:
+      meal_prompt: "Selecione a Refeição"
+      submit: "Salvar Cardápio"
+      section_protein: "Proteínas"
+      section_side_dish: "Acompanhamentos"
+      section_salad: "Saladas"
+      section_dessert: "Sobremesas"
+      animal_protein_placeholder: "Ex: Frango grelhado"
+      vegan_protein_placeholder: "Ex: Tofu grelhado"
+      side_dish_one_placeholder: "Ex: Arroz branco"
+      side_dish_two_placeholder: "Ex: Feijão carioca"
+      side_dish_three_placeholder: "Ex: Macarrão alho e óleo"
+      salad_one_placeholder: "Ex: Alface americana"
+      salad_two_placeholder: "Ex: Cenoura ralada"
+      salad_three_placeholder: "Ex: Beterraba cozida"
+      dessert_one_placeholder: "Ex: Melancia fresca"
+      dessert_two_placeholder: "Ex: Paçoca"
+      errors:
+        one: "1 erro impediu o cardápio de ser salvo:"
+        other: "%{count} erros impediram o cardápio de ser salvo:"
+    today:
+      title: "Cardápio do Dia: %{date}"
+      current_meal: "%{meal}"
+      served_hours: "Servido das %{start}h às %{end}h"
+      scheduled_title: "Cardápios Previstos para o Dia"
+      hours_range: "Das %{start}h às %{end}h"
+      section_protein: "Proteínas"
+      section_side_dish: "Acompanhamentos"
+      section_salad: "Saladas"
+      section_dessert: "Sobremesas"
+      access_link: "← Voltar para Identificação"
+    daily_menu_row:
+      edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir este cardápio?"
+
+  users:
+    index:
+      title: "Gerenciamento de Usuários"
+      new_link: "Novo Usuário"
+      empty: "Nenhum usuário cadastrado."
+    new:
+      title: "Novo Usuário"
+      subtitle: "Crie um novo acesso ao sistema"
+      back: "← Voltar"
+    edit:
+      title: "Editar: %{name}"
+      subtitle: "Atualize os dados deste usuário"
+      back: "← Voltar"
+    form:
+      username_label: "Nome de usuário"
+      email_label: "E-mail"
+      role_label: "Role"
+      role_prompt: "Selecione uma role"
+      password_label: "Senha"
+      password_confirmation_label: "Confirmação de senha"
+      password_placeholder_edit: "Nova senha (opcional)"
+      password_hint: "Deixe em branco para manter a senha atual"
+      submit: "Salvar Usuário"
+      errors:
+        one: "1 erro impediu este usuário de ser salvo:"
+        other: "%{count} erros impediram este usuário de ser salvo:"
+    user_row:
+      edit: "Editar"
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir este usuário?"
+
+  access_logs:
+    index:
+      title: "Histórico de Acessos"
+      page: "Página %{page}"
+      previous: "← Anterior"
+      next: "Próxima →"
+      headers:
+        time: "Hora"
+        identifier: "Matrícula/CPF"
+        name: "Nome"
+        course: "Curso"
+        result: "Resultado"
+        actions: "Ações"
+    row:
+      delete: "Excluir"
+      confirm_delete: "Tem certeza que deseja excluir este registro?"
+
+  access:
+    identification:
+      register_modal:
+        title: "Cadastrar Pessoa"
+        description: "Pessoa não encontrada. Escolha o tipo de cadastro:"
+        new_student: "Novo Aluno"
+        new_visitor: "Novo Visitante"
+      title: "Validação de Acesso"
+      subtitle: "Identifique o aluno ou visitante para registrar o acesso"
+      cpf_panel:
+        title: "CPF ou Matrícula"
+        description: "Digite o identificador para validar o acesso"
+        placeholder: "CPF ou matrícula"
+        submit: "Validar"
+      qr_panel:
+        title: "Leitura por Câmera"
+        description: "Aponte a câmera para o QR Code do aluno"
+        start_scanner: "Iniciar Scanner"
+        modal_header: "Aponte para o QR Code"
+      divider: "ou"
+      logs:
+        title: "Últimos Acessos de Hoje"
+        empty: "Nenhum acesso registrado ainda hoje."
+        headers:
+          time: "Hora"
+          identifier: "Matrícula/CPF"
+          name: "Nome"
+          course: "Curso"
+          result: "Resultado"
+          actions: "Ações"
+
+  finder:
+    index:
+      title: "Consulta de Acesso ao RU"
+      subtitle: "Aluno ou visitante? Digite seu CPF para ver sua situação cadastral e
+        saldo"
+      placeholder: "000.000.000-00"
+      submit: "Consultar"
+      staff_login: "Área do funcionário"
+      menu_link: "Cardápio de hoje"
+      invalid_cpf: "CPF inválido. Verifique os dígitos informados."
+      not_found: "Nenhum cadastro encontrado com esse CPF. Verifique o número e tente
+        novamente."
+      rate_limited: "Muitas tentativas. Aguarde 1 minuto antes de consultar novamente."
+      visitor_badge: "Visitante"
+      email_label: "E-mail"
+      course_label: "Curso"
+      registration_label: "Matrícula"
+      balance_label: "Saldo disponível"
+      logs_title: "Últimos acessos"
+      no_logs: "Nenhum acesso registrado ainda."
+      back: "Nova consulta"
+      status:
+        active: "Ativa"
+        inactive: "Inativa"
+        suspended: "Suspensa"
+        graduated: "Formado(a)"
+
+  devise:
+    sessions:
+      new:
+        logo: "Ru"
+        title: "RU Connect"
+        subtitle: "Acesse sua conta"
+        email_placeholder: "seu@email.com"
+        password_placeholder: "••••••••"
+        remember_me: "Lembrar de mim"
+        submit: "Entrar"
+
+  permissions:
+    index:
+      title: "Controle de Permissões"
+      subtitle: "Defina quais funcionalidades cada papel pode acessar no sistema."
+      role_label: "Papel"
+      matrix_title: "Matriz de permissões"
+      legend_granted: "Permitido"
+      legend_denied: "Negado"
+      legend_na: "Não aplicável"
+      resource: "Recurso"
+      no_roles: "Nenhuma role cadastrada além do admin."
+      resources:
+        Access: "Identificação"
+        Student: "Alunos"
+        Visitor: "Visitantes"
+        DailyMenu: "Cardápios"
+        Meal: "Refeições"
+        AccessLog: "Logs de Acesso"
+        User: "Usuários"
+        Role: "Roles"
+      actions:
+        index: "Acessar"
+        show: "Visualizar"
+        new: "Criar"
+        edit: "Editar"
+        destroy: "Excluir"
+        regenerate_qr: "Reg. QR"

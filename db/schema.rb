@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "unaccent"
 
   create_table "access_logs", force: :cascade do |t|
     t.string "access_result"
@@ -26,14 +27,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
   end
 
   create_table "daily_menus", force: :cascade do |t|
+    t.string "animal_protein", default: "", null: false
     t.datetime "created_at", null: false
     t.date "date"
-    t.string "dessert"
-    t.string "main_dish"
+    t.string "dessert_one", default: "", null: false
+    t.string "dessert_two"
     t.bigint "meal_id", null: false
-    t.string "salad"
-    t.string "side_dish"
+    t.string "salad_one", default: "", null: false
+    t.string "salad_three"
+    t.string "salad_two"
+    t.string "side_dish_one", default: "", null: false
+    t.string "side_dish_three"
+    t.string "side_dish_two"
     t.datetime "updated_at", null: false
+    t.string "vegan_protein", default: "", null: false
     t.index ["meal_id"], name: "index_daily_menus_on_meal_id"
   end
 
@@ -45,6 +52,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "permissions", force: :cascade do |t|
+    t.string "action", null: false
+    t.datetime "created_at", null: false
+    t.string "resource", null: false
+    t.bigint "role_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id", "resource", "action"], name: "index_permissions_on_role_id_and_resource_and_action", unique: true
+    t.index ["role_id"], name: "index_permissions_on_role_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
@@ -52,6 +69,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
   end
 
   create_table "students", force: :cascade do |t|
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
     t.string "course"
     t.string "cpf"
     t.datetime "created_at", null: false
@@ -59,6 +77,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
     t.string "name"
     t.string "qr_code_hash"
     t.string "registration"
+    t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["qr_code_hash"], name: "index_students_on_qr_code_hash", unique: true
     t.index ["registration"], name: "index_students_on_registration", unique: true
@@ -80,6 +99,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
   end
 
   create_table "visitors", force: :cascade do |t|
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
     t.string "cpf"
     t.datetime "created_at", null: false
     t.string "email"
@@ -89,4 +109,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_10_002552) do
   end
 
   add_foreign_key "daily_menus", "meals"
+  add_foreign_key "permissions", "roles"
 end

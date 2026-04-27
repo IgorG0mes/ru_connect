@@ -1,8 +1,12 @@
-<h1>Editar Refeição: <%= @meal.name %></h1>
+<div class="form-page">
+  <div class="form-page-topbar">
+    <%= link_to t(".back"), meals_path, class: "profile-back-link" %>
+  </div>
 
-<%= render 'form', meal: @meal %>
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title", name: @meal.name) %></h1>
+    <p class="form-page-subtitle"><%= t(".subtitle") %></p>
+  </div>
 
-<hr>
-
-<%= link_to 'Mostrar Detalhes', @meal %> |
-<%= link_to 'Voltar para a Lista', meals_path %>
+  <%= render "form", meal: @meal %>
+</div>
