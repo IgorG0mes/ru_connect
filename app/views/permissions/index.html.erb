@@ -1,0 +1,71 @@
+<div class="resource-search-page">
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title") %></h1>
+    <p class="form-page-subtitle"><%= t(".subtitle") %></p>
+  </div>
+
+  <% if @roles.any? %>
+    <div class="perm-role-selector">
+      <p class="perm-role-label"><%= t(".role_label") %></p>
+      <div class="permissions-tabs">
+        <% @roles.each do |role| %>
+          <%= link_to role.name.capitalize, permissions_path(role_id: role.id),
+                class: "permissions-tab #{'permissions-tab--active' if role == @selected_role}" %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @selected_role %>
+      <div class="profile-card perm-matrix-card">
+        <div class="perm-matrix-header">
+          <div>
+            <div class="profile-card-title"><%= t(".matrix_title") %></div>
+            <p class="perm-matrix-role-name"><%= @selected_role.name.capitalize %></p>
+          </div>
+          <div class="perm-legend">
+            <span class="perm-legend-item perm-legend-item--granted">✓ <%= t(".legend_granted") %></span>
+            <span class="perm-legend-item perm-legend-item--denied">✕ <%= t(".legend_denied") %></span>
+            <span class="perm-legend-item perm-legend-item--na">— <%= t(".legend_na") %></span>
+          </div>
+        </div>
+
+        <div class="permissions-matrix-wrapper">
+          <table class="permissions-table">
+            <thead>
+              <tr>
+                <th class="permissions-th-resource"><%= t(".resource") %></th>
+                <% @all_actions.each do |action| %>
+                  <th class="permissions-th-action"><%= t(".actions.#{action}", default: action) %></th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody>
+              <% @resources.each do |resource, actions| %>
+                <tr>
+                  <td class="permissions-td-resource">
+                    <%= t(".resources.#{resource}", default: resource) %>
+                  </td>
+                  <% @all_actions.each do |action| %>
+                    <td class="permissions-td-cell">
+                      <% if actions.include?(action) %>
+                        <%= render "cell",
+                              role: @selected_role,
+                              resource: resource,
+                              action: action,
+                              granted: @granted.include?([resource, action]) %>
+                      <% else %>
+                        <span class="permission-cell permission-cell--na">—</span>
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="resource-search-empty"><%= t(".no_roles") %></p>
+  <% end %>
+</div>

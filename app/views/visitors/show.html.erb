@@ -1,26 +1,65 @@
-<h1>Detalhes do Visitante: <%= @visitor.name %></h1>
+<% avatar_colors = %w[#3b82f6 #8b5cf6 #ec4899 #f59e0b #10b981 #ef4444 #06b6d4 #6366f1] %>
+<% avatar_color = avatar_colors[@visitor.name.ord % avatar_colors.length] %>
+<% initials = @visitor.name.split.first(2).map { |w| w[0]&.upcase }.join %>
 
-<p><strong>Nome:</strong> <%= @visitor.name %></p>
-<p><strong>CPF:</strong> <%= @visitor.cpf %></p>
-<p><strong>E-mail:</strong> <%= @visitor.email %></p>
-<p><strong>QR Code Hash (Chave):</strong> <code><%= @visitor.qr_code_hash %></code></p>
+<div class="student-profile">
+  <div class="student-profile-topbar">
+    <%= link_to t(".back"), visitors_path, class: "profile-back-link" %>
+    <div class="profile-topbar-actions">
+      <% if policy(@visitor).edit? %>
+        <%= link_to t(".edit"), edit_visitor_path(@visitor), class: "identify-btn" %>
+      <% end %>
+      <% if policy(@visitor).destroy? %>
+        <%= link_to t(".delete"), visitor_path(@visitor),
+              class: "profile-delete-btn",
+              data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete", name: @visitor.name) } %>
+      <% end %>
+    </div>
+  </div>
 
-<div style="float: left; margin-left: 20px;">
-  <% if @visitor.qr_code_hash.present? %>
-    <h2>QR Code de Acesso</h2>
-    <%= @visitor.generate_qr_code_svg %>
-    <p class="text-center">Chave: <code><%= @visitor.qr_code_hash %></code></p>
-  <% else %>
-    <p>QR Code ainda não gerado. Edite e salve para forçar a geração.</p>
-  <% end %>
-  <% if current_user.role&.name == 'admin' %>
-  <%= link_to 'Gerar Novo QR Code', regenerate_qr_visitor_path(@visitor), 
-      data: { turbo_method: :post, turbo_confirm: 'Isso invalidará o QR Code antigo. Continuar?' },
-      style: "color: orange;" %>
-<% end %>
+  <div class="student-profile-hero">
+    <div class="student-profile-avatar" style="background: <%= avatar_color %>">
+      <%= initials %>
+    </div>
+    <div class="student-profile-hero-info">
+      <h1 class="student-profile-name"><%= @visitor.name %></h1>
+      <div class="student-profile-tags">
+        <% if @visitor.qr_code_hash.present? %>
+          <span class="student-badge student-badge--active"><%= t(".qr_active") %></span>
+        <% else %>
+          <span class="student-badge student-badge--missing"><%= t(".qr_missing") %></span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="student-profile-grid">
+    <div class="profile-card">
+      <div class="profile-card-title"><%= t(".personal_info") %></div>
+
+      <div class="profile-field">
+        <div class="profile-field-label"><%= Visitor.human_attribute_name(:cpf) %></div>
+        <div class="profile-field-value"><%= @visitor.cpf.presence || t("shared.not_available") %></div>
+      </div>
+
+      <div class="profile-field">
+        <div class="profile-field-label"><%= Visitor.human_attribute_name(:email) %></div>
+        <div class="profile-field-value"><%= @visitor.email.presence || t(".no_email") %></div>
+      </div>
+
+      <div class="profile-field">
+        <div class="profile-field-label"><%= Visitor.human_attribute_name(:balance) %></div>
+        <div class="profile-field-value profile-field-value--balance">
+          <%= number_to_currency(@visitor.balance, unit: "R$", separator: ",", delimiter: ".") %>
+        </div>
+      </div>
+
+      <div class="profile-field">
+        <div class="profile-field-label"><%= t(".registered_at") %></div>
+        <div class="profile-field-value"><%= l(@visitor.created_at, format: :long) %></div>
+      </div>
+    </div>
+
+    <%= render "visitors/qr_code", visitor: @visitor %>
+  </div>
 </div>
-
-<hr style="clear: both;">
-
-<%= link_to 'Editar', edit_visitor_path(@visitor) %> |
-<%= link_to 'Voltar para a Lista', visitors_path %>
