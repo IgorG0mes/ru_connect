@@ -42,7 +42,7 @@ pt-BR:
       default: "%A, %d de %B de %Y, %H:%M:%S %Z"
       short: "%d/%m, %H:%M"
       long: "%A, %d de %B de %Y, %H:%M"
-      access_log: "%d de %B de %Y, %A às %H:%M"
+      access_log: "%d/%m/%Y · %H:%M"
     am: ""
     pm: ""
 
@@ -112,7 +112,7 @@ pt-BR:
       access_denied: "ACESSO NEGADO: %{result}"
       access_warning: "AVISO: %{result}"
       not_found: "Usuário não encontrado. Necessário Cadastro."
-      no_meal: "Refeição não está disponível no horário atual."
+      no_meal: "Refeição não disponível."
       already_consumed: "Acesso já consumido hoje."
       approved: "Acesso aprovado para %{meal}."
     access_logs:
@@ -413,6 +413,7 @@ pt-BR:
       section_salad: "Saladas"
       section_dessert: "Sobremesas"
       access_link: "← Voltar para Identificação"
+      no_menu_today: "Nenhum cardápio disponível hoje."
     daily_menu_row:
       edit: "Editar"
       delete: "Excluir"
@@ -517,6 +518,8 @@ pt-BR:
       balance_label: "Saldo disponível"
       logs_title: "Últimos acessos"
       no_logs: "Nenhum acesso registrado ainda."
+      show_qr: "Mostrar QR Code"
+      hide_qr: "Ocultar QR Code"
       back: "Nova consulta"
       status:
         active: "Ativa"

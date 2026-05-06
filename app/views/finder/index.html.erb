@@ -71,6 +71,17 @@
       </div>
 
       <div class="consulta-result-footer">
+        <% if @person.qr_code_hash.present? %>
+          <div data-controller="toggle" class="consulta-qr-section">
+            <button type="button" data-action="click->toggle#toggle" class="consulta-btn consulta-btn--outline">
+              <span data-toggle-target="showLabel">📱 <%= t(".show_qr") %></span>
+              <span data-toggle-target="hideLabel" style="display:none">✕ <%= t(".hide_qr") %></span>
+            </button>
+            <div data-toggle-target="content" style="display:none" class="consulta-qr-display">
+              <%= @person.generate_qr_code_svg %>
+            </div>
+          </div>
+        <% end %>
         <%= link_to finder_path, class: "consulta-btn consulta-btn--outline" do %>
           ← <%= t(".back") %>
         <% end %>
