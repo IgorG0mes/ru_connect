@@ -37,9 +37,11 @@ export default class extends Controller {
     this.modalTarget.style.display = "flex"
     document.body.style.overflow = "hidden"
 
+    const qrboxSize = Math.min(250, Math.floor(window.innerWidth * 0.65))
+
     this.scanner = new Html5QrcodeScanner(
       this.readerTarget.id,
-      { fps: 10, qrbox: { width: 300, height: 300 } },
+      { fps: 10, qrbox: { width: qrboxSize, height: qrboxSize } },
       false
     )
     this.scanner.render(
