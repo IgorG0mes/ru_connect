@@ -17,7 +17,7 @@
     <% if policy(visitor).regenerate_qr? %>
       <div class="profile-qr-actions">
         <%= link_to t(".regenerate"), regenerate_qr_visitor_path(visitor),
-              class: "profile-qr-btn",
+              class: "identify-btn profile-qr-btn",
               data: { turbo_method: :post, turbo_confirm: t(".confirm_regenerate") } %>
       </div>
     <% end %>
