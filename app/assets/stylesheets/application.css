@@ -85,6 +85,33 @@ a, a:visited { color: inherit; }
   box-shadow: 0 0 0 3px rgba(30,41,59,0.1);
 }
 
+.login-input-wrapper {
+  position: relative;
+}
+
+.login-input-wrapper .login-input {
+  padding-right: 2.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-eye-btn {
+  position: absolute;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: #94a3b8;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.login-eye-btn:hover { color: #1e293b; }
+
 .login-remember {
   display: flex;
   align-items: center;
