@@ -1,6 +1,6 @@
 class StudentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_student, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
+  before_action :set_student, only: [ :show, :edit, :update, :regenerate_qr, :send_qr_email, :destroy ]
 
   PER_PAGE = 10
 
@@ -30,6 +30,7 @@ class StudentsController < ApplicationController
     authorize @student
 
     if @student.save
+      QrCodeMailer.welcome(@student).deliver_now if @student.email.present?
       redirect_to students_path, notice: t("flash.students.created", name: @student.name)
     else
       render :new, status: :unprocessable_entity
@@ -62,6 +63,7 @@ class StudentsController < ApplicationController
   def regenerate_qr
     authorize @student
     QrCodeGeneratorService.generate_and_assign(@student)
+    QrCodeMailer.qr_code_regenerated(@student).deliver_now if @student.email.present?
 
     respond_to do |format|
       format.turbo_stream do
@@ -73,6 +75,16 @@ class StudentsController < ApplicationController
       end
       format.html { redirect_to @student, notice: t("flash.students.qr_regenerated", name: @student.name) }
     end
+  end
+
+  def send_qr_email
+    authorize @student
+    if @student.email.blank?
+      redirect_to @student, alert: t("flash.students.no_email")
+      return
+    end
+    QrCodeMailer.send_qr_code(@student).deliver_now
+    redirect_to @student, notice: t("flash.students.qr_email_sent", email: @student.email)
   end
 
   private

@@ -926,10 +926,35 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
 .profile-qr-actions {
   width: 100%;
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .profile-qr-btn {
   width: 100%;
+}
+
+.profile-qr-btn--email {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 1.25rem;
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.profile-qr-btn--email:hover {
+  background-color: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
 }
 
 /* Generic form pages (new/edit) */
