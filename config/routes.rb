@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
   devise_for :users, controllers: { registrations: "users/registrations" }
 
   root "finder#index"
@@ -10,11 +12,17 @@ Rails.application.routes.draw do
   post "finder", to: "finder#search"
 
   resources :students do
-    post :regenerate_qr, on: :member
+    member do
+      post :regenerate_qr
+      post :send_qr_email
+    end
   end
 
   resources :visitors do
-    post :regenerate_qr, on: :member
+    member do
+      post :regenerate_qr
+      post :send_qr_email
+    end
   end
 
   resources :meals

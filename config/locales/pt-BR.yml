@@ -127,11 +127,15 @@ pt-BR:
       created: "Aluno %{name} cadastrado com sucesso! QR Code gerado."
       updated: "Aluno atualizado com sucesso."
       qr_regenerated: "Novo QR Code gerado para %{name}."
+      qr_email_sent: "QR Code enviado para %{email}."
+      no_email: "Este aluno não possui e-mail cadastrado."
       deleted: "Aluno %{name} excluído com sucesso."
     visitors:
       created: "Visitante %{name} cadastrado com sucesso! QR Code gerado."
       updated: "Visitante atualizado com sucesso."
       qr_regenerated: "Novo QR Code gerado para %{name}."
+      qr_email_sent: "QR Code enviado para %{email}."
+      no_email: "Este visitante não possui e-mail cadastrado."
       deleted: "Visitante %{name} excluído com sucesso."
     meals:
       created: "Refeição %{name} cadastrada com sucesso!"
@@ -236,6 +240,8 @@ pt-BR:
       not_generated: "QR Code ainda não gerado. Edite e salve para forçar a geração."
       regenerate: "Gerar Novo QR Code"
       confirm_regenerate: "Isso invalidará o QR Code antigo. Continuar?"
+      send_email: "Enviar por E-mail"
+      confirm_send_email: "Enviar o QR Code para o e-mail cadastrado?"
     student_row:
       show: "Ver Perfil"
       qr_active: "QR Ativo"
@@ -294,6 +300,8 @@ pt-BR:
       not_generated: "QR Code ainda não gerado. Edite e salve para forçar a geração."
       regenerate: "Gerar Novo QR Code"
       confirm_regenerate: "Isso invalidará o QR Code antigo. Continuar?"
+      send_email: "Enviar por E-mail"
+      confirm_send_email: "Enviar o QR Code para o e-mail cadastrado?"
     visitor_row:
       show: "Ver Perfil"
       qr_active: "QR Ativo"
@@ -565,3 +573,12 @@ pt-BR:
         edit: "Editar"
         destroy: "Excluir"
         regenerate_qr: "Reg. QR"
+        send_qr_email: "Env. E-mail QR"
+
+  qr_code_mailer:
+    welcome:
+      subject: "Bem-vindo(a) ao RU Connect, %{name}! Aqui está seu QR Code"
+    send_qr_code:
+      subject: "Seu QR Code de Acesso ao RU - %{name}"
+    qr_code_regenerated:
+      subject: "Seu novo QR Code de Acesso ao RU - %{name}"
