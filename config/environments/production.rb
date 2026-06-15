@@ -53,8 +53,9 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # Não derruba a request se o e-mail falhar; os jobs do Solid Queue cuidam do reenvio.
-  config.action_mailer.raise_delivery_errors = false
+  # Por padrão não levanta erro de entrega (o job no Solid Queue cuida do reenvio).
+  # Defina MAIL_RAISE_ERRORS=true no Render para ver o erro real do SMTP no log.
+  config.action_mailer.raise_delivery_errors = ENV.fetch("MAIL_RAISE_ERRORS", "false") == "true"
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
 
