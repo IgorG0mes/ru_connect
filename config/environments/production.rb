@@ -54,10 +54,9 @@ Rails.application.configure do
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
   # Por padrão não levanta erro de entrega (o job no Solid Queue cuida do reenvio).
-  # Defina MAIL_RAISE_ERRORS=true no Render para ver o erro real do SMTP no log.
+  # Defina MAIL_RAISE_ERRORS=true no Render para ver o erro real no log.
   config.action_mailer.raise_delivery_errors = ENV.fetch("MAIL_RAISE_ERRORS", "false") == "true"
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.delivery_method = :smtp
 
   # Host usado nos links gerados dentro dos e-mails. Defina APP_HOST no Render
   # (ex.: ru-connect.onrender.com).
@@ -66,15 +65,12 @@ Rails.application.configure do
     protocol: "https"
   }
 
-  # SMTP via variáveis de ambiente (defina no painel do Render).
-  config.action_mailer.smtp_settings = {
-    address:              ENV["SMTP_ADDRESS"],
-    port:                 ENV.fetch("SMTP_PORT", 587).to_i,
-    domain:               ENV["SMTP_DOMAIN"],
-    user_name:            ENV["SMTP_USERNAME"],
-    password:             ENV["SMTP_PASSWORD"],
-    authentication:       :plain,
-    enable_starttls_auto: true
+  # Envio via API HTTP do SendGrid (porta 443). O Render free bloqueia as portas
+  # de SMTP, então usamos a API em vez de smtp_settings. Defina SENDGRID_API_KEY.
+  config.action_mailer.delivery_method = :sendgrid_actionmailer
+  config.action_mailer.sendgrid_actionmailer_settings = {
+    api_key: ENV["SENDGRID_API_KEY"],
+    raise_delivery_errors: true
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
