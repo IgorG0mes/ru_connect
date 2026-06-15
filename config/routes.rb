@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: "users/registrations" }
 
+  # Health check usado pelo Render (e load balancers em geral): retorna 200 se o app subiu.
+  get "up" => "rails/health#show", as: :rails_health_check
+
   root "finder#index"
   get "identify", to: "access#identification", as: :identify
   post "identify", to: "access#process_identification"
