@@ -20,7 +20,9 @@ load_solid_schema() {
     echo "==> ${marker} já existe — pulando schema de ${db_name}."
   else
     echo "==> Carregando schema do banco ${db_name}..."
-    bundle exec rails "db:schema:load:${db_name}"
+    # schema:load é tratado como destrutivo pelo Rails em produção; liberamos a
+    # checagem porque só chegamos aqui quando a tabela ainda NÃO existe.
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails "db:schema:load:${db_name}"
   fi
 }
 
