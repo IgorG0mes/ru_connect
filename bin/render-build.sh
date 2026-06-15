@@ -7,6 +7,23 @@ bundle install
 bundle exec rails assets:precompile
 bundle exec rails assets:clean
 
-# db:prepare cria o banco (se necessario) e roda as migrations de todos os
-# bancos configurados em produção: primary, cache, queue e cable (Solid *).
+# Banco primary: cria (se necessario) e roda as migrations da aplicação.
 bundle exec rails db:prepare
+
+# O stack Solid (Queue/Cache/Cable) usa arquivos db/*_schema.rb, não migrations.
+# No Render o banco já vem criado, então o db:prepare acima NÃO carrega esses
+# schemas. Carregamos manualmente — só quando a tabela marcadora ainda não
+# existe, deixando o passo idempotente entre deploys.
+load_solid_schema() {
+  local db_name="$1" marker="$2"
+  if bundle exec rails runner "exit(ActiveRecord::Base.connection.table_exists?('$marker') ? 0 : 1)"; then
+    echo "==> ${marker} já existe — pulando schema de ${db_name}."
+  else
+    echo "==> Carregando schema do banco ${db_name}..."
+    bundle exec rails "db:schema:load:${db_name}"
+  fi
+}
+
+load_solid_schema queue solid_queue_jobs
+load_solid_schema cache solid_cache_entries
+load_solid_schema cable solid_cable_messages

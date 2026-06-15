@@ -25,12 +25,12 @@ services:
       - key: RACK_ENV
         value: production
       - key: WEB_CONCURRENCY
-        value: 2
+        value: "2"
       - key: RAILS_MAX_THREADS
-        value: 3
+        value: "3"
       - key: SOLID_QUEUE_IN_PUMA
-        value: true
+        value: "true"
       - key: RAILS_LOG_TO_STDOUT
-        value: true
+        value: "true"
       - key: RAILS_SERVE_STATIC_FILES
-        value: true
+        value: "true"
