@@ -30,7 +30,7 @@ class StudentsController < ApplicationController
     authorize @student
 
     if @student.save
-      QrCodeMailer.welcome(@student).deliver_now if @student.email.present?
+      QrCodeMailer.welcome(@student).deliver_later if @student.email.present?
       redirect_to students_path, notice: t("flash.students.created", name: @student.name)
     else
       render :new, status: :unprocessable_entity
@@ -63,7 +63,7 @@ class StudentsController < ApplicationController
   def regenerate_qr
     authorize @student
     QrCodeGeneratorService.generate_and_assign(@student)
-    QrCodeMailer.qr_code_regenerated(@student).deliver_now if @student.email.present?
+    QrCodeMailer.qr_code_regenerated(@student).deliver_later if @student.email.present?
 
     respond_to do |format|
       format.turbo_stream do
@@ -83,7 +83,7 @@ class StudentsController < ApplicationController
       redirect_to @student, alert: t("flash.students.no_email")
       return
     end
-    QrCodeMailer.send_qr_code(@student).deliver_now
+    QrCodeMailer.send_qr_code(@student).deliver_later
     redirect_to @student, notice: t("flash.students.qr_email_sent", email: @student.email)
   end
 
