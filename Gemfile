@@ -39,6 +39,8 @@ gem "thruster", require: false
 
 gem "devise"
 gem "pundit"
+# Envio de e-mail via API HTTP do SendGrid (o Render free bloqueia portas SMTP).
+gem "sendgrid-actionmailer"
 gem "rqrcode"
 gem "rails-i18n"
 gem "holidays"
