@@ -29,3 +29,23 @@ load_solid_schema() {
 load_solid_schema queue solid_queue_jobs
 load_solid_schema cache solid_cache_entries
 load_solid_schema cable solid_cable_messages
+
+# Cria o usuário admin inicial de forma idempotente (só na primeira vez).
+# As credenciais vêm de variáveis de ambiente — defina ADMIN_EMAIL e
+# ADMIN_PASSWORD no painel do Render. Como o plano free não tem console,
+# este é o jeito de criar o primeiro acesso.
+if [ -n "$ADMIN_EMAIL" ] && [ -n "$ADMIN_PASSWORD" ]; then
+  bundle exec rails runner "
+    role = Role.find_or_create_by!(name: 'admin')
+    user = User.find_or_initialize_by(email: ENV['ADMIN_EMAIL'])
+    if user.new_record?
+      user.username = ENV.fetch('ADMIN_USERNAME', 'admin')
+      user.password = ENV['ADMIN_PASSWORD']
+      user.role = role
+      user.save!
+      puts '==> Usuário admin criado: ' + user.email
+    else
+      puts '==> Usuário admin já existe — nada a fazer.'
+    end
+  "
+fi
