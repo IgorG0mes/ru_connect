@@ -2090,8 +2090,10 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
 .consulta-subtitle {
   font-size: 0.95rem;
   color: #64748b;
-  margin: 0;
   max-width: 380px;
+  text-align: center;
+  margin: 0 auto 16px auto;
+  line-height: 1.5;
 }
 
 .consulta-form {
@@ -2329,16 +2331,67 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
   gap: 0.75rem;
 }
 
-.consulta-qr-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.consulta-btn--full {
+  width: 100%;
+}
+
+/* Ações do resultado (comprar fichas / QR) lado a lado */
+.consulta-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
   width: 100%;
 }
 
+.consulta-action {
+  display: contents;
+}
+
+.consulta-action-btn {
+  grid-row: 1;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.925rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  border: 1.5px solid transparent;
+}
+
+.consulta-action-btn--buy {
+  background: #1e293b;
+  color: #fff;
+}
+
+.consulta-action-btn--buy:hover {
+  background: #0f172a;
+}
+
+.consulta-action-btn--qr {
+  background: #fff;
+  color: #1e293b;
+  border-color: #cbd5e1;
+}
+
+.consulta-action-btn--qr:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.consulta-action-panel {
+  grid-column: 1 / -1;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .consulta-qr-display {
   text-align: center;
+  align-items: center;
 }
 
 .consulta-qr-display svg {
@@ -2349,6 +2402,169 @@ body:not(:has(.sidebar)) .main-wrapper { margin-left: 0; }
   padding: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   display: inline-block;
+}
+
+/* Form de compra de fichas */
+.ticket-buy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.ticket-buy-row-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.ticket-buy-row--total {
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.ticket-buy-row--total .ticket-buy-row-value {
+  color: #16a34a;
+  font-size: 1.2rem;
+}
+
+.ticket-buy-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ticket-qty-stepper {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ticket-qty-btn {
+  width: 48px;
+  border: none;
+  background: #f1f5f9;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ticket-qty-btn:hover {
+  background: #e2e8f0;
+}
+
+.ticket-qty-input {
+  flex: 1;
+  border: none;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.ticket-qty-input:focus {
+  outline: none;
+}
+
+.ticket-qty-input::-webkit-outer-spin-button,
+.ticket-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Admin: preços de ficha */
+.ticket-prices-subtitle {
+  color: #64748b;
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+}
+
+.ticket-prices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.ticket-price-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ticket-price-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ticket-price-emoji {
+  font-size: 1.75rem;
+}
+
+.ticket-price-type {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.ticket-price-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ticket-price-field {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+
+.ticket-price-field:focus-within {
+  border-color: #1e293b;
+}
+
+.ticket-price-prefix {
+  padding: 0 0.75rem;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.ticket-price-input {
+  flex: 1;
+  border: none;
+  padding: 0.7rem 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  width: 100%;
+}
+
+.ticket-price-input:focus {
+  outline: none;
 }
 
 /* Permissions matrix */

@@ -1,0 +1,19 @@
+<div class="consulta-page">
+  <div class="consulta-result-card">
+    <div class="consulta-result-header consulta-result-header--<%= variant %>">
+      <div>
+        <h2 class="consulta-result-name"><%= icon %> <%= title %></h2>
+      </div>
+    </div>
+
+    <div class="consulta-result-body">
+      <p class="consulta-subtitle"><%= message %></p>
+    </div>
+
+    <div class="consulta-result-footer">
+      <%= link_to finder_path, class: "consulta-btn consulta-btn--outline" do %>
+        ← <%= back_label %>
+      <% end %>
+    </div>
+  </div>
+</div>

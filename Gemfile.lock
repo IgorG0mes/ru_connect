@@ -119,6 +119,9 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.6.2)
     dotenv (3.2.0)
+    dotenv-rails (3.2.0)
+      dotenv (= 3.2.0)
+      railties (>= 6.1)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (6.0.4)
@@ -127,6 +130,12 @@ GEM
       tzinfo
     faker (3.8.0)
       i18n (>= 1.8.11, < 2)
+    faraday (2.14.3)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.4)
+      net-http (~> 0.5)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm-linux-gnu)
@@ -195,6 +204,9 @@ GEM
       net-smtp
     marcel (1.2.1)
     matrix (0.4.3)
+    mercadopago-sdk (3.1.0)
+      faraday (~> 2.0)
+      json (~> 2.5)
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
@@ -202,6 +214,8 @@ GEM
       drb (~> 2.0)
       prism (~> 1.5)
     msgpack (1.8.3)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     net-imap (0.6.4.1)
       date
       net-protocol
@@ -461,6 +475,7 @@ DEPENDENCIES
   cpf_cnpj
   debug
   devise
+  dotenv-rails
   faker
   holidays
   image_processing (~> 1.2)
@@ -469,6 +484,7 @@ DEPENDENCIES
   kamal
   letter_opener
   letter_opener_web
+  mercadopago-sdk
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)

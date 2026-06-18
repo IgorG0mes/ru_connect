@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   get "finder", to: "finder#index", as: :finder
   post "finder", to: "finder#search"
 
+  resources :payments, only: [:create]
+  get  "carteira/recarga/sucesso",  to: "payments#success",  as: :payment_success
+  get  "carteira/recarga/falha",    to: "payments#failure",  as: :payment_failure
+  get  "carteira/recarga/pendente", to: "payments#pending",  as: :payment_pending
+  post "webhooks/mercadopago",      to: "payments#webhook",  as: :mercadopago_webhook
+
   resources :students do
     member do
       post :regenerate_qr
@@ -36,6 +42,7 @@ Rails.application.routes.draw do
 
   resources :roles, except: [:show]
   resources :users, path: "admin/users", except: [:show]
+  resources :ticket_prices, only: [:index, :update]
 
   resources :permissions, only: [:index] do
     collection do

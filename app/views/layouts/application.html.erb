@@ -69,6 +69,12 @@
                 <span class="sidebar-label"><%= t(".nav.daily_menus") %></span>
               <% end %>
             <% end %>
+            <% if policy(TicketPrice).index? %>
+              <%= link_to ticket_prices_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🎫</span>
+                <span class="sidebar-label"><%= t(".nav.ticket_prices") %></span>
+              <% end %>
+            <% end %>
             <% if policy(AccessLog).index? %>
               <%= link_to access_logs_path, class: "sidebar-link" do %>
                 <span class="sidebar-icon">📜</span>
