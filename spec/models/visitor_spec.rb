@@ -32,10 +32,21 @@ RSpec.describe Visitor, type: :model do
       expect(visitor.errors[:cpf]).to be_present
     end
 
-    it "is invalid with a negative balance" do
-      visitor = build_visitor(balance: -1)
+    it "is invalid with a negative ticket_balance" do
+      visitor = build_visitor(ticket_balance: -1)
       expect(visitor).not_to be_valid
-      expect(visitor.errors[:balance]).to be_present
+      expect(visitor.errors[:ticket_balance]).to be_present
+    end
+  end
+
+  describe "ticket wallet" do
+    it "credits and consumes tickets" do
+      visitor = build_visitor(ticket_balance: 1)
+      visitor.save!
+      visitor.credit_tickets!(2)
+      expect(visitor.reload.ticket_balance).to eq(3)
+      expect(visitor.consume_ticket!).to be(true)
+      expect(visitor.reload.ticket_balance).to eq(2)
     end
   end
 

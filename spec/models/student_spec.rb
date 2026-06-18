@@ -17,14 +17,14 @@ RSpec.describe Student, type: :model do
       expect(build_student).to be_valid
     end
 
-    it "is invalid with a negative balance" do
-      student = build_student(balance: -1)
+    it "is invalid with a negative ticket_balance" do
+      student = build_student(ticket_balance: -1)
       expect(student).not_to be_valid
-      expect(student.errors[:balance]).to be_present
+      expect(student.errors[:ticket_balance]).to be_present
     end
 
-    it "is valid with a zero balance" do
-      expect(build_student(balance: 0)).to be_valid
+    it "is valid with a zero ticket_balance" do
+      expect(build_student(ticket_balance: 0)).to be_valid
     end
 
     it "is invalid with a malformed cpf" do
@@ -81,6 +81,28 @@ RSpec.describe Student, type: :model do
       student = build_student
       student.save!
       expect(student.generate_qr_code_svg).to include("<svg")
+    end
+  end
+
+  describe "ticket wallet" do
+    it "credits tickets" do
+      student = build_student
+      student.save!
+      expect { student.credit_tickets!(3) }.to change { student.reload.ticket_balance }.by(3)
+    end
+
+    it "consumes one ticket and returns true when there is balance" do
+      student = build_student(ticket_balance: 2)
+      student.save!
+      expect(student.consume_ticket!).to be(true)
+      expect(student.reload.ticket_balance).to eq(1)
+    end
+
+    it "does not consume and returns false when balance is zero" do
+      student = build_student(ticket_balance: 0)
+      student.save!
+      expect(student.consume_ticket!).to be(false)
+      expect(student.reload.ticket_balance).to eq(0)
     end
   end
 end
