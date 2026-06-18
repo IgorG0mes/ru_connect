@@ -106,11 +106,22 @@ class AccessController < ApplicationController
       )
     end
 
-    AccessLog.create!(
-      personable: person,
-      status: :allowed,
-      access_time: Time.current,
-      access_result: I18n.t("flash.access.approved", meal: meal.name.capitalize)
-    )
+    if person.ticket_balance < 1
+      return AccessLog.create(
+        personable: person,
+        status: :denied,
+        access_result: I18n.t("flash.access.no_tickets")
+      )
+    end
+
+    AccessLog.transaction do
+      person.consume_ticket!
+      AccessLog.create!(
+        personable: person,
+        status: :allowed,
+        access_time: Time.current,
+        access_result: I18n.t("flash.access.approved", meal: meal.name.capitalize)
+      )
+    end
   end
 end
