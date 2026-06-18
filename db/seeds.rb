@@ -2,6 +2,10 @@ puts "\n--- 1. CRIAÇÃO DE ROLES ---"
 Role.find_or_create_by!(name: 'admin')
 Role.find_or_create_by!(name: 'balconist')
 
+puts "\n--- PREÇOS DE FICHA ---"
+TicketPrice.find_or_create_by!(payable_type: 'Student') { |tp| tp.price = 6.50 }
+TicketPrice.find_or_create_by!(payable_type: 'Visitor') { |tp| tp.price = 12.50 }
+
 require 'cpf_cnpj'
 require 'faker'
 
