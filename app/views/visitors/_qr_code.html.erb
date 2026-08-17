@@ -14,11 +14,18 @@
       <p class="profile-qr-missing"><%= t(".not_generated") %></p>
     <% end %>
 
-    <% if policy(visitor).regenerate_qr? %>
+    <% if policy(visitor).regenerate_qr? || policy(visitor).send_qr_email? %>
       <div class="profile-qr-actions">
-        <%= link_to t(".regenerate"), regenerate_qr_visitor_path(visitor),
-              class: "profile-qr-btn",
-              data: { turbo_method: :post, turbo_confirm: t(".confirm_regenerate") } %>
+        <% if policy(visitor).regenerate_qr? %>
+          <%= link_to t(".regenerate"), regenerate_qr_visitor_path(visitor),
+                class: "identify-btn profile-qr-btn",
+                data: { turbo_method: :post, turbo_confirm: t(".confirm_regenerate") } %>
+        <% end %>
+        <% if policy(visitor).send_qr_email? && visitor.qr_code_hash.present? %>
+          <%= link_to t(".send_email"), send_qr_email_visitor_path(visitor),
+                data: { turbo_method: :post, turbo_confirm: t(".confirm_send_email") },
+                class: "profile-qr-btn profile-qr-btn--email" %>
+        <% end %>
       </div>
     <% end %>
   </div>

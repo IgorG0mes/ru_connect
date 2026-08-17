@@ -47,7 +47,7 @@
           <div class="consulta-info-item">
             <span class="consulta-info-label"><%= t(".balance_label") %></span>
             <span class="consulta-info-value consulta-info-value--balance">
-              <%= number_to_currency(@person.balance, unit: "R$", separator: ",", delimiter: ".") %>
+              <%= t(".tickets_count", count: @person.ticket_balance) %>
             </span>
           </div>
         </div>
@@ -71,7 +71,57 @@
       </div>
 
       <div class="consulta-result-footer">
-        <%= link_to finder_path, class: "consulta-btn consulta-btn--outline" do %>
+        <div class="consulta-actions">
+          <% if @unit_price %>
+            <div data-controller="toggle" class="consulta-action">
+              <button type="button" data-action="click->toggle#toggle" class="consulta-action-btn consulta-action-btn--buy">
+                <span data-toggle-target="showLabel">🎟️ <%= t(".add_balance") %></span>
+                <span data-toggle-target="hideLabel" style="display:none">✕ <%= t(".add_balance") %></span>
+              </button>
+              <div data-toggle-target="content" style="display:none" class="consulta-action-panel"
+                   data-controller="ticket-calc" data-ticket-calc-unit-price-value="<%= @unit_price.to_f %>">
+                <div class="ticket-buy-row">
+                  <span class="ticket-buy-row-label"><%= t(".unit_price_label") %></span>
+                  <span class="ticket-buy-row-value"><%= number_to_currency(@unit_price, unit: "R$", separator: ",", delimiter: ".") %></span>
+                </div>
+                <%= form_with url: payments_path, method: :post, data: { turbo: false } do |f| %>
+                  <%= hidden_field_tag :payable_sgid, @person.to_sgid(for: "payment_topup").to_s %>
+                  <label class="ticket-buy-label" for="quantity"><%= t(".quantity_label") %></label>
+                  <div class="ticket-qty-stepper">
+                    <button type="button" class="ticket-qty-btn" data-action="ticket-calc#decrement" aria-label="−">−</button>
+                    <%= number_field_tag :quantity, 1,
+                          id: "quantity",
+                          step: 1,
+                          min: 1,
+                          max: Payment::MAX_QUANTITY,
+                          inputmode: "numeric",
+                          required: true,
+                          class: "ticket-qty-input",
+                          data: { "ticket-calc-target": "quantity", action: "input->ticket-calc#update" } %>
+                    <button type="button" class="ticket-qty-btn" data-action="ticket-calc#increment" aria-label="+">+</button>
+                  </div>
+                  <div class="ticket-buy-row ticket-buy-row--total">
+                    <span class="ticket-buy-row-label"><%= t(".total_label") %></span>
+                    <strong class="ticket-buy-row-value" data-ticket-calc-target="total">—</strong>
+                  </div>
+                  <%= f.submit t(".pay_button"), class: "consulta-btn consulta-btn--full" %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <% if @person.qr_code_hash.present? %>
+            <div data-controller="toggle" class="consulta-action">
+              <button type="button" data-action="click->toggle#toggle" class="consulta-action-btn consulta-action-btn--qr">
+                <span data-toggle-target="showLabel">📱 <%= t(".show_qr") %></span>
+                <span data-toggle-target="hideLabel" style="display:none">✕ <%= t(".hide_qr") %></span>
+              </button>
+              <div data-toggle-target="content" style="display:none" class="consulta-action-panel consulta-qr-display">
+                <%= @person.generate_qr_code_svg %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <%= link_to finder_path, class: "consulta-btn consulta-btn--outline consulta-btn--full" do %>
           ← <%= t(".back") %>
         <% end %>
       </div>
