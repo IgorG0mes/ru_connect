@@ -1,9 +1,9 @@
 # 🍽️ RU Connect — University Restaurant Management System
 
-![Ruby on Rails](https://img.shields.io/badge/Rails-8.1.0-red?style=for-the-badge&logo=ruby-on-rails)
+![Ruby](https://img.shields.io/badge/Ruby-3.4.6-cc342d?style=for-the-badge&logo=ruby)
+![Ruby on Rails](https://img.shields.io/badge/Rails-8.1.3-red?style=for-the-badge&logo=ruby-on-rails)
 ![Docker](https://img.shields.io/badge/Docker-24.0-blue?style=for-the-badge&logo=docker)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14-blue?style=for-the-badge&logo=postgresql)
-![Ruby](https://img.shields.io/badge/Ruby-3.4.6-cc342d?style=for-the-badge&logo=ruby)
 
 **RU Connect** is a management platform designed to streamline meal workflows, menu planning, and access control in University Restaurants. The system is built for performance, security, and effortless deployment using a fully containerized architecture.
 
