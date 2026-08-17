@@ -65,9 +65,9 @@
       </div>
 
       <div class="profile-field">
-        <div class="profile-field-label"><%= Student.human_attribute_name(:balance) %></div>
+        <div class="profile-field-label"><%= t("tickets.label") %></div>
         <div class="profile-field-value profile-field-value--balance">
-          <%= number_to_currency(@student.balance, unit: "R$", separator: ",", delimiter: ".") %>
+          <%= t("tickets.count", count: @student.ticket_balance) %>
         </div>
       </div>
 

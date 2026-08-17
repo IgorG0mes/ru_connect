@@ -1,0 +1,31 @@
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1>🎟️ <%= t(".title") %></h1>
+  </div>
+  <p class="ticket-prices-subtitle"><%= t(".subtitle") %></p>
+
+  <div class="ticket-prices-grid">
+    <% @ticket_prices.each do |ticket_price| %>
+      <% emoji = ticket_price.payable_type == "Student" ? "🎓" : "👤" %>
+      <%= form_with model: ticket_price, method: :patch, class: "ticket-price-card" do |f| %>
+        <div class="ticket-price-card-head">
+          <span class="ticket-price-emoji"><%= emoji %></span>
+          <span class="ticket-price-type"><%= t(".types.#{ticket_price.payable_type.downcase}") %></span>
+        </div>
+
+        <label class="ticket-price-label" for="price_<%= ticket_price.id %>"><%= t(".price_label") %></label>
+        <div class="ticket-price-field">
+          <span class="ticket-price-prefix">R$</span>
+          <%= f.number_field :price,
+                id: "price_#{ticket_price.id}",
+                step: "0.01",
+                min: "0.01",
+                inputmode: "decimal",
+                class: "ticket-price-input" %>
+        </div>
+
+        <%= f.submit t(".save"), class: "consulta-btn consulta-btn--full" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
