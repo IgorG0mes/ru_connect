@@ -1,22 +1,24 @@
 require "rails_helper"
 
 RSpec.describe AccessController, type: :request do
-  def create_student(cpf: CPF.generate(stripped: true), registration: "REG_#{SecureRandom.hex(4)}")
+  def create_student(cpf: CPF.generate(stripped: true), registration: "REG_#{SecureRandom.hex(4)}", ticket_balance: 5)
     Student.create!(
-      name:         "Estudante #{SecureRandom.hex(4)}",
-      cpf:          cpf,
-      registration: registration,
-      email:        "stu_#{SecureRandom.hex(4)}@example.com",
-      course:       "Medicina",
-      status:       :active
+      name:           "Estudante #{SecureRandom.hex(4)}",
+      cpf:            cpf,
+      registration:   registration,
+      email:          "stu_#{SecureRandom.hex(4)}@example.com",
+      course:         "Medicina",
+      status:         :active,
+      ticket_balance: ticket_balance
     )
   end
 
-  def create_visitor(cpf: CPF.generate(stripped: true))
+  def create_visitor(cpf: CPF.generate(stripped: true), ticket_balance: 5)
     Visitor.create!(
-      name:  "Visitante #{SecureRandom.hex(4)}",
-      cpf:   cpf,
-      email: "vis_#{SecureRandom.hex(4)}@example.com"
+      name:           "Visitante #{SecureRandom.hex(4)}",
+      cpf:            cpf,
+      email:          "vis_#{SecureRandom.hex(4)}@example.com",
+      ticket_balance: ticket_balance
     )
   end
 
@@ -116,6 +118,26 @@ RSpec.describe AccessController, type: :request do
           log = AccessLog.last
           expect(log.personable).to eq(student)
           expect(log.status).to eq("allowed")
+        end
+
+        it "consumes one ticket on a granted access" do
+          student = create_student(ticket_balance: 3)
+          create_current_meal
+          expect {
+            post identify_path, params: { identifier: student.registration }
+          }.to change { student.reload.ticket_balance }.by(-1)
+        end
+      end
+
+      context "when student has no tickets" do
+        it "denies access and does not consume" do
+          student = create_student(ticket_balance: 0)
+          create_current_meal
+          expect {
+            post identify_path, params: { identifier: student.registration }
+          }.to change(AccessLog, :count).by(1)
+          expect(AccessLog.last.status).to eq("denied")
+          expect(student.reload.ticket_balance).to eq(0)
         end
 
         it "responds with turbo_stream" do

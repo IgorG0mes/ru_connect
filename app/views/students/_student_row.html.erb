@@ -21,7 +21,7 @@
         <span class="student-card-tag"><%= student.course %></span>
       <% end %>
       <span class="student-card-tag student-card-tag--balance">
-        💰 <%= number_to_currency(student.balance, unit: "R$", separator: ",", delimiter: ".") %>
+        🎟️ <%= t("tickets.count", count: student.ticket_balance) %>
       </span>
     </div>
   </div>
