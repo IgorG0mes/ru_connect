@@ -1,0 +1,56 @@
+<div class="menu-face-body">
+  <div class="menu-face-header">
+    <span class="menu-face-label"><%= menu.meal.name %></span>
+    <span class="menu-face-hours">
+      <%= menu.meal.start_at.strftime("%H:%M") %> – <%= menu.meal.end_at.strftime("%H:%M") %>
+    </span>
+  </div>
+
+  <div class="menu-section">
+    <span class="menu-section-title">🥩 <%= t("daily_menus.today.section_protein") %></span>
+    <div class="menu-item">
+      <span class="menu-item-label"><%= DailyMenu.human_attribute_name(:animal_protein) %></span>
+      <span class="menu-item-value"><%= menu.animal_protein %></span>
+    </div>
+    <div class="menu-item">
+      <span class="menu-item-label"><%= DailyMenu.human_attribute_name(:vegan_protein) %></span>
+      <span class="menu-item-value"><%= menu.vegan_protein %></span>
+    </div>
+  </div>
+
+  <% side_dishes = [menu.side_dish_one, menu.side_dish_two, menu.side_dish_three].select(&:present?) %>
+  <% if side_dishes.any? %>
+    <div class="menu-section">
+      <span class="menu-section-title">🍛 <%= t("daily_menus.today.section_side_dish") %></span>
+      <% side_dishes.each do |dish| %>
+        <div class="menu-item menu-item--single">
+          <span class="menu-item-value"><%= dish %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% salads = [menu.salad_one, menu.salad_two, menu.salad_three].select(&:present?) %>
+  <% if salads.any? %>
+    <div class="menu-section">
+      <span class="menu-section-title">🥗 <%= t("daily_menus.today.section_salad") %></span>
+      <% salads.each do |salad| %>
+        <div class="menu-item menu-item--single">
+          <span class="menu-item-value"><%= salad %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% desserts = [menu.dessert_one, menu.dessert_two].select(&:present?) %>
+  <% if desserts.any? %>
+    <div class="menu-section">
+      <span class="menu-section-title">🍮 <%= t("daily_menus.today.section_dessert") %></span>
+      <% desserts.each do |dessert| %>
+        <div class="menu-item menu-item--single">
+          <span class="menu-item-value"><%= dessert %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

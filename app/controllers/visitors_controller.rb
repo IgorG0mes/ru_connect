@@ -1,6 +1,6 @@
 class VisitorsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr, :destroy ]
+  before_action :set_visitor, only: [ :show, :edit, :update, :regenerate_qr, :send_qr_email, :destroy ]
 
   PER_PAGE = 10
 
@@ -27,6 +27,7 @@ class VisitorsController < ApplicationController
     authorize @visitor
 
     if @visitor.save
+      QrCodeMailer.welcome(@visitor).deliver_later if @visitor.email.present?
       redirect_to visitors_path, notice: t("flash.visitors.created", name: @visitor.name)
     else
       render :new, status: :unprocessable_entity
@@ -59,6 +60,7 @@ class VisitorsController < ApplicationController
   def regenerate_qr
     authorize @visitor
     QrCodeGeneratorService.generate_and_assign(@visitor)
+    QrCodeMailer.qr_code_regenerated(@visitor).deliver_later if @visitor.email.present?
 
     respond_to do |format|
       format.turbo_stream do
@@ -70,6 +72,16 @@ class VisitorsController < ApplicationController
       end
       format.html { redirect_to @visitor, notice: t("flash.visitors.qr_regenerated", name: @visitor.name) }
     end
+  end
+
+  def send_qr_email
+    authorize @visitor
+    if @visitor.email.blank?
+      redirect_to @visitor, alert: t("flash.visitors.no_email")
+      return
+    end
+    QrCodeMailer.send_qr_code(@visitor).deliver_later
+    redirect_to @visitor, notice: t("flash.visitors.qr_email_sent", email: @visitor.email)
   end
 
   private

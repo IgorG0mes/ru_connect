@@ -29,6 +29,8 @@ RSpec.describe StudentsController, type: :request do
     end
   end
 
+  before { ActionMailer::Base.deliveries.clear }
+
   describe "as admin" do
     include_context "with admin"
 
@@ -86,6 +88,18 @@ RSpec.describe StudentsController, type: :request do
             post students_path, params: { student: valid_student_params }
           }.to change(Student, :count).by(1)
           expect(response).to redirect_to(students_path)
+        end
+
+        it "sends welcome email when student has email" do
+          post students_path, params: { student: valid_student_params(email: "novo@example.com") }
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+          expect(ActionMailer::Base.deliveries.last.to).to eq(["novo@example.com"])
+          expect(ActionMailer::Base.deliveries.last.subject).to include("Bem-vindo")
+        end
+
+        it "does not send email when student has no email" do
+          post students_path, params: { student: valid_student_params(email: "") }
+          expect(ActionMailer::Base.deliveries).to be_empty
         end
       end
 
@@ -162,6 +176,35 @@ RSpec.describe StudentsController, type: :request do
         post regenerate_qr_student_path(student)
         expect(student.reload.qr_code_hash).not_to eq(old_hash)
       end
+
+      it "sends qr_code_regenerated email when student has email" do
+        post regenerate_qr_student_path(student)
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.last.subject).to include("novo QR Code")
+      end
+
+      it "does not send email when student has no email" do
+        student_no_email = create_student(email: "")
+        post regenerate_qr_student_path(student_no_email)
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+
+    describe "POST /students/:id/send_qr_email" do
+      it "sends email and redirects with notice when student has email" do
+        student = create_student(email: "aluno@example.com")
+        post send_qr_email_student_path(student)
+        expect(response).to redirect_to(student_path(student))
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.last.to).to eq(["aluno@example.com"])
+      end
+
+      it "redirects with alert and sends no email when student has no email" do
+        student = create_student(email: "")
+        post send_qr_email_student_path(student)
+        expect(response).to redirect_to(student_path(student))
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
     end
   end
 
@@ -212,6 +255,12 @@ RSpec.describe StudentsController, type: :request do
       post regenerate_qr_student_path(student)
       expect(response).to redirect_to(root_path)
     end
+
+    it "redirects send_qr_email to root" do
+      student = create_student
+      post send_qr_email_student_path(student)
+      expect(response).to redirect_to(root_path)
+    end
   end
 
   describe "as non-admin with granted permissions" do
@@ -224,6 +273,7 @@ RSpec.describe StudentsController, type: :request do
       grant(plain_role, "Student", "edit")
       grant(plain_role, "Student", "destroy")
       grant(plain_role, "Student", "regenerate_qr")
+      grant(plain_role, "Student", "send_qr_email")
     end
 
     it "can access index" do
@@ -281,6 +331,13 @@ RSpec.describe StudentsController, type: :request do
            headers: { "Accept" => "text/vnd.turbo-stream.html" }
       expect(response).to be_successful
       expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    end
+
+    it "can send qr email" do
+      student = create_student(email: "aluno@example.com")
+      post send_qr_email_student_path(student)
+      expect(response).to redirect_to(student_path(student))
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
     end
   end
 end

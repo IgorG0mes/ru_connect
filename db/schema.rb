@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_18_012708) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -52,6 +52,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.string "external_reference", null: false
+    t.string "mp_payment_id"
+    t.string "mp_preference_id"
+    t.bigint "payable_id", null: false
+    t.string "payable_type", null: false
+    t.integer "quantity", default: 1, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_reference"], name: "index_payments_on_external_reference", unique: true
+    t.index ["mp_payment_id"], name: "index_payments_on_mp_payment_id"
+    t.index ["payable_type", "payable_id"], name: "index_payments_on_payable"
+  end
+
   create_table "permissions", force: :cascade do |t|
     t.string "action", null: false
     t.datetime "created_at", null: false
@@ -69,7 +85,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
   end
 
   create_table "students", force: :cascade do |t|
-    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
     t.string "course"
     t.string "cpf"
     t.datetime "created_at", null: false
@@ -78,9 +93,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
     t.string "qr_code_hash"
     t.string "registration"
     t.integer "status", default: 0, null: false
+    t.integer "ticket_balance", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["qr_code_hash"], name: "index_students_on_qr_code_hash", unique: true
     t.index ["registration"], name: "index_students_on_registration", unique: true
+  end
+
+  create_table "ticket_prices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "payable_type", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.index ["payable_type"], name: "index_ticket_prices_on_payable_type", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -99,12 +123,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_204917) do
   end
 
   create_table "visitors", force: :cascade do |t|
-    t.decimal "balance", precision: 10, scale: 2, default: "0.0", null: false
     t.string "cpf"
     t.datetime "created_at", null: false
     t.string "email"
     t.string "name"
     t.string "qr_code_hash"
+    t.integer "ticket_balance", default: 0, null: false
     t.datetime "updated_at", null: false
   end
 
