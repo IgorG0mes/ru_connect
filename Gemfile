@@ -39,6 +39,10 @@ gem "thruster", require: false
 
 gem "devise"
 gem "pundit"
+# Envio de e-mail via API HTTP do SendGrid (o Render free bloqueia portas SMTP).
+gem "sendgrid-actionmailer"
+# SDK oficial do Mercado Pago para Checkout Pro (recarga de saldo dos alunos/visitantes).
+gem "mercadopago-sdk"
 gem "rqrcode"
 gem "rails-i18n"
 gem "holidays"
@@ -53,6 +57,10 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
+  # Carrega variaveis do arquivo .env em desenvolvimento/teste (em producao o Render
+  # injeta as ENV diretamente). Sem isso, MP_ACCESS_TOKEN e afins ficam ausentes.
+  gem "dotenv-rails"
+
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
   gem "bundler-audit", require: false
@@ -66,6 +74,9 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
+  gem "letter_opener_web"
+  gem "rails-realtime-erd"
 end
 
 group :test do
