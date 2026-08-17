@@ -1,23 +1,16 @@
-<h1>Gerenciamento de Roles</h1>
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1><%= t(".title") %></h1>
+    <%= link_to t(".new_link"), new_role_path, class: "identify-btn" %>
+  </div>
 
-<%= link_to "Nova Role", new_role_path %>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>Nome da Role</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @roles.each do |role| %>
-      <tr>
-        <td><%= role.name %></td>
-        <td>
-          <%= link_to "Editar", edit_role_path(role) %> |
-          <%= link_to "Excluir", role, data: { turbo_method: :delete, turbo_confirm: "CUIDADO: Excluir esta role pode quebrar o acesso de usuários. Continuar?" }, style: "color: red;" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <% if @roles.any? %>
+    <div class="roles-list">
+      <% @roles.each do |role| %>
+        <%= render "roles/role_row", role: role %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="resource-search-empty"><%= t(".empty") %></p>
+  <% end %>
+</div>

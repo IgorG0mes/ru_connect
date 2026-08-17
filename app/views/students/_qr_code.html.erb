@@ -1,0 +1,32 @@
+<turbo-frame id="qr_code_student_<%= student.id %>">
+  <div class="profile-card profile-card--qr">
+    <div class="profile-card-title"><%= t(".title") %></div>
+
+    <% if student.qr_code_hash.present? %>
+      <div class="profile-qr-image">
+        <%= student.generate_qr_code_svg %>
+      </div>
+      <div class="profile-qr-hash">
+        <span class="profile-field-label"><%= t(".key_label") %></span>
+        <code class="profile-qr-code"><%= student.qr_code_hash %></code>
+      </div>
+    <% else %>
+      <p class="profile-qr-missing"><%= t(".not_generated") %></p>
+    <% end %>
+
+    <% if policy(student).regenerate_qr? || policy(student).send_qr_email? %>
+      <div class="profile-qr-actions">
+        <% if policy(student).regenerate_qr? %>
+          <%= link_to t(".regenerate"), regenerate_qr_student_path(student),
+                data: { turbo_method: :post, turbo_confirm: t(".confirm_regenerate") },
+                class: "identify-btn profile-qr-btn" %>
+        <% end %>
+        <% if policy(student).send_qr_email? && student.qr_code_hash.present? %>
+          <%= link_to t(".send_email"), send_qr_email_student_path(student),
+                data: { turbo_method: :post, turbo_confirm: t(".confirm_send_email") },
+                class: "profile-qr-btn profile-qr-btn--email" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

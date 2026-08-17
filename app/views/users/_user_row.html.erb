@@ -1,0 +1,28 @@
+<% avatar_colors = %w[#3b82f6 #8b5cf6 #ec4899 #f59e0b #10b981 #ef4444 #06b6d4 #6366f1] %>
+<% avatar_color = avatar_colors[user.username.ord % avatar_colors.length] %>
+<% initials = user.username.split.first(2).map { |w| w[0]&.upcase }.join %>
+
+<div class="student-card" id="user_<%= user.id %>">
+  <div class="student-card-avatar" style="background: <%= avatar_color %>">
+    <%= initials %>
+  </div>
+
+  <div class="student-card-body">
+    <div class="student-card-name"><%= user.username %></div>
+    <div class="student-card-meta">
+      <span class="student-card-tag"><%= user.email %></span>
+      <% if user.role.present? %>
+        <span class="student-card-tag">🔑 <%= user.role.name %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="student-card-actions">
+    <%= link_to t(".edit"), edit_user_path(user), class: "identify-btn student-card-btn" %>
+    <% if user != current_user %>
+      <%= link_to t(".delete"), user,
+            data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") },
+            class: "role-delete-btn" %>
+    <% end %>
+  </div>
+</div>

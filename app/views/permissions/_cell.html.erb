@@ -1,0 +1,6 @@
+<%= button_to toggle_permissions_path,
+      params: { role_id: role.id, resource: resource, permission_action: action },
+      class: "permission-cell #{granted ? 'permission-cell--granted' : 'permission-cell--denied'}",
+      form: { id: "perm_#{role.id}_#{resource}_#{action}" } do %>
+  <%= granted ? "✓" : "✕" %>
+<% end %>

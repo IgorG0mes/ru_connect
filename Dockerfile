@@ -21,6 +21,12 @@ COPY . .
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
+
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    chown -R rails:rails /usr/src/app /bundle
+USER rails:rails
+
 ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 3000

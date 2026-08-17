@@ -1,0 +1,10 @@
+<% if flash[:access_notice] %>
+  <div class="toast toast-notice" data-controller="toast" data-toast-duration-value="5000" data-action="click->toast#dismiss">
+    <%= flash[:access_notice] %>
+  </div>
+<% end %>
+<% if flash[:access_alert] %>
+  <div class="toast toast-alert" data-controller="toast" data-toast-duration-value="5000" data-action="click->toast#dismiss">
+    <%= flash[:access_alert] %>
+  </div>
+<% end %>
