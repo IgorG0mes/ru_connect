@@ -1,0 +1,41 @@
+<% if @person %>
+  <div class="consulta-page">
+    <div class="consulta-result-card">
+      <div class="consulta-result-header consulta-result-header--active">
+        <div>
+          <h2 class="consulta-result-name">✅ <%= t("payments.success.title") %></h2>
+        </div>
+      </div>
+
+      <div class="consulta-result-body">
+        <p class="consulta-subtitle"><%= t("payments.success.greeting", name: @person.name) %></p>
+
+        <div class="consulta-info-grid">
+          <div class="consulta-info-item">
+            <span class="consulta-info-label"><%= t("finder.index.balance_label") %></span>
+            <span class="consulta-info-value consulta-info-value--balance">
+              <%= t("tickets.count", count: @person.ticket_balance) %>
+            </span>
+          </div>
+        </div>
+
+        <% unless @payment&.approved? %>
+          <p class="consulta-recharge-hint"><%= t("payments.success.processing") %></p>
+        <% end %>
+      </div>
+
+      <div class="consulta-result-footer">
+        <%= link_to finder_path, class: "consulta-btn consulta-btn--outline consulta-btn--full" do %>
+          ← <%= t("payments.success.back") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <%= render "status",
+        variant: "active",
+        icon: "✅",
+        title: t("payments.success.title"),
+        message: t("payments.success.message"),
+        back_label: t("payments.success.back") %>
+<% end %>

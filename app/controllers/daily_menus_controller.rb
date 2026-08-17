@@ -59,17 +59,23 @@ class DailyMenusController < ApplicationController
   end
 
   def today
-    current_meal = Meal.find_current
-    @current_menu = DailyMenu.includes(:meal)
-                             .find_by(date: Date.current, meal: current_meal)
+    @menus = DailyMenu.includes(:meal)
+                      .where(date: Date.current)
+                      .joins(:meal)
+                      .order("meals.start_at ASC")
 
-    if current_meal.nil?
-      flash.now[:alert] = t("flash.daily_menus.no_meal")
-    elsif @current_menu.nil? && (Date.current.saturday? || Date.current.sunday?)
-      flash.now[:alert] = t("flash.daily_menus.closed_weekend")
-    elsif Holidays.on(Date.current, :br).any?
-      flash.now[:alert] = t("flash.daily_menus.closed_holiday")
+    if @menus.empty?
+      if Date.current.saturday? || Date.current.sunday?
+        flash.now[:alert] = t("flash.daily_menus.closed_weekend")
+      elsif Holidays.on(Date.current, :br).any?
+        flash.now[:alert] = t("flash.daily_menus.closed_holiday")
+      else
+        flash.now[:alert] = t("flash.daily_menus.no_meal")
+      end
     end
+
+    current_meal = Meal.find_current
+    @initial_face = @menus.index { |m| m.meal_id == current_meal&.id } || 0
   end
 
   private

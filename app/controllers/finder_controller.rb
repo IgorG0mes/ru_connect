@@ -24,6 +24,7 @@ class FinderController < ApplicationController
 
     if @person
       @recent_logs = @person.access_logs.order(created_at: :desc).limit(3)
+      @unit_price = TicketPrice.price_for(@person.class.name)
     else
       flash.now[:alert] = t("finder.index.not_found")
     end

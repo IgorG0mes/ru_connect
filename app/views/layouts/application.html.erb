@@ -2,7 +2,7 @@
 <html>
   <head>
     <title><%= content_for(:title) || t(".app_title") %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -16,15 +16,16 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "mobile", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js" type="text/javascript" nonce="<%= request.content_security_policy_nonce %>"></script>
+    <script src="<%= asset_path('html5-qrcode.min.js') %>" data-turbo-track="reload"></script>
   </head>
 
   <body>
-    <div class="app-layout">
+    <div class="app-layout" data-controller="sidebar">
       <% if user_signed_in? %>
-        <aside class="sidebar" data-controller="sidebar">
+        <aside class="sidebar" data-sidebar-target="panel">
           <div class="sidebar-header">
             <button class="sidebar-link sidebar-toggle" data-action="click->sidebar#toggle">
               <span class="sidebar-icon">☰</span>
@@ -68,6 +69,12 @@
                 <span class="sidebar-label"><%= t(".nav.daily_menus") %></span>
               <% end %>
             <% end %>
+            <% if policy(TicketPrice).index? %>
+              <%= link_to ticket_prices_path, class: "sidebar-link" do %>
+                <span class="sidebar-icon">🎫</span>
+                <span class="sidebar-label"><%= t(".nav.ticket_prices") %></span>
+              <% end %>
+            <% end %>
             <% if policy(AccessLog).index? %>
               <%= link_to access_logs_path, class: "sidebar-link" do %>
                 <span class="sidebar-icon">📜</span>
@@ -100,7 +107,16 @@
         </aside>
       <% end %>
 
+      <div class="sidebar-overlay"></div>
+
       <div class="main-wrapper">
+        <% if user_signed_in? %>
+          <div class="mobile-topbar">
+            <button class="mobile-menu-btn" data-action="click->sidebar#toggle">☰</button>
+            <span class="mobile-topbar-title"><%= t(".app_title") %></span>
+          </div>
+        <% end %>
+
         <div id="toast_container" class="toast-container">
           <% if notice %>
             <div class="toast toast-notice" data-controller="toast" data-action="click->toast#dismiss">

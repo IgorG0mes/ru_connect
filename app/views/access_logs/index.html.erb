@@ -4,7 +4,7 @@
   </div>
 
   <turbo-frame id="access_logs_frame">
-    <div class="access-log-feed" id="access_logs_body">
+    <div class="access-log-feed access-log-feed--page" id="access_logs_body">
       <% @access_logs.each do |log| %>
         <%= render "access_logs/log_card", log: log %>
       <% end %>
