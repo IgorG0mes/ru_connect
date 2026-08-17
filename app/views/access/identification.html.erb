@@ -31,12 +31,16 @@
       <h2 class="identify-panel-title"><%= t(".cpf_panel.title") %></h2>
       <p class="identify-panel-desc"><%= t(".cpf_panel.description") %></p>
 
-      <%= form_with url: identify_path, method: :post, html: { class: "identify-form" } do |f| %>
+      <%= form_with url: identify_path, method: :post,
+            html: { class: "identify-form",
+                    data: { controller: "form-clear",
+                            action: "turbo:submit-end->form-clear#clear" } } do |f| %>
         <div class="identify-input-group">
           <%= f.text_field :identifier,
                 autofocus: true,
                 placeholder: t(".cpf_panel.placeholder"),
-                class: "identify-input" %>
+                class: "identify-input",
+                data: { form_clear_target: "input" } %>
           <%= f.submit t(".cpf_panel.submit"), class: "identify-btn identify-btn--inline" %>
         </div>
       <% end %>

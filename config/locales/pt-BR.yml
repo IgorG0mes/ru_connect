@@ -42,7 +42,7 @@ pt-BR:
       default: "%A, %d de %B de %Y, %H:%M:%S %Z"
       short: "%d/%m, %H:%M"
       long: "%A, %d de %B de %Y, %H:%M"
-      access_log: "%d de %B de %Y, %A às %H:%M"
+      access_log: "%d/%m/%Y · %H:%M"
     am: ""
     pm: ""
 
@@ -112,12 +112,22 @@ pt-BR:
       access_denied: "ACESSO NEGADO: %{result}"
       access_warning: "AVISO: %{result}"
       not_found: "Usuário não encontrado. Necessário Cadastro."
-      no_meal: "Refeição não está disponível no horário atual."
+      no_meal: "Refeição não disponível."
       already_consumed: "Acesso já consumido hoje."
+      no_tickets: "Saldo de fichas insuficiente."
       approved: "Acesso aprovado para %{meal}."
     access_logs:
       destroyed: "Registro de acesso excluído com sucesso."
       not_found: "Registro de acesso não encontrado."
+    payments:
+      rate_limited: "Muitas tentativas. Aguarde 1 minuto antes de tentar novamente."
+      invalid_person: "Cadastro inválido para recarga. Faça uma nova consulta."
+      invalid_quantity: "Quantidade inválida. Informe entre 1 e 50 fichas."
+      price_unset: "Preço de ficha não configurado para este tipo. Procure um atendente."
+      gateway_error: "Não foi possível iniciar o pagamento. Tente novamente em instantes."
+    ticket_prices:
+      updated: "Preço da ficha de %{type} atualizado com sucesso."
+      invalid: "Não foi possível salvar o preço. Verifique o valor informado."
     users:
       created: "Usuário %{name} criado com sucesso."
       updated: "Usuário %{name} atualizado com sucesso."
@@ -127,11 +137,15 @@ pt-BR:
       created: "Aluno %{name} cadastrado com sucesso! QR Code gerado."
       updated: "Aluno atualizado com sucesso."
       qr_regenerated: "Novo QR Code gerado para %{name}."
+      qr_email_sent: "QR Code enviado para %{email}."
+      no_email: "Este aluno não possui e-mail cadastrado."
       deleted: "Aluno %{name} excluído com sucesso."
     visitors:
       created: "Visitante %{name} cadastrado com sucesso! QR Code gerado."
       updated: "Visitante atualizado com sucesso."
       qr_regenerated: "Novo QR Code gerado para %{name}."
+      qr_email_sent: "QR Code enviado para %{email}."
+      no_email: "Este visitante não possui e-mail cadastrado."
       deleted: "Visitante %{name} excluído com sucesso."
     meals:
       created: "Refeição %{name} cadastrada com sucesso!"
@@ -168,6 +182,7 @@ pt-BR:
         visitors: "Visitantes"
         meals: "Refeições"
         daily_menus: "Cardápios"
+        ticket_prices: "Preços de Ficha"
         access_logs: "Logs de Acesso"
         roles: "Roles"
         users: "Usuários"
@@ -236,6 +251,8 @@ pt-BR:
       not_generated: "QR Code ainda não gerado. Edite e salve para forçar a geração."
       regenerate: "Gerar Novo QR Code"
       confirm_regenerate: "Isso invalidará o QR Code antigo. Continuar?"
+      send_email: "Enviar por E-mail"
+      confirm_send_email: "Enviar o QR Code para o e-mail cadastrado?"
     student_row:
       show: "Ver Perfil"
       qr_active: "QR Ativo"
@@ -294,6 +311,8 @@ pt-BR:
       not_generated: "QR Code ainda não gerado. Edite e salve para forçar a geração."
       regenerate: "Gerar Novo QR Code"
       confirm_regenerate: "Isso invalidará o QR Code antigo. Continuar?"
+      send_email: "Enviar por E-mail"
+      confirm_send_email: "Enviar o QR Code para o e-mail cadastrado?"
     visitor_row:
       show: "Ver Perfil"
       qr_active: "QR Ativo"
@@ -413,6 +432,7 @@ pt-BR:
       section_salad: "Saladas"
       section_dessert: "Sobremesas"
       access_link: "← Voltar para Identificação"
+      no_menu_today: "Nenhum cardápio disponível hoje."
     daily_menu_row:
       edit: "Editar"
       delete: "Excluir"
@@ -514,15 +534,62 @@ pt-BR:
       email_label: "E-mail"
       course_label: "Curso"
       registration_label: "Matrícula"
-      balance_label: "Saldo disponível"
+      balance_label: "Fichas disponíveis"
+      tickets_count:
+        one: "%{count} ficha"
+        other: "%{count} fichas"
       logs_title: "Últimos acessos"
       no_logs: "Nenhum acesso registrado ainda."
+      show_qr: "Mostrar QR Code"
+      hide_qr: "Ocultar QR Code"
       back: "Nova consulta"
+      add_balance: "Comprar fichas"
+      quantity_label: "Quantidade de fichas"
+      unit_price_label: "Valor por ficha"
+      total_label: "Total"
+      pay_button: "Pagar com Mercado Pago"
       status:
         active: "Ativa"
         inactive: "Inativa"
         suspended: "Suspensa"
         graduated: "Formado(a)"
+
+  payments:
+    success:
+      title: "Pagamento recebido!"
+      greeting: "Pronto, %{name}! Veja abaixo seu saldo de fichas."
+      processing: "Estamos confirmando o pagamento com o Mercado Pago — seu saldo
+        atualiza em instantes."
+      message: "Estamos confirmando seu pagamento com o Mercado Pago. Seu saldo será
+        creditado em instantes."
+      back: "Voltar à consulta"
+    pending:
+      title: "Pagamento pendente"
+      message: "Seu pagamento está em processamento. Assim que for aprovado, o saldo
+        será creditado automaticamente."
+      back: "Voltar à consulta"
+    failure:
+      title: "Pagamento não concluído"
+      message: "O pagamento não foi concluído. Nenhum valor foi cobrado. Você pode
+        tentar novamente."
+      back: "Voltar à consulta"
+
+  ticket_prices:
+    index:
+      title: "Preços de ficha"
+      subtitle: "Defina o valor base de cada ficha por tipo. Esse valor é usado no
+        cálculo da compra do aluno/visitante."
+      price_label: "Valor por ficha"
+      save: "Salvar"
+      types:
+        student: "Aluno"
+        visitor: "Visitante"
+
+  tickets:
+    label: "Fichas"
+    count:
+      one: "%{count} ficha"
+      other: "%{count} fichas"
 
   devise:
     sessions:
@@ -562,3 +629,12 @@ pt-BR:
         edit: "Editar"
         destroy: "Excluir"
         regenerate_qr: "Reg. QR"
+        send_qr_email: "Env. E-mail QR"
+
+  qr_code_mailer:
+    welcome:
+      subject: "Bem-vindo(a) ao RU Connect, %{name}! Aqui está seu QR Code"
+    send_qr_code:
+      subject: "Seu QR Code de Acesso ao RU - %{name}"
+    qr_code_regenerated:
+      subject: "Seu novo QR Code de Acesso ao RU - %{name}"

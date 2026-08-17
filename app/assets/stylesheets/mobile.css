@@ -1,0 +1,375 @@
+@media (max-width: 768px) {
+
+  html { font-size: 14px; }
+
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.875rem;
+    background: #1e293b;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .mobile-menu-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: color 0.15s, background 0.15s;
+  }
+  .mobile-menu-btn:hover { color: #fff; background: #334155; }
+  .mobile-topbar-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    letter-spacing: 0.01em;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 240px !important;
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+  .sidebar--mobile-open { transform: translateX(0); }
+  .sidebar-overlay.is-visible { display: block; }
+  .sidebar--mobile-open .sidebar-label,
+  .sidebar--mobile-open .sidebar-user-name,
+  .sidebar--mobile-open .sidebar-logo { opacity: 1; pointer-events: auto; }
+
+  /* svh desconta a barra do browser no iOS/Android, garantindo que o footer fique visível */
+  .sidebar      { height: 100vh; height: 100svh; }
+  .sidebar-nav  { min-height: 0; overflow-y: auto; }
+  /* padding-bottom evita que o botão Sair fique atrás do indicador home no iPhone */
+  .sidebar-footer { padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px)); }
+
+  .main-wrapper { margin-left: 0 !important; overflow-x: hidden; }
+  .main-content { padding: 0.75rem; overflow-x: hidden; }
+  .main-content:has(.consulta-page) { padding: 0; }
+
+  /* finder é página pública (sem topbar): travar scroll na cadeia inteira */
+  body:has(.consulta-page)       { overflow: hidden; height: 100dvh; height: 100svh; }
+  .app-layout:has(.consulta-page),
+  .main-wrapper:has(.consulta-page) { height: 100%; overflow: hidden; }
+
+  .toast-container {
+    top: auto;
+    bottom: 1rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    max-width: none;
+  }
+  .toast { font-size: 0.8rem; padding: 0.6rem 0.875rem; }
+  .toast-visible { animation: toast-in-mobile 0.3s ease forwards; }
+  .toast-hiding  { animation: toast-out-mobile 0.4s ease forwards; }
+
+  @keyframes toast-in-mobile {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toast-out-mobile {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(16px); }
+  }
+
+  .identify-page     { gap: 0.875rem; padding: 0; }
+  .identify-header   { margin-bottom: 0; text-align: left; }
+  .identify-title    { font-size: 1.15rem; margin-bottom: 0.2rem; }
+  .identify-subtitle { font-size: 0.8rem; }
+
+  .identify-panels    { flex-direction: column; min-height: 0; border-radius: 10px; }
+  .identify-panel     { padding: 1rem 0.875rem; gap: 0.375rem; }
+  .identify-panel-icon { font-size: 1.5rem; }
+
+  .identify-divider           { flex-direction: row; height: auto; padding: 0; }
+  .identify-divider::before   { top: 50%; bottom: auto; left: 0; right: 0; width: 100%; height: 1px; }
+  .identify-divider span      { padding: 0 0.625rem; font-size: 0.7rem; }
+
+  .identify-input-group    { flex-direction: column; gap: 0.375rem; }
+  .identify-input          { width: 100%; height: 44px; font-size: 16px; }
+  .identify-btn            { width: 100%; height: 44px; font-size: 0.875rem; }
+  .identify-btn--inline    { width: 100%; }
+  .identify-btn--secondary { height: 44px; font-size: 0.875rem; }
+
+  /* font-size: 16px previne zoom automático do iOS em inputs */
+  input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea { font-size: 16px !important; }
+
+  .identify-logs-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 0.375rem; }
+  /* max-height evita scroll excessivo na tela de identificação */
+  .access-log-feed          { gap: 0.25rem; max-height: 40vh; overflow-y: auto; }
+  /* na tela de logs paginada não limita altura — 10 registros cabem sem scroll */
+  .access-log-feed--page    { max-height: none; overflow-y: visible; }
+  .consulta-logs-list  { max-height: 140px; overflow-y: auto; }
+
+  .access-log-card {
+    padding: 0.5rem 0.625rem;
+    gap: 0.25rem;
+    align-items: flex-start;
+    border-radius: 8px;
+    flex-wrap: wrap;
+  }
+  .access-log-card .access-log-card-body {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+  }
+  .access-log-card .access-status-badge {
+    order: 2;
+  }
+  .access-log-card-body   { gap: 0.15rem; flex: 1; min-width: 0; }
+  .access-log-card-row    { gap: 0.25rem; align-items: baseline; }
+
+  .access-log-card-row:first-child {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  .access-log-card-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+  }
+  .access-log-card-time {
+    font-size: 0.65rem;
+    font-variant-numeric: tabular-nums;
+    color: #94a3b8;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .access-log-card-row:last-child {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  .access-log-card-meta {
+    font-size: 0.68rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #64748b;
+    flex: 1;
+    min-width: 0;
+  }
+  .access-log-delete-btn { font-size: 0.62rem; flex-shrink: 0; }
+  .access-status-badge   { font-size: 0.6rem; padding: 0.15rem 0.35rem; flex-shrink: 0; }
+
+  .identify-logs-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; }
+  .identify-logs-table         { font-size: 0.75rem; min-width: 520px; }
+  .identify-logs-table th,
+  .identify-logs-table td      { padding: 0.5rem 0.75rem; white-space: nowrap; }
+
+  .resource-search-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    margin-bottom: 0.875rem;
+  }
+  .resource-search-header h1 { font-size: 1.1rem; margin: 0; }
+  .resource-search-form      { margin-bottom: 0.875rem; }
+  .resource-search-hint      { font-size: 0.75rem; }
+  .resource-search-count     { font-size: 0.75rem; margin-bottom: 0.5rem; }
+  .resource-pagination       { flex-wrap: wrap; gap: 0.375rem; margin-top: 0.75rem; }
+  .resource-pagination-info  { font-size: 0.75rem; }
+
+  .students-list { gap: 0.375rem; }
+  .student-card {
+    padding: 0.5rem 0.625rem;
+    gap: 0.5rem;
+  }
+  .student-card-avatar  { width: 34px; height: 34px; font-size: 0.72rem; flex-shrink: 0; }
+  .student-card-body    { min-width: 0; flex: 1; }
+  .student-card-name    { font-size: 0.82rem; margin-bottom: 0.15rem; white-space: nowrap; }
+  .student-card-meta    { gap: 0.25rem; }
+  .student-card-tag     { font-size: 0.68rem; padding: 0.1rem 0.35rem; }
+  .student-card-qr      { width: 38px; height: 38px; flex-shrink: 0; }
+  .student-card-actions { gap: 0.25rem; flex-shrink: 0; }
+  .student-card-btn     { height: 32px; font-size: 0.7rem; padding: 0 0.5rem; }
+  .student-badge        { font-size: 0.62rem; padding: 0.15rem 0.4rem; }
+
+  /* identify-btn tem flex-shrink:0 e padding em px — override dentro de card-actions
+     para não empurrar o botão excluir para fora do card */
+  .student-card-actions .identify-btn,
+  .role-card-actions .identify-btn {
+    height: 32px !important;
+    padding: 0 0.5rem !important;
+    font-size: 0.7rem !important;
+    flex-shrink: 1 !important;
+    min-width: 0;
+  }
+  .role-card-actions { gap: 0.25rem; }
+  .role-card         { padding: 0.5rem 0.625rem; gap: 0.5rem; border-radius: 8px; }
+  .role-delete-btn   { height: 32px; font-size: 0.7rem; padding: 0 0.5rem; flex-shrink: 1; }
+
+  .student-profile-topbar  { flex-wrap: wrap; gap: 0.375rem; margin-bottom: 0.875rem; }
+  .profile-topbar-actions  { gap: 0.25rem; flex-wrap: wrap; }
+  .profile-back-link       { font-size: 0.8rem; }
+  .profile-delete-btn      { font-size: 0.75rem !important; height: 34px !important; padding: 0 0.625rem !important; }
+
+  /* override do identify-btn genérico no topbar do profile */
+  .profile-topbar-actions .identify-btn {
+    height: 34px !important;
+    padding: 0 0.625rem !important;
+    font-size: 0.75rem !important;
+    flex-shrink: 1 !important;
+    width: auto !important;
+    flex: 1;
+  }
+  .profile-delete-btn { flex: 1; }
+
+  .student-profile-hero   { gap: 0.75rem; margin-bottom: 1rem; }
+  .student-profile-avatar { width: 48px; height: 48px; font-size: 1.1rem; }
+  .student-profile-name   { font-size: 1rem; }
+  .student-profile-tags   { gap: 0.25rem; }
+  .student-card-tag       { font-size: 0.68rem; }
+
+  .student-profile-grid { grid-template-columns: 1fr; gap: 0.625rem; }
+  .profile-card         { padding: 0.875rem 1rem; }
+  .profile-card-title   { font-size: 0.65rem; margin-bottom: 0.75rem; }
+  .profile-field        { margin-bottom: 0.75rem; }
+  .profile-field-label  { font-size: 0.72rem; }
+  .profile-field-value  { font-size: 0.85rem; }
+
+  .meals-list   { gap: 0.375rem; }
+  .roles-list   { gap: 0.375rem; }
+
+  .daily-section        { margin-bottom: 1rem; }
+  .daily-section-header { margin-bottom: 0.5rem; padding-bottom: 0.375rem; gap: 0.5rem; }
+  .daily-section-menus  { gap: 0.375rem; justify-content: center; }
+
+  .calendar-grid    { grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .calendar-weekday { font-size: 0.6rem; padding: 0.25rem 0; }
+
+  .daily-menu-card      { padding: 0.75rem 0.875rem; gap: 0.625rem; }
+  .daily-menu-card-date { min-width: 40px; }
+  .daily-menu-card-day  { font-size: 1.4rem; line-height: 1; }
+
+  .daily-menu-meal-card-footer {
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    padding-top: 0.5rem;
+  }
+  .daily-menu-meal-card-footer .identify-btn,
+  .daily-menu-meal-card-footer .student-card-btn {
+    height: 34px;
+    font-size: 0.72rem;
+    padding: 0 0.625rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .main-content:has(.consulta-page) { height: 100%; overflow: hidden; }
+  .consulta-page {
+    height: 100%;
+    min-height: unset;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+  }
+  .consulta-secondary-actions { margin-top: 1rem; gap: 0.5rem; }
+  .consulta-secondary-btn     { font-size: 0.8rem; padding: 0.45rem 0.875rem; }
+
+  .consulta-info-grid   { grid-template-columns: 1fr; gap: 0.625rem; margin-bottom: 1rem; }
+  .consulta-result-body { padding: 0.875rem; }
+  .consulta-result-name { font-size: 1rem; }
+  .consulta-result-icon { font-size: 1.5rem; }
+  .consulta-info-label  { font-size: 0.65rem; }
+  .consulta-info-value  { font-size: 0.82rem; }
+
+  .consulta-logs-section { padding-top: 0.875rem; }
+  .consulta-logs-title   { font-size: 0.72rem; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+  .consulta-logs-list    { gap: 0.25rem; }
+  .consulta-log-item     { padding: 0.375rem 0.625rem; font-size: 0.78rem; border-radius: 6px; }
+  .consulta-log-date     { font-size: 0.72rem; }
+  .consulta-log-result   { font-size: 0.72rem; }
+
+  .consulta-result-footer { padding: 0.875rem; }
+
+  .register-modal-box {
+    width: calc(100% - 1.5rem);
+    max-width: 340px;
+    padding: 1.25rem 1rem;
+  }
+  .register-modal-header h3 { font-size: 0.95rem; }
+  .register-modal-desc      { font-size: 0.8rem; margin-bottom: 1rem; }
+  .register-modal-options   { gap: 0.625rem; }
+  .register-option          { padding: 0.875rem 0.75rem; border-radius: 8px; }
+  .register-option-icon     { font-size: 1.5rem; }
+  .register-option-label    { font-size: 0.82rem; }
+
+  .qr-modal-box    { width: calc(100% - 1.5rem); max-width: 340px; }
+  .qr-modal-header { padding: 0.75rem 1rem; font-size: 0.875rem; }
+
+  .devise-body  { min-height: 100vh; min-height: 100svh; }
+  .login-wrapper {
+    min-height: 100vh;
+    min-height: 100svh;
+    align-items: center;
+    padding: 1rem;
+  }
+  .login-card     { padding: 1.5rem 1.25rem; }
+  .login-title    { font-size: 1.2rem; }
+  .login-subtitle { font-size: 0.78rem; }
+
+  .form-group  { margin-bottom: 0.875rem; }
+  .form-label  { font-size: 0.75rem; }
+  .form-input,
+  .form-select,
+  .form-textarea { font-size: 0.875rem; padding: 0.55rem 0.75rem; }
+  .form-submit { height: 44px; font-size: 0.875rem; }
+
+  .form-page {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* -webkit-appearance: none remove o estilo nativo do iOS em inputs time */
+  .form-input[type="time"] {
+    width: 100%;
+    min-height: 44px;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .permissions-matrix-wrapper { border-radius: 8px; }
+  .permissions-table          { font-size: 0.72rem; }
+  .permissions-table th,
+  .permissions-table td       { padding: 0.4rem 0.5rem; }
+  .permission-cell            { width: 28px; height: 28px; font-size: 0.8rem; }
+}
+
+@media (max-width: 480px) {
+
+  html { font-size: 13px; }
+
+  .main-content { padding: 0.5rem; }
+
+  .identify-panel      { padding: 0.875rem 0.75rem; }
+  .identify-panel-icon { font-size: 1.25rem; }
+  .identify-title      { font-size: 1.05rem; }
+
+  /* remove QR do card em telas muito pequenas para preservar espaço */
+  .student-card-qr { display: none; }
+
+  .calendar-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .login-card { padding: 1.25rem 0.875rem; }
+
+  .student-profile-avatar { width: 40px; height: 40px; font-size: 0.95rem; }
+}

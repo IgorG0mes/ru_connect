@@ -8,7 +8,12 @@ class Meal < ApplicationRecord
       start_time = meal.start_at.strftime("%H:%M:%S")
       end_time   = meal.end_at.strftime("%H:%M:%S")
 
-      current_time.between?(start_time, end_time)
+      if start_time <= end_time
+        current_time.between?(start_time, end_time)
+      else
+        # Janela que cruza a meia-noite (ex.: jantar 22:00–01:00).
+        current_time >= start_time || current_time <= end_time
+      end
     end
 
     meals.first
