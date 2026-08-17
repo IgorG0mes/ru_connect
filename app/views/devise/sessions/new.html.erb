@@ -1,26 +1,42 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-logo"><%= t(".logo") %></div>
+      <h1 class="login-title"><%= t(".title") %></h1>
+      <p class="login-subtitle"><%= t(".subtitle") %></p>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "login-form" }) do |f| %>
+      <div class="login-field">
+        <%= f.label :email, class: "login-label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "login-input", placeholder: t(".email_placeholder") %>
+      </div>
+
+      <div class="login-field">
+        <%= f.label :password, class: "login-label" %>
+        <div class="login-input-wrapper" data-controller="password-visibility">
+          <%= f.password_field :password, autocomplete: "current-password", class: "login-input", placeholder: t(".password_placeholder"), data: { "password-visibility-target": "input" } %>
+          <button type="button" class="login-eye-btn" data-action="click->password-visibility#toggle" tabindex="-1" aria-label="Mostrar senha">
+            <span data-password-visibility-target="eyeOpen">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+            <span data-password-visibility-target="eyeClosed" style="display:none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-8-10-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="login-remember">
+          <%= f.check_box :remember_me, class: "login-checkbox" %>
+          <%= f.label :remember_me, t(".remember_me"), class: "login-remember-label" %>
+        </div>
+      <% end %>
+
+      <div class="login-actions">
+        <%= f.submit t(".submit"), class: "login-btn" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

@@ -1,3 +1,25 @@
-<h1>Registro de Acessos (Histórico Completo)</h1>
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1><%= t(".title") %></h1>
+  </div>
 
-<%= render 'access_logs/access_logs_table', logs: @access_logs %>
+  <turbo-frame id="access_logs_frame">
+    <div class="access-log-feed access-log-feed--page" id="access_logs_body">
+      <% @access_logs.each do |log| %>
+        <%= render "access_logs/log_card", log: log %>
+      <% end %>
+    </div>
+
+    <div class="resource-pagination">
+      <% if @page > 1 %>
+        <%= link_to t(".previous"), access_logs_path(page: @page - 1),
+              data: { turbo_frame: "access_logs_frame" }, class: "identify-btn" %>
+      <% end %>
+      <span class="resource-pagination-info"><%= t(".page", page: @page) %></span>
+      <% if @has_more %>
+        <%= link_to t(".next"), access_logs_path(page: @page + 1),
+              data: { turbo_frame: "access_logs_frame" }, class: "identify-btn" %>
+      <% end %>
+    </div>
+  </turbo-frame>
+</div>

@@ -1,25 +1,16 @@
-<h1>Lista de Refeições e Horários</h1>
+<div class="resource-search-page">
+  <div class="resource-search-header">
+    <h1><%= t(".title") %></h1>
+    <%= link_to t(".new_link"), new_meal_path, class: "identify-btn" %>
+  </div>
 
-<%= link_to "Nova Refeição", new_meal_path %>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Início</th>
-      <th>Fim</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @meals.each do |meal| %>
-      <tr>
-        <td><%= meal.name %></td>
-        <td><%= meal.start_at.strftime('%H:%M') if meal.start_at %></td>
-        <td><%= meal.end_at.strftime('%H:%M') if meal.end_at %></td>
-        <td>
-          <%= link_to "Editar", edit_meal_path(meal) %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <% if @meals.any? %>
+    <div class="meals-list">
+      <% @meals.each do |meal| %>
+        <%= render "meals/meal_row", meal: meal %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="resource-search-empty"><%= t(".empty") %></p>
+  <% end %>
+</div>

@@ -1,0 +1,12 @@
+<div class="form-page">
+  <div class="form-page-topbar">
+    <%= link_to t(".back"), users_path, class: "profile-back-link" %>
+  </div>
+
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title") %></h1>
+    <p class="form-page-subtitle"><%= t(".subtitle") %></p>
+  </div>
+
+  <%= render "form", user: @user %>
+</div>

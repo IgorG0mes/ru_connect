@@ -1,39 +1,21 @@
-<table border="1">
-  <thead>
-    <tr>
-      <th>Hora</th>
-      <th>Matrícula/CPF</th>
-      <th>Nome</th>
-      <th>Curso</th>
-      <th>Resultado</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% logs.each do |log| %>
+<div class="identify-logs-table-wrapper">
+  <table class="identify-logs-table">
+    <thead>
       <tr>
-        <td><%= l(log.created_at) %></td> 
-        <td><%= log.identifier %></td> 
-        <td><%= log.person_name %></td>
-        <td><%= log.course_name %></td>
-        
-        <td>
-          <% if log.allowed? %>
-            <span style="color: green;"><%= log.access_result %></span>
-          <% elsif log.denied? %>
-            <span style="color: red;"><%= log.access_result %></span>
-          <% else %>
-            <span style="color: orange;"><%= log.access_result %></span>
-          <% end %>
-        </td>
-        <td>
-          <% if defined?(current_user) && current_user&.role&.name == 'admin' %>
-            <%= link_to "Excluir", log, data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir este registro?" }, style: "color: red;" %>
-          <% else %>
-            <small>Sem permissão</small>
-          <% end %>
-        </td>
+        <th><%= t("access_logs.index.headers.time") %></th>
+        <th><%= t("access_logs.index.headers.identifier") %></th>
+        <th><%= t("access_logs.index.headers.name") %></th>
+        <th><%= t("access_logs.index.headers.course") %></th>
+        <th><%= t("access_logs.index.headers.result") %></th>
+        <% if policy(AccessLog).destroy? %>
+          <th><%= t("access_logs.index.headers.actions") %></th>
+        <% end %>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% logs.each do |log| %>
+        <%= render "access_logs/row", log: log %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

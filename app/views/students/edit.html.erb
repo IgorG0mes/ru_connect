@@ -1,10 +1,13 @@
-<h1>Editar Aluno: <%= @student.name %></h1>
+<div class="form-page">
+  <div class="form-page-topbar">
+    <%= link_to t(".back"), students_path, class: "profile-back-link" %>
+    <%= link_to t(".show_details"), @student, class: "identify-btn" %>
+  </div>
 
-<%# O 'render' chama o arquivo _form.html.erb. %>
-<%# Como @student já existe e tem ID, o form_with dentro do _form sabe que deve fazer um PUT/PATCH (update) %>
-<%= render 'form', student: @student %>
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title") %></h1>
+    <p class="form-page-subtitle"><%= t(".subtitle", name: @student.name) %></p>
+  </div>
 
-<hr>
-
-<%= link_to 'Mostrar Detalhes', @student %> |
-<%= link_to 'Voltar para a Lista', students_path %>
+  <%= render 'form', student: @student %>
+</div>
