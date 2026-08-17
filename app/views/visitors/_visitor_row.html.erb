@@ -1,0 +1,40 @@
+<% avatar_colors = %w[#3b82f6 #8b5cf6 #ec4899 #f59e0b #10b981 #ef4444 #06b6d4 #6366f1] %>
+<% avatar_color = avatar_colors[visitor.name.ord % avatar_colors.length] %>
+<% initials = visitor.name.split.first(2).map { |w| w[0]&.upcase }.join %>
+<% masked_cpf = visitor.cpf.present? ? "#{visitor.cpf[0..2]}.***.***-#{visitor.cpf[9..10]}" : nil %>
+
+<div class="student-card" id="visitor_<%= visitor.id %>">
+  <div class="student-card-avatar" style="background: <%= avatar_color %>">
+    <%= initials %>
+  </div>
+
+  <div class="student-card-body">
+    <div class="student-card-name"><%= visitor.name %></div>
+    <div class="student-card-meta">
+      <% if masked_cpf %>
+        <span class="student-card-tag"><%= Visitor.human_attribute_name(:cpf) %>: <strong><%= masked_cpf %></strong></span>
+      <% end %>
+      <% if visitor.email.present? %>
+        <span class="student-card-tag"><%= visitor.email %></span>
+      <% end %>
+      <span class="student-card-tag student-card-tag--balance">
+        🎟️ <%= t("tickets.count", count: visitor.ticket_balance) %>
+      </span>
+    </div>
+  </div>
+
+  <% if visitor.qr_code_hash.present? %>
+    <div class="student-card-qr">
+      <%= visitor.generate_qr_code_svg %>
+    </div>
+  <% end %>
+
+  <div class="student-card-actions">
+    <% if visitor.qr_code_hash.present? %>
+      <span class="student-badge student-badge--active"><%= t(".qr_active") %></span>
+    <% else %>
+      <span class="student-badge student-badge--missing"><%= t(".qr_missing") %></span>
+    <% end %>
+    <%= link_to t(".show"), visitor, class: "identify-btn student-card-btn", data: { turbo_frame: "_top" } %>
+  </div>
+</div>

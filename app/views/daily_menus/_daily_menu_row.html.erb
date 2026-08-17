@@ -1,0 +1,28 @@
+<div class="daily-menu-meal-card" id="daily_menu_<%= menu.id %>">
+  <div class="daily-menu-meal-card-header">
+    <span class="daily-menu-meal-badge"><%= menu.meal.name %></span>
+    <span class="daily-menu-meal-hours"><%= menu.meal.start_at.strftime("%H:%M") %>–<%= menu.meal.end_at.strftime("%H:%M") %></span>
+  </div>
+  <div class="daily-menu-meal-card-main">
+    🥩 <%= menu.animal_protein %> / 🌱 <%= menu.vegan_protein %>
+  </div>
+  <div class="daily-menu-card-extras">
+    <% [menu.side_dish_one, menu.side_dish_two, menu.side_dish_three].select(&:present?).each do |dish| %>
+      <span class="daily-menu-extra-tag">🍛 <%= dish %></span>
+    <% end %>
+    <% [menu.salad_one, menu.salad_two, menu.salad_three].select(&:present?).each do |salad| %>
+      <span class="daily-menu-extra-tag">🥗 <%= salad %></span>
+    <% end %>
+    <% [menu.dessert_one, menu.dessert_two].select(&:present?).each do |dessert| %>
+      <span class="daily-menu-extra-tag">🍮 <%= dessert %></span>
+    <% end %>
+  </div>
+  <div class="daily-menu-meal-card-footer">
+    <% if policy(menu).edit? %>
+      <%= link_to t(".edit"), edit_daily_menu_path(menu), class: "identify-btn student-card-btn" %>
+    <% end %>
+    <% if policy(menu).destroy? %>
+      <%= link_to t(".delete"), daily_menu_path(menu), data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") }, class: "profile-delete-btn student-card-btn" %>
+    <% end %>
+    </div>
+</div>

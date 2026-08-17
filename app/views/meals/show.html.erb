@@ -1,10 +1,27 @@
-<h1>Refeição: <%= @meal.name %></h1>
+<div class="form-page">
+  <div class="form-page-topbar">
+    <%= link_to t(".back"), meals_path, class: "profile-back-link" %>
+    <%= link_to t(".edit"), edit_meal_path(@meal), class: "identify-btn" %>
+  </div>
 
-<p><strong>Nome:</strong> <%= @meal.name %></p>
-<p><strong>Início:</strong> <%= @meal.start_at.strftime('%H:%M') if @meal.start_at %></p>
-<p><strong>Fim:</strong> <%= @meal.end_at.strftime('%H:%M') if @meal.end_at %></p>
+  <div class="form-page-header">
+    <h1 class="form-page-title"><%= t(".title", name: @meal.name) %></h1>
+  </div>
 
-<hr>
-
-<%= link_to 'Editar', edit_meal_path(@meal) %> |
-<%= link_to 'Voltar para a Lista', meals_path %>
+  <div class="form-card">
+    <div class="profile-field">
+      <div class="profile-field-label"><%= Meal.human_attribute_name(:name) %></div>
+      <div class="profile-field-value"><%= @meal.name %></div>
+    </div>
+    <hr class="form-divider">
+    <div class="profile-field">
+      <div class="profile-field-label"><%= Meal.human_attribute_name(:start_at) %></div>
+      <div class="profile-field-value"><%= @meal.start_at.strftime('%H:%M') if @meal.start_at %></div>
+    </div>
+    <hr class="form-divider">
+    <div class="profile-field">
+      <div class="profile-field-label"><%= Meal.human_attribute_name(:end_at) %></div>
+      <div class="profile-field-value"><%= @meal.end_at.strftime('%H:%M') if @meal.end_at %></div>
+    </div>
+  </div>
+</div>

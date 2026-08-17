@@ -1,0 +1,10 @@
+<div class="role-card" id="role_<%= role.id %>">
+  <div class="role-card-icon">🔑</div>
+  <div class="role-card-name"><%= role.name %></div>
+  <div class="role-card-actions">
+    <%= link_to t(".edit"), edit_role_path(role), class: "identify-btn student-card-btn" %>
+    <%= link_to t(".delete"), role,
+          data: { turbo_method: :delete, turbo_confirm: t(".confirm_delete") },
+          class: "role-delete-btn" %>
+  </div>
+</div>

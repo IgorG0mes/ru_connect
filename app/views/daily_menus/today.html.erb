@@ -1,33 +1,57 @@
-<div class="container text-center">
-  <h1>Cardápio do Dia: <%= l(Date.current, format: '%A, %d de %B') %></h1>
-  <hr>
+<% content_for :head do %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<% end %>
 
-  <% if @current_menu.present? %>
-    <h2>Refeição Atual: <%= @current_menu.meal.name %></h2>
-    <p class="lead">Servido das <%= @current_menu.meal.start_at.strftime('%H:%M') %>h às <%= @current_menu.meal.end_at.strftime('%H:%M') %>h</p>
+<div class="today-page">
+  <div class="today-header">
+    <div class="today-logo">🍽️</div>
+    <h1 class="today-title"><%= l(Date.current, format: '%A, %d de %B') %></h1>
+  </div>
 
-    <div class="card p-4 my-4" style="border: 1px solid #ccc;">
-      <p><strong>Prato Principal:</strong> <%= @current_menu.main_dish %></p>
-      <p><strong>Acompanhamentos:</strong> <%= @current_menu.side_dish %></p>
-      <p><strong>Salada:</strong> <%= @current_menu.salad %></p>
-      <p><strong>Sobremesa:</strong> <%= @current_menu.dessert %></p>
+  <% if @menus.empty? %>
+    <div class="today-empty">
+      <p>📭</p>
+      <p><%= t(".no_menu_today") %></p>
     </div>
 
-  <% elsif @daily_menus.present? %>
-    <h2>Cardápios Previstos para o Dia</h2>
-    <% @daily_menus.each do |menu| %>
-      <div class="card p-3 my-3">
-        <h3><%= menu.meal.name %></h3>
-        <p><small>Das <%= menu.meal.start_at.strftime('%H:%M') %>h às <%= menu.meal.end_at.strftime('%H:%M') %>h</small></p>
-        <p>Prato Principal: <%= menu.main_dish %></p>
+  <% elsif @menus.size == 1 %>
+    <% menu = @menus.first %>
+    <div class="menu-single-card">
+      <div class="menu-face-accent"></div>
+      <%= render "daily_menus/menu_face_body", menu: menu %>
+    </div>
+
+  <% else %>
+    <div class="menu-flip-scene"
+         data-controller="menu-flip"
+         data-menu-flip-initial-face-value="<%= @initial_face %>">
+
+      <div class="menu-flip-tabs">
+        <% @menus.each_with_index do |menu, i| %>
+          <button class="menu-flip-tab <%= i == @initial_face ? 'menu-flip-tab--active' : '' %>"
+                  data-menu-flip-target="tab"
+                  data-face="<%= i %>"
+                  data-action="click->menu-flip#flip">
+            <%= i == 0 ? '☀️' : '🌙' %> <%= menu.meal.name %>
+          </button>
+        <% end %>
       </div>
-    <% end %>
-  
-  <% elsif flash[:alert] %>
-    <div class="alert alert-warning">
-      <%= flash[:alert] %>
+
+      <div class="menu-flip-card <%= @initial_face > 0 ? 'is-flipped' : '' %>"
+           data-menu-flip-target="card">
+
+        <% @menus.each_with_index do |menu, i| %>
+          <div class="menu-face menu-face--<%= i == 0 ? 'front' : 'back' %>">
+            <div class="menu-face-accent"></div>
+            <%= render "daily_menus/menu_face_body", menu: menu %>
+          </div>
+        <% end %>
+      </div>
     </div>
   <% end %>
 
-  <p class="mt-5"><small>Para identificação, volte à <%= link_to 'Validação de Acesso', root_path %>.</small></p>
+  <div class="today-footer">
+    <%= link_to t(".access_link"), root_path, class: "today-access-link" %>
+  </div>
 </div>

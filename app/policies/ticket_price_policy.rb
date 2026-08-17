@@ -1,0 +1,2 @@
+class TicketPricePolicy < ApplicationPolicy
+end
