@@ -1,47 +1,53 @@
+<% content_for :head do %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<% end %>
+
 <div class="today-page">
   <div class="today-header">
     <div class="today-logo">🍽️</div>
-    <h1 class="today-title"><%= t(".title", date: l(Date.current, format: '%A, %d de %B')) %></h1>
+    <h1 class="today-title"><%= l(Date.current, format: '%A, %d de %B') %></h1>
   </div>
 
-  <% if @current_menu.present? %>
-    <p class="today-meal-label"><%= t(".current_meal", meal: @current_menu.meal.name) %></p>
-    <p class="today-hours"><%= t(".served_hours", start: @current_menu.meal.start_at.strftime('%H:%M'), end: @current_menu.meal.end_at.strftime('%H:%M')) %></p>
+  <% if @menus.empty? %>
+    <div class="today-empty">
+      <p>📭</p>
+      <p><%= t(".no_menu_today") %></p>
+    </div>
 
-    <div class="today-menu-card">
-      <p class="form-section-title">🥩 <%= t(".section_protein") %></p>
-      <div class="today-menu-item">
-        <div class="today-menu-label"><%= DailyMenu.human_attribute_name(:animal_protein) %></div>
-        <div class="today-menu-value"><%= @current_menu.animal_protein %></div>
+  <% elsif @menus.size == 1 %>
+    <% menu = @menus.first %>
+    <div class="menu-single-card">
+      <div class="menu-face-accent"></div>
+      <%= render "daily_menus/menu_face_body", menu: menu %>
+    </div>
+
+  <% else %>
+    <div class="menu-flip-scene"
+         data-controller="menu-flip"
+         data-menu-flip-initial-face-value="<%= @initial_face %>">
+
+      <div class="menu-flip-tabs">
+        <% @menus.each_with_index do |menu, i| %>
+          <button class="menu-flip-tab <%= i == @initial_face ? 'menu-flip-tab--active' : '' %>"
+                  data-menu-flip-target="tab"
+                  data-face="<%= i %>"
+                  data-action="click->menu-flip#flip">
+            <%= i == 0 ? '☀️' : '🌙' %> <%= menu.meal.name %>
+          </button>
+        <% end %>
       </div>
-      <div class="today-menu-item">
-        <div class="today-menu-label"><%= DailyMenu.human_attribute_name(:vegan_protein) %></div>
-        <div class="today-menu-value"><%= @current_menu.vegan_protein %></div>
+
+      <div class="menu-flip-card <%= @initial_face > 0 ? 'is-flipped' : '' %>"
+           data-menu-flip-target="card">
+
+        <% @menus.each_with_index do |menu, i| %>
+          <div class="menu-face menu-face--<%= i == 0 ? 'front' : 'back' %>">
+            <div class="menu-face-accent"></div>
+            <%= render "daily_menus/menu_face_body", menu: menu %>
+          </div>
+        <% end %>
       </div>
-
-      <hr class="form-divider">
-      <p class="form-section-title">🍛 <%= t(".section_side_dish") %></p>
-      <% [@current_menu.side_dish_one, @current_menu.side_dish_two, @current_menu.side_dish_three].select(&:present?).each do |dish| %>
-        <div class="today-menu-item">
-          <div class="today-menu-value"><%= dish %></div>
-        </div>
-      <% end %>
-
-      <hr class="form-divider">
-      <p class="form-section-title">🥗 <%= t(".section_salad") %></p>
-      <% [@current_menu.salad_one, @current_menu.salad_two, @current_menu.salad_three].select(&:present?).each do |salad| %>
-        <div class="today-menu-item">
-          <div class="today-menu-value"><%= salad %></div>
-        </div>
-      <% end %>
-
-      <hr class="form-divider">
-      <p class="form-section-title">🍮 <%= t(".section_dessert") %></p>
-      <% [@current_menu.dessert_one, @current_menu.dessert_two].select(&:present?).each do |dessert| %>
-        <div class="today-menu-item">
-          <div class="today-menu-value"><%= dessert %></div>
-        </div>
-      <% end %>
     </div>
   <% end %>
 
