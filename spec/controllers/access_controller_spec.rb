@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe AccessController, type: :request do
+  include ActiveSupport::Testing::TimeHelpers
+
   def create_student(cpf: CPF.generate(stripped: true), registration: "REG_#{SecureRandom.hex(4)}", ticket_balance: 5)
     Student.create!(
       name:           "Estudante #{SecureRandom.hex(4)}",
@@ -151,15 +153,62 @@ RSpec.describe AccessController, type: :request do
         end
       end
 
-      context "when student is found, meal is active, but already consumed today" do
+      context "when student is found, meal is active, but already consumed for that meal today" do
         it "creates AccessLog with denied status" do
           student = create_student
-          create_current_meal
-          AccessLog.create!(personable: student, status: :allowed, access_result: "Aprovado", access_time: Time.current)
+          meal = create_current_meal
+          AccessLog.create!(personable: student, meal: meal, status: :allowed, access_result: "Aprovado", access_time: Time.current)
           expect {
             post identify_path, params: { identifier: student.registration }
           }.to change(AccessLog, :count).by(1)
-          expect(AccessLog.order(:created_at).last.status).to eq("denied")
+          expect(AccessLog.last.status).to eq("denied")
+        end
+      end
+
+      context "lunch and dinner access on the same day" do
+        let!(:lunch)  { Meal.create!(name: "Almoço", start_at: "11:00", end_at: "14:00") }
+        let!(:dinner) { Meal.create!(name: "Jantar", start_at: "18:00", end_at: "21:00") }
+
+        it "allows access at lunch time" do
+          student = create_student
+          travel_to Time.zone.now.change(hour: 12, min: 0) do
+            post identify_path, params: { identifier: student.registration }
+          end
+          expect(AccessLog.last.status).to eq("allowed")
+          expect(AccessLog.last.meal).to eq(lunch)
+        end
+
+        it "denies a second access attempt at lunch time" do
+          student = create_student
+          travel_to Time.zone.now.change(hour: 12, min: 0) do
+            post identify_path, params: { identifier: student.registration }
+            expect {
+              post identify_path, params: { identifier: student.registration }
+            }.to change(AccessLog, :count).by(1)
+          end
+          expect(AccessLog.last.status).to eq("denied")
+        end
+
+        it "allows access at dinner time even after lunch was already consumed" do
+          student = create_student
+          travel_to(Time.zone.now.change(hour: 12, min: 0)) { post identify_path, params: { identifier: student.registration } }
+          travel_to Time.zone.now.change(hour: 19, min: 0) do
+            post identify_path, params: { identifier: student.registration }
+          end
+          expect(AccessLog.last.status).to eq("allowed")
+          expect(AccessLog.last.meal).to eq(dinner)
+        end
+
+        it "denies a second access attempt at dinner time" do
+          student = create_student
+          travel_to(Time.zone.now.change(hour: 12, min: 0)) { post identify_path, params: { identifier: student.registration } }
+          travel_to Time.zone.now.change(hour: 19, min: 0) do
+            post identify_path, params: { identifier: student.registration }
+            expect {
+              post identify_path, params: { identifier: student.registration }
+            }.to change(AccessLog, :count).by(1)
+          end
+          expect(AccessLog.last.status).to eq("denied")
         end
       end
 

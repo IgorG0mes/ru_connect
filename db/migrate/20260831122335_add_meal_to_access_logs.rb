@@ -1,0 +1,5 @@
+class AddMealToAccessLogs < ActiveRecord::Migration[8.1]
+  def change
+    add_reference :access_logs, :meal, null: true, foreign_key: true
+  end
+end

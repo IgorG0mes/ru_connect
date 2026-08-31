@@ -113,7 +113,7 @@ pt-BR:
       access_warning: "AVISO: %{result}"
       not_found: "Usuário não encontrado. Necessário Cadastro."
       no_meal: "Refeição não disponível."
-      already_consumed: "Acesso já consumido hoje."
+      already_consumed: "Acesso já consumido para %{meal} hoje."
       no_tickets: "Saldo de fichas insuficiente."
       approved: "Acesso aprovado para %{meal}."
     access_logs:
