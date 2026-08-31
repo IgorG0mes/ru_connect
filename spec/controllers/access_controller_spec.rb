@@ -151,15 +151,32 @@ RSpec.describe AccessController, type: :request do
         end
       end
 
-      context "when student is found, meal is active, but already consumed today" do
+      context "when student is found, meal is active, but already consumed for that meal today" do
         it "creates AccessLog with denied status" do
           student = create_student
-          create_current_meal
-          AccessLog.create!(personable: student, status: :allowed, access_result: "Aprovado", access_time: Time.current)
+          meal = create_current_meal
+          AccessLog.create!(personable: student, meal: meal, status: :allowed, access_result: "Aprovado", access_time: Time.current)
           expect {
             post identify_path, params: { identifier: student.registration }
           }.to change(AccessLog, :count).by(1)
           expect(AccessLog.order(:created_at).last.status).to eq("denied")
+        end
+      end
+
+      context "when student already consumed a different meal today" do
+        it "still allows access to the current meal" do
+          student = create_student
+          previous_meal = Meal.create!(
+            name:     "Cafe_#{SecureRandom.hex(3)}",
+            start_at: (Time.current - 3.hours).strftime("%H:%M"),
+            end_at:   (Time.current - 2.hours).strftime("%H:%M")
+          )
+          AccessLog.create!(personable: student, meal: previous_meal, status: :allowed, access_result: "Aprovado", access_time: Time.current - 2.hours)
+          create_current_meal
+          expect {
+            post identify_path, params: { identifier: student.registration }
+          }.to change(AccessLog, :count).by(1)
+          expect(AccessLog.order(:created_at).last.status).to eq("allowed")
         end
       end
 

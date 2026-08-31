@@ -1,5 +1,6 @@
 class AccessLog < ApplicationRecord
   belongs_to :personable, polymorphic: true
+  belongs_to :meal, optional: true
   enum :status, [ :allowed, :denied, :warning ]
   validates :status, presence: true
 

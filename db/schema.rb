@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_18_012708) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_31_122335) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "unaccent"
@@ -19,10 +19,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_012708) do
     t.string "access_result"
     t.datetime "access_time"
     t.datetime "created_at", null: false
+    t.bigint "meal_id"
     t.bigint "personable_id", null: false
     t.string "personable_type", null: false
     t.integer "status"
     t.datetime "updated_at", null: false
+    t.index ["meal_id"], name: "index_access_logs_on_meal_id"
     t.index ["personable_type", "personable_id"], name: "index_access_logs_on_personable"
   end
 
@@ -132,6 +134,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_18_012708) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "access_logs", "meals"
   add_foreign_key "daily_menus", "meals"
   add_foreign_key "permissions", "roles"
 end

@@ -98,17 +98,19 @@ class AccessController < ApplicationController
       )
     end
 
-    if AccessLog.exists?(personable: person, status: :allowed, created_at: Date.current.all_day)
+    if AccessLog.exists?(personable: person, status: :allowed, meal: meal, created_at: Date.current.all_day)
       return AccessLog.create(
         personable: person,
+        meal: meal,
         status: :denied,
-        access_result: I18n.t("flash.access.already_consumed")
+        access_result: I18n.t("flash.access.already_consumed", meal: meal.name.downcase)
       )
     end
 
     if person.ticket_balance < 1
       return AccessLog.create(
         personable: person,
+        meal: meal,
         status: :denied,
         access_result: I18n.t("flash.access.no_tickets")
       )
@@ -118,6 +120,7 @@ class AccessController < ApplicationController
       person.consume_ticket!
       AccessLog.create!(
         personable: person,
+        meal: meal,
         status: :allowed,
         access_time: Time.current,
         access_result: I18n.t("flash.access.approved", meal: meal.name.capitalize)
